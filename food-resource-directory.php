@@ -61,7 +61,7 @@ class Food_Resource_Directory {
             wp_localize_script('frd-script', 'frdData', array(
                 'ajaxUrl' => admin_url('admin-ajax.php'),
                 'nonce' => wp_create_nonce('frd_nonce'),
-                'mapboxToken' => 'sk.eyJ1IjoibWFjb21iZGVmZW5kZXJzIiwiYSI6ImNtaGU0cWlhdDBhYzAybXB1Zmo4d3JrMmYifQ.3ZzRIkqmh9uPRv5WWz7MKA',
+                'mapboxToken' => 'pk.eyJ1IjoibWFjb21iZGVmZW5kZXJzIiwiYSI6ImNtaGU0bDlrejBhMXQybnB2Zng5aW85M3UifQ.dsT7ITwivyDeR0j07AZkgA',
                 'defaultCenter' => array(-83.0458, 42.5803), // Center of the three counties
                 'defaultZoom' => 9
             ));
@@ -86,10 +86,15 @@ class Food_Resource_Directory {
      */
     public function ajax_get_locations() {
         check_ajax_referer('frd_nonce', 'nonce');
-        
+
+        error_log('FRD: ajax_get_locations called');
+
         $filters = isset($_POST['filters']) ? $_POST['filters'] : array();
         $user_location = isset($_POST['user_location']) ? $_POST['user_location'] : null;
-        
+
+        error_log('FRD: Filters: ' . print_r($filters, true));
+        error_log('FRD: User location: ' . print_r($user_location, true));
+
         $args = array(
             'post_type' => 'food-resource',
             'posts_per_page' => -1,
@@ -97,6 +102,8 @@ class Food_Resource_Directory {
             'orderby' => 'title',
             'order' => 'ASC'
         );
+
+        error_log('FRD: Query args: ' . print_r($args, true));
         
         // Apply meta query filters
         $meta_query = array('relation' => 'AND');
@@ -143,14 +150,20 @@ class Food_Resource_Directory {
         
         $query = new WP_Query($args);
         $locations = array();
-        
+
+        error_log('FRD: Query found ' . $query->found_posts . ' posts');
+
         if ($query->have_posts()) {
             while ($query->have_posts()) {
                 $query->the_post();
                 $post_id = get_the_ID();
-                
+
+                error_log('FRD: Processing post ID: ' . $post_id . ' - ' . get_the_title());
+
                 $location = $this->get_location_data($post_id);
-                
+
+                error_log('FRD: Location data: ' . print_r($location, true));
+
                 // Calculate distance if user location is provided
                 if ($user_location && isset($user_location['lat']) && isset($user_location['lng'])) {
                     $location['distance'] = $this->calculate_distance(
@@ -160,19 +173,23 @@ class Food_Resource_Directory {
                         $location['longitude']
                     );
                 }
-                
+
                 $locations[] = $location;
             }
             wp_reset_postdata();
+        } else {
+            error_log('FRD: No posts found!');
         }
-        
+
         // Sort by distance if user location is provided
         if ($user_location) {
             usort($locations, function($a, $b) {
                 return $a['distance'] <=> $b['distance'];
             });
         }
-        
+
+        error_log('FRD: Returning ' . count($locations) . ' locations');
+
         wp_send_json_success($locations);
     }
     
@@ -180,21 +197,33 @@ class Food_Resource_Directory {
      * Get formatted location data for a post
      */
     private function get_location_data($post_id) {
+        error_log('FRD: Getting location data for post ' . $post_id);
+
         $street_address = get_field('street_address', $post_id);
         $city = get_field('city', $post_id);
         $state = get_field('state', $post_id);
         $zip = get_field('zip', $post_id);
-        
+
+        error_log('FRD: ACF fields - street: ' . $street_address . ', city: ' . $city . ', state: ' . $state . ', zip: ' . $zip);
+
         // Build full address
         $full_address = trim($street_address . ', ' . $city . ', ' . $state . ' ' . $zip);
-        
+
+        error_log('FRD: Full address: ' . $full_address);
+
         // Get coordinates (we'll geocode these on first load)
         $coordinates = get_post_meta($post_id, '_frd_coordinates', true);
         if (empty($coordinates)) {
+            error_log('FRD: No cached coordinates, geocoding...');
             $coordinates = $this->geocode_address($full_address);
             if ($coordinates) {
+                error_log('FRD: Geocoded successfully: ' . print_r($coordinates, true));
                 update_post_meta($post_id, '_frd_coordinates', $coordinates);
+            } else {
+                error_log('FRD: Geocoding failed for address: ' . $full_address);
             }
+        } else {
+            error_log('FRD: Using cached coordinates: ' . print_r($coordinates, true));
         }
         
         // Get hours
@@ -294,24 +323,35 @@ class Food_Resource_Directory {
      * Geocode an address using Mapbox
      */
     private function geocode_address($address) {
+        error_log('FRD: Geocoding address: ' . $address);
+
         $mapbox_token = 'pk.eyJ1IjoibWFjb21iZGVmZW5kZXJzIiwiYSI6ImNtaGU0bDlrejBhMXQybnB2Zng5aW85M3UifQ.dsT7ITwivyDeR0j07AZkgA';
         $url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' . urlencode($address) . '.json?access_token=' . $mapbox_token . '&country=US&proximity=-83.0458,42.5803';
-        
+
+        error_log('FRD: Geocoding URL: ' . $url);
+
         $response = wp_remote_get($url);
-        
+
         if (is_wp_error($response)) {
+            error_log('FRD: Geocoding WP Error: ' . $response->get_error_message());
             return null;
         }
-        
-        $body = json_decode(wp_remote_retrieve_body($response), true);
-        
-        if (isset($body['features'][0]['center'])) {
-            return array(
-                'lng' => $body['features'][0]['center'][0],
-                'lat' => $body['features'][0]['center'][1]
+
+        $body = wp_remote_retrieve_body($response);
+        error_log('FRD: Geocoding response body: ' . $body);
+
+        $data = json_decode($body, true);
+
+        if (isset($data['features'][0]['center'])) {
+            $coords = array(
+                'lng' => $data['features'][0]['center'][0],
+                'lat' => $data['features'][0]['center'][1]
             );
+            error_log('FRD: Geocoding successful: ' . print_r($coords, true));
+            return $coords;
         }
-        
+
+        error_log('FRD: Geocoding failed - no features found in response');
         return null;
     }
     
