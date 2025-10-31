@@ -1,0 +1,45 @@
+# WordPress
+wp-config.php
+.htaccess
+
+# IDEs
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+.DS_Store
+Thumbs.db
+
+# Node (if you add build tools later)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Composer (if you add PHP dependencies later)
+vendor/
+composer.lock
+
+# Build files
+*.zip
+dist/
+
+# Environment files
+.env
+.env.local
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+*~
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Desktop.ini
