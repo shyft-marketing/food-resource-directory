@@ -231,6 +231,51 @@ class Food_Resource_Directory {
     }
     
     /**
+     * Format phone number for display: 5555555555 -> (555) 555-5555
+     */
+    private function format_phone_display($phone) {
+        if (empty($phone)) {
+            return '';
+        }
+
+        // Remove all non-numeric characters
+        $phone = preg_replace('/[^0-9]/', '', $phone);
+
+        // Check if it's a valid 10-digit US number
+        if (strlen($phone) == 10) {
+            return '(' . substr($phone, 0, 3) . ') ' . substr($phone, 3, 3) . '-' . substr($phone, 6, 4);
+        }
+
+        // Return original if not 10 digits
+        return $phone;
+    }
+
+    /**
+     * Format phone number for tel: link: 5555555555 -> +15555555555
+     */
+    private function format_phone_link($phone) {
+        if (empty($phone)) {
+            return '';
+        }
+
+        // Remove all non-numeric characters
+        $phone = preg_replace('/[^0-9]/', '', $phone);
+
+        // Add +1 for US numbers (assuming 10-digit US numbers)
+        if (strlen($phone) == 10) {
+            return '+1' . $phone;
+        }
+
+        // Return with + prefix if already has country code
+        if (strlen($phone) == 11 && substr($phone, 0, 1) == '1') {
+            return '+' . $phone;
+        }
+
+        // Return original if format is unclear
+        return $phone;
+    }
+
+    /**
      * Get formatted location data for a post
      */
     private function get_location_data($post_id) {
@@ -263,9 +308,12 @@ class Food_Resource_Directory {
             error_log('FRD: Using cached coordinates: ' . print_r($coordinates, true));
         }
         
+        // Get special hours note (for "Appointment Only", etc.)
+        $hours_other_hours = get_field('hours_other_hours', $post_id);
+
         // Get hours
         $hours = $this->format_hours($post_id);
-        
+
         // Get services
         $services = get_field('services', $post_id);
         if (!is_array($services)) {
@@ -277,7 +325,17 @@ class Food_Resource_Directory {
         if (!is_array($languages)) {
             $languages = $languages ? array($languages) : array();
         }
-        
+
+        // Get and format phone number
+        $phone_raw = get_field('phone', $post_id);
+        error_log('FRD: Raw phone from ACF: ' . var_export($phone_raw, true) . ' (type: ' . gettype($phone_raw) . ')');
+
+        $phone_display = $this->format_phone_display($phone_raw);
+        $phone_link = $this->format_phone_link($phone_raw);
+
+        error_log('FRD: Formatted phone display: ' . $phone_display);
+        error_log('FRD: Formatted phone link: ' . $phone_link);
+
         return array(
             'id' => $post_id,
             'title' => get_the_title($post_id),
@@ -286,7 +344,8 @@ class Food_Resource_Directory {
             'state' => $state,
             'zip' => $zip,
             'full_address' => $full_address,
-            'phone' => get_field('phone', $post_id),
+            'phone' => $phone_display,
+            'phone_link' => $phone_link,
             'website' => get_field('url', $post_id),
             'services' => $services,
             'languages' => $languages,
@@ -294,7 +353,8 @@ class Food_Resource_Directory {
             'notes' => get_field('notes', $post_id),
             'county' => get_field('county', $post_id),
             'hours' => $hours,
-            'hours_text' => $this->get_hours_text($post_id),
+            'hours_other_hours' => $hours_other_hours,
+            'hours_text' => $this->get_hours_text($post_id, $hours_other_hours),
             'latitude' => isset($coordinates['lat']) ? $coordinates['lat'] : null,
             'longitude' => isset($coordinates['lng']) ? $coordinates['lng'] : null,
             'distance' => null
@@ -330,7 +390,12 @@ class Food_Resource_Directory {
     /**
      * Get hours as readable text
      */
-    private function get_hours_text($post_id) {
+    private function get_hours_text($post_id, $hours_other_hours = null) {
+        // If there's a special hours note (and it's not "Regular hours"), return that instead
+        if (!empty($hours_other_hours) && $hours_other_hours !== 'Regular hours') {
+            return $hours_other_hours;
+        }
+
         $days = array(
             'monday' => 'Monday',
             'tuesday' => 'Tuesday',
@@ -340,19 +405,19 @@ class Food_Resource_Directory {
             'saturday' => 'Saturday',
             'sunday' => 'Sunday'
         );
-        
+
         $hours_text = array();
-        
+
         foreach ($days as $key => $label) {
             $is_open = get_field('hours_' . $key . '_open', $post_id);
             if ($is_open) {
                 $open_time = get_field('hours_' . $key . '_open_time', $post_id);
                 $close_time = get_field('hours_' . $key . '_close_time', $post_id);
-                
+
                 $hours_text[] = $label . ': ' . $open_time . ' - ' . $close_time;
             }
         }
-        
+
         return !empty($hours_text) ? implode('<br>', $hours_text) : 'Hours not available';
     }
     

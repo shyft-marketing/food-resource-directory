@@ -258,6 +258,14 @@
                     filteredLocations = response.data;
                     console.log('FRD: Loaded ' + allLocations.length + ' locations');
 
+                    // Debug first location's phone data
+                    if (allLocations.length > 0) {
+                        console.log('FRD: First location phone data:', {
+                            phone: allLocations[0].phone,
+                            phone_link: allLocations[0].phone_link
+                        });
+                    }
+
                     // Update results count
                     updateResultsCount();
 
@@ -540,9 +548,9 @@
 
         // Footer with links
         const $footer = $('<div class="frd-location-footer"></div>');
-        
+
         if (location.phone) {
-            $footer.append('<a href="tel:' + location.phone + '" class="frd-location-link">📞 Call</a>');
+            $footer.append('<a href="tel:' + location.phone_link + '" class="frd-location-link">📞 Call</a>');
         }
         
         if (location.website) {
@@ -610,7 +618,7 @@
             html += '<div class="frd-modal-section">';
             html += '<h4>Contact</h4>';
             if (location.phone) {
-                html += '<p><strong>Phone:</strong> <a href="tel:' + location.phone + '">' + location.phone + '</a></p>';
+                html += '<p><strong>Phone:</strong> <a href="tel:' + location.phone_link + '">' + location.phone + '</a></p>';
             }
             if (location.website) {
                 html += '<p><strong>Website:</strong> <a href="' + location.website + '" target="_blank">' + location.website + '</a></p>';
@@ -627,11 +635,17 @@
         }
 
         // Hours
-        if (location.hours) {
-            html += '<div class="frd-modal-section">';
-            html += '<h4>Hours</h4>';
+        html += '<div class="frd-modal-section">';
+        html += '<h4>Hours</h4>';
+
+        // Check if there's a special hours note (Appointment only, Hours unknown, etc.)
+        // Skip if it's "Regular hours" (the default value)
+        if (location.hours_other_hours && location.hours_other_hours !== 'Regular hours') {
+            html += '<p>' + location.hours_other_hours + '</p>';
+        } else if (location.hours) {
+            // Display normal hours table
             html += '<div class="frd-modal-hours">';
-            
+
             const dayLabels = {
                 monday: 'Monday',
                 tuesday: 'Tuesday',
@@ -655,8 +669,11 @@
             });
 
             html += '</div>';
-            html += '</div>';
+        } else {
+            html += '<p>Hours not available</p>';
         }
+
+        html += '</div>';
 
         // Languages
         if (location.languages && location.languages.length > 0) {
@@ -684,9 +701,9 @@
 
         // Action buttons
         html += '<div class="frd-modal-actions">';
-        
+
         if (location.phone) {
-            html += '<a href="tel:' + location.phone + '" class="frd-modal-btn">📞 Call</a>';
+            html += '<a href="tel:' + location.phone_link + '" class="frd-modal-btn">📞 Call</a>';
         }
         
         if (location.website) {
