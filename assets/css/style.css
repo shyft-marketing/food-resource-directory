@@ -335,6 +335,11 @@
     color: var(--frd-text);
 }
 
+/* Popup More Info Button */
+.frd-popup-more-info:hover {
+    background: var(--frd-primary-dark) !important;
+}
+
 /* List View */
 .frd-list-view {
     background: white;
