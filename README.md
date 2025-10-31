@@ -77,10 +77,14 @@ A WordPress plugin that displays an interactive map and filterable directory of 
 
 ### Step 2: Create Field Group in ACF
 
+**⚠️ IMPORTANT**: See [ACF-FIELD-STRUCTURE.md](ACF-FIELD-STRUCTURE.md) for the EXACT field configuration.
+
+The plugin requires specific field names and structure. Here's a summary:
+
 1. Go to **ACF → Field Groups → Add New**
 2. Name: "Food Resource Info"
 3. Location: Post Type is equal to `food-resource`
-4. Add these fields:
+4. Add these fields (use FLAT structure, not nested groups):
 
 **Address Information:**
 - `street_address` (Text)
@@ -105,18 +109,18 @@ A WordPress plugin that displays an interactive map and filterable directory of 
 - `languages` (Select - multiple, return label)
   - Add all languages you want to support
 
-**Hours (Group field named `hours`):**
+**Hours (FLAT structure - NOT nested groups!):**
 
-For each day (create a sub-group for each):
-- `monday` (Group)
-  - `open` (True/False)
-  - `open_time` (Time Picker)
-  - `close_time` (Time Picker)
-- `tuesday` (Group)
-  - `open` (True/False)
-  - `open_time` (Time Picker)
-  - `close_time` (Time Picker)
+For each day, create 3 separate fields:
+- `hours_monday_open` (True/False)
+- `hours_monday_open_time` (Time Picker, conditional on open=true)
+- `hours_monday_close_time` (Time Picker, conditional on open=true)
+- `hours_tuesday_open` (True/False)
+- `hours_tuesday_open_time` (Time Picker, conditional on open=true)
+- `hours_tuesday_close_time` (Time Picker, conditional on open=true)
 - *(Repeat for wednesday, thursday, friday, saturday, sunday)*
+
+**See [ACF-FIELD-STRUCTURE.md](ACF-FIELD-STRUCTURE.md) for complete step-by-step instructions.**
 
 **Additional Information:**
 - `eligibility` (Text Area)
