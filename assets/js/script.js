@@ -132,6 +132,21 @@
         $('.frd-modal-content').on('click', function(e) {
             e.stopPropagation();
         });
+
+        // Handle "More Info" button clicks in map popups
+        $(document).on('click', '.frd-popup-more-info', function(e) {
+            e.preventDefault();
+            const locationId = parseInt($(this).data('location-id'));
+
+            // Find the location in allLocations array
+            const location = allLocations.find(function(loc) {
+                return loc.id === locationId;
+            });
+
+            if (location) {
+                showLocationDetails(location);
+            }
+        });
     }
 
     function switchView(view) {
@@ -441,11 +456,6 @@
 
             marker.setPopup(popup);
 
-            // Add click handler to show full details
-            marker.getElement().addEventListener('click', function() {
-                showLocationDetails(location);
-            });
-
             markers.push(marker);
         });
 
@@ -469,13 +479,13 @@
     function createPopupContent(location) {
         let html = '<div class="frd-popup">';
         html += '<h3 style="margin: 0 0 10px 0; font-size: 16px; font-weight: 600;">' + location.title + '</h3>';
-        
+
         if (location.distance !== null) {
             html += '<p style="margin: 0 0 8px 0; font-weight: 600; color: #2563eb;">' + location.distance + ' miles away</p>';
         }
-        
+
         html += '<p style="margin: 0 0 8px 0; font-size: 14px; color: #64748b;">' + location.full_address + '</p>';
-        
+
         if (location.services && location.services.length > 0) {
             html += '<div style="margin-bottom: 8px;">';
             location.services.forEach(function(service) {
@@ -483,10 +493,11 @@
             });
             html += '</div>';
         }
-        
-        html += '<p style="margin: 8px 0 0 0; font-size: 13px;"><a href="#" onclick="return false;" style="color: #2563eb; font-weight: 500;">Click marker for full details →</a></p>';
+
+        // Add "More Info" button
+        html += '<button class="frd-popup-more-info" data-location-id="' + location.id + '" style="width: 100%; margin-top: 8px; padding: 8px 12px; background: #2563eb; color: white; border: none; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; transition: background 0.2s;">More Info</button>';
         html += '</div>';
-        
+
         return html;
     }
 
