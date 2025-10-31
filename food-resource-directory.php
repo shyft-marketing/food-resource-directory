@@ -231,6 +231,51 @@ class Food_Resource_Directory {
     }
     
     /**
+     * Format phone number for display: 5555555555 -> (555) 555-5555
+     */
+    private function format_phone_display($phone) {
+        if (empty($phone)) {
+            return '';
+        }
+
+        // Remove all non-numeric characters
+        $phone = preg_replace('/[^0-9]/', '', $phone);
+
+        // Check if it's a valid 10-digit US number
+        if (strlen($phone) == 10) {
+            return '(' . substr($phone, 0, 3) . ') ' . substr($phone, 3, 3) . '-' . substr($phone, 6, 4);
+        }
+
+        // Return original if not 10 digits
+        return $phone;
+    }
+
+    /**
+     * Format phone number for tel: link: 5555555555 -> +15555555555
+     */
+    private function format_phone_link($phone) {
+        if (empty($phone)) {
+            return '';
+        }
+
+        // Remove all non-numeric characters
+        $phone = preg_replace('/[^0-9]/', '', $phone);
+
+        // Add +1 for US numbers (assuming 10-digit US numbers)
+        if (strlen($phone) == 10) {
+            return '+1' . $phone;
+        }
+
+        // Return with + prefix if already has country code
+        if (strlen($phone) == 11 && substr($phone, 0, 1) == '1') {
+            return '+' . $phone;
+        }
+
+        // Return original if format is unclear
+        return $phone;
+    }
+
+    /**
      * Get formatted location data for a post
      */
     private function get_location_data($post_id) {
@@ -280,7 +325,12 @@ class Food_Resource_Directory {
         if (!is_array($languages)) {
             $languages = $languages ? array($languages) : array();
         }
-        
+
+        // Get and format phone number
+        $phone_raw = get_field('phone', $post_id);
+        $phone_display = $this->format_phone_display($phone_raw);
+        $phone_link = $this->format_phone_link($phone_raw);
+
         return array(
             'id' => $post_id,
             'title' => get_the_title($post_id),
@@ -289,7 +339,8 @@ class Food_Resource_Directory {
             'state' => $state,
             'zip' => $zip,
             'full_address' => $full_address,
-            'phone' => get_field('phone', $post_id),
+            'phone' => $phone_display,
+            'phone_link' => $phone_link,
             'website' => get_field('url', $post_id),
             'services' => $services,
             'languages' => $languages,

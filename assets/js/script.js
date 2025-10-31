@@ -540,9 +540,9 @@
 
         // Footer with links
         const $footer = $('<div class="frd-location-footer"></div>');
-        
+
         if (location.phone) {
-            $footer.append('<a href="tel:' + location.phone + '" class="frd-location-link">📞 Call</a>');
+            $footer.append('<a href="tel:' + location.phone_link + '" class="frd-location-link">📞 Call</a>');
         }
         
         if (location.website) {
@@ -610,7 +610,7 @@
             html += '<div class="frd-modal-section">';
             html += '<h4>Contact</h4>';
             if (location.phone) {
-                html += '<p><strong>Phone:</strong> <a href="tel:' + location.phone + '">' + location.phone + '</a></p>';
+                html += '<p><strong>Phone:</strong> <a href="tel:' + location.phone_link + '">' + location.phone + '</a></p>';
             }
             if (location.website) {
                 html += '<p><strong>Website:</strong> <a href="' + location.website + '" target="_blank">' + location.website + '</a></p>';
@@ -693,9 +693,9 @@
 
         // Action buttons
         html += '<div class="frd-modal-actions">';
-        
+
         if (location.phone) {
-            html += '<a href="tel:' + location.phone + '" class="frd-modal-btn">📞 Call</a>';
+            html += '<a href="tel:' + location.phone_link + '" class="frd-modal-btn">📞 Call</a>';
         }
         
         if (location.website) {
