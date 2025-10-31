@@ -296,7 +296,7 @@ class Food_Resource_Directory {
      * Geocode an address using Mapbox
      */
     private function geocode_address($address) {
-        $mapbox_token = 'sk.eyJ1IjoibWFjb21iZGVmZW5kZXJzIiwiYSI6ImNtaGU0cWlhdDBhYzAybXB1Zmo4d3JrMmYifQ.3ZzRIkqmh9uPRv5WWz7MKA';
+        $mapbox_token = 'pk.eyJ1IjoibWFjb21iZGVmZW5kZXJzIiwiYSI6ImNtaGU0bDlrejBhMXQybnB2Zng5aW85M3UifQ.dsT7ITwivyDeR0j07AZkgA';
         $url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' . urlencode($address) . '.json?access_token=' . $mapbox_token . '&country=US&proximity=-83.0458,42.5803';
         
         $response = wp_remote_get($url);
