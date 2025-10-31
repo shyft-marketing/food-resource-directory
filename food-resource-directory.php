@@ -335,8 +335,8 @@ class Food_Resource_Directory {
      * Get hours as readable text
      */
     private function get_hours_text($post_id, $hours_other_hours = null) {
-        // If there's a special hours note, return that instead
-        if (!empty($hours_other_hours)) {
+        // If there's a special hours note (and it's not "Regular hours"), return that instead
+        if (!empty($hours_other_hours) && $hours_other_hours !== 'Regular hours') {
             return $hours_other_hours;
         }
 

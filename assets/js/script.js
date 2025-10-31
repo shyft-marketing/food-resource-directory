@@ -631,7 +631,8 @@
         html += '<h4>Hours</h4>';
 
         // Check if there's a special hours note (Appointment only, Hours unknown, etc.)
-        if (location.hours_other_hours) {
+        // Skip if it's "Regular hours" (the default value)
+        if (location.hours_other_hours && location.hours_other_hours !== 'Regular hours') {
             html += '<p>' + location.hours_other_hours + '</p>';
         } else if (location.hours) {
             // Display normal hours table
