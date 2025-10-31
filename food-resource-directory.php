@@ -1,17 +1,15 @@
 <?php
 /**
- * Plugin Name: Food Resource Directory
- * Plugin URI: https://github.com/yourusername/food-resource-directory
- * Description: Interactive map and filterable directory of food pantries and soup kitchens with ACF integration
- * Version: 1.0.0
- * Author: Your Organization
- * Author URI: https://yourwebsite.com
- * License: GPL v2 or later
- * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: food-resource-directory
- * Requires at least: 5.0
- * Requires PHP: 7.4
- */
+    * Plugin Name: Food Resource Directory
+    * Plugin URI: https://github.com/shyft-marketing/food-resource-directory
+    * Description: Interactive map and filterable directory of food pantries and soup kitchens with ACF integration
+    * Version: 1.0.0
+    * Author: SHYFT
+    * Author URI: https://shyft.wtf
+    * License: GPL v2 or later
+    * GitHub Plugin URI: shyft-marketing/food-resource-directory
+    * Primary Branch: main
+*/
 
 // Exit if accessed directly
 if (!defined('ABSPATH')) {
