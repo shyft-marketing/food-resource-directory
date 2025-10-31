@@ -328,8 +328,13 @@ class Food_Resource_Directory {
 
         // Get and format phone number
         $phone_raw = get_field('phone', $post_id);
+        error_log('FRD: Raw phone from ACF: ' . var_export($phone_raw, true) . ' (type: ' . gettype($phone_raw) . ')');
+
         $phone_display = $this->format_phone_display($phone_raw);
         $phone_link = $this->format_phone_link($phone_raw);
+
+        error_log('FRD: Formatted phone display: ' . $phone_display);
+        error_log('FRD: Formatted phone link: ' . $phone_link);
 
         return array(
             'id' => $post_id,

@@ -258,6 +258,14 @@
                     filteredLocations = response.data;
                     console.log('FRD: Loaded ' + allLocations.length + ' locations');
 
+                    // Debug first location's phone data
+                    if (allLocations.length > 0) {
+                        console.log('FRD: First location phone data:', {
+                            phone: allLocations[0].phone,
+                            phone_link: allLocations[0].phone_link
+                        });
+                    }
+
                     // Update results count
                     updateResultsCount();
 
