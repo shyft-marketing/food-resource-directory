@@ -264,6 +264,10 @@
                             phone: allLocations[0].phone,
                             phone_link: allLocations[0].phone_link
                         });
+
+                        // Make accessible for debugging
+                        window.frdDebugLocation = allLocations[0];
+                        console.log('FRD: Access location data via: window.frdDebugLocation');
                     }
 
                     // Update results count
