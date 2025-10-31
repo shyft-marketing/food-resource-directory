@@ -10,24 +10,36 @@
 
     // Initialize on document ready
     $(document).ready(function() {
+        console.log('FRD: Document ready, initializing...');
+        console.log('FRD: Mapbox token:', frdData.mapboxToken);
+        console.log('FRD: AJAX URL:', frdData.ajaxUrl);
         initializeDirectory();
     });
 
     function initializeDirectory() {
+        console.log('FRD: Starting initialization...');
+
         // Initialize map
-        initializeMap();
-        
+        try {
+            initializeMap();
+            console.log('FRD: Map initialized successfully');
+        } catch (error) {
+            console.error('FRD: Error initializing map:', error);
+        }
+
         // Load initial locations
         loadLocations();
-        
+
         // Bind event handlers
         bindEvents();
-        
+
         // Open filters by default on desktop
         if ($(window).width() > 768) {
             $('.frd-filters').addClass('expanded');
             $('.frd-filters-toggle-text').text('Hide Filters');
         }
+
+        console.log('FRD: Initialization complete');
     }
 
     function initializeMap() {
@@ -226,7 +238,9 @@
     }
 
     function loadLocations() {
+        console.log('FRD: Loading locations...');
         const filters = getFilters();
+        console.log('FRD: Current filters:', filters);
 
         $.ajax({
             url: frdData.ajaxUrl,
@@ -238,24 +252,31 @@
                 user_location: userLocation
             },
             success: function(response) {
+                console.log('FRD: AJAX response received:', response);
                 if (response.success) {
                     allLocations = response.data;
                     filteredLocations = response.data;
-                    
+                    console.log('FRD: Loaded ' + allLocations.length + ' locations');
+
                     // Update results count
                     updateResultsCount();
-                    
+
                     // Update map markers
                     updateMapMarkers();
-                    
+
                     // Update list
                     updateList();
                 } else {
-                    console.error('Error loading locations');
+                    console.error('FRD: Error loading locations - success=false', response);
+                    alert('Error loading locations. Check console for details.');
                 }
             },
-            error: function() {
-                console.error('AJAX error loading locations');
+            error: function(xhr, status, error) {
+                console.error('FRD: AJAX error loading locations');
+                console.error('FRD: Status:', status);
+                console.error('FRD: Error:', error);
+                console.error('FRD: Response:', xhr.responseText);
+                alert('AJAX error loading locations. Check console for details.');
             }
         });
     }
