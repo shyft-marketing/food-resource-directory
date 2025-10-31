@@ -51,69 +51,42 @@
                 </div>
             </div>
 
-            <!-- Services Filter -->
-            <div class="frd-filter-group">
-                <label>Services</label>
-                <div class="frd-checkbox-group">
-                    <label class="frd-checkbox-label">
-                        <input type="checkbox" name="services[]" value="Food Pantry" />
-                        <span>Food Pantry</span>
-                    </label>
-                    <label class="frd-checkbox-label">
-                        <input type="checkbox" name="services[]" value="Soup Kitchen" />
-                        <span>Soup Kitchen</span>
-                    </label>
-                    <label class="frd-checkbox-label">
-                        <input type="checkbox" name="services[]" value="Other" />
-                        <span>Other</span>
-                    </label>
+            <!-- Main Filters Row -->
+            <div class="frd-filters-row">
+                <!-- Services Filter -->
+                <div class="frd-filter-group">
+                    <label for="frd-services">Services</label>
+                    <select id="frd-services" name="services[]" multiple>
+                        <option value="Food Pantry">Food Pantry</option>
+                        <option value="Soup Kitchen">Soup Kitchen</option>
+                        <option value="Other">Other</option>
+                    </select>
                 </div>
-            </div>
 
-            <!-- Days Filter -->
-            <div class="frd-filter-group">
-                <label>Open On</label>
-                <div class="frd-checkbox-group">
-                    <label class="frd-checkbox-label">
-                        <input type="checkbox" name="days[]" value="monday" />
-                        <span>Monday</span>
-                    </label>
-                    <label class="frd-checkbox-label">
-                        <input type="checkbox" name="days[]" value="tuesday" />
-                        <span>Tuesday</span>
-                    </label>
-                    <label class="frd-checkbox-label">
-                        <input type="checkbox" name="days[]" value="wednesday" />
-                        <span>Wednesday</span>
-                    </label>
-                    <label class="frd-checkbox-label">
-                        <input type="checkbox" name="days[]" value="thursday" />
-                        <span>Thursday</span>
-                    </label>
-                    <label class="frd-checkbox-label">
-                        <input type="checkbox" name="days[]" value="friday" />
-                        <span>Friday</span>
-                    </label>
-                    <label class="frd-checkbox-label">
-                        <input type="checkbox" name="days[]" value="saturday" />
-                        <span>Saturday</span>
-                    </label>
-                    <label class="frd-checkbox-label">
-                        <input type="checkbox" name="days[]" value="sunday" />
-                        <span>Sunday</span>
-                    </label>
+                <!-- Days Filter -->
+                <div class="frd-filter-group">
+                    <label for="frd-days">Open On</label>
+                    <select id="frd-days" name="days[]" multiple>
+                        <option value="monday">Monday</option>
+                        <option value="tuesday">Tuesday</option>
+                        <option value="wednesday">Wednesday</option>
+                        <option value="thursday">Thursday</option>
+                        <option value="friday">Friday</option>
+                        <option value="saturday">Saturday</option>
+                        <option value="sunday">Sunday</option>
+                    </select>
                 </div>
-            </div>
 
-            <!-- County Filter -->
-            <div class="frd-filter-group">
-                <label for="frd-county">County</label>
-                <select id="frd-county" name="county">
-                    <option value="">All Counties</option>
-                    <option value="Macomb County">Macomb County</option>
-                    <option value="Oakland County">Oakland County</option>
-                    <option value="Wayne County">Wayne County</option>
-                </select>
+                <!-- County Filter -->
+                <div class="frd-filter-group">
+                    <label for="frd-county">County</label>
+                    <select id="frd-county" name="county">
+                        <option value="">All Counties</option>
+                        <option value="Macomb County">Macomb County</option>
+                        <option value="Oakland County">Oakland County</option>
+                        <option value="Wayne County">Wayne County</option>
+                    </select>
+                </div>
             </div>
 
             <!-- Filter Actions -->

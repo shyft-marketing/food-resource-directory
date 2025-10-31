@@ -358,16 +358,9 @@
     }
 
     function getFilters() {
-        const services = [];
-        $('input[name="services[]"]:checked').each(function() {
-            services.push($(this).val());
-        });
-
-        const days = [];
-        $('input[name="days[]"]:checked').each(function() {
-            days.push($(this).val());
-        });
-
+        // Get selected values from multi-select dropdowns
+        const services = $('#frd-services').val() || [];
+        const days = $('#frd-days').val() || [];
         const county = $('#frd-county').val();
 
         return {
@@ -378,10 +371,10 @@
     }
 
     function resetFilters() {
-        // Clear checkboxes
-        $('input[name="services[]"]').prop('checked', false);
-        $('input[name="days[]"]').prop('checked', false);
-        
+        // Clear multi-select dropdowns
+        $('#frd-services').val([]);
+        $('#frd-days').val([]);
+
         // Clear county select
         $('#frd-county').val('');
         

@@ -123,6 +123,14 @@
     display: block;
 }
 
+/* Filters Row */
+.frd-filters-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
 .frd-filter-group {
     margin-bottom: 20px;
 }
@@ -161,6 +169,23 @@
     outline: none;
     border-color: var(--frd-primary);
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* Multi-select dropdowns */
+.frd-filter-group select[multiple] {
+    min-height: 120px;
+    padding: 4px;
+}
+
+.frd-filter-group select[multiple] option {
+    padding: 8px 12px;
+    border-radius: 4px;
+    margin-bottom: 2px;
+}
+
+.frd-filter-group select[multiple] option:checked {
+    background: var(--frd-primary);
+    color: white;
 }
 
 /* Distance Slider */
@@ -205,36 +230,6 @@
     color: var(--frd-primary);
 }
 
-/* Checkbox Group */
-.frd-checkbox-group {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 12px;
-}
-
-.frd-checkbox-label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-    padding: 8px;
-    border-radius: 6px;
-    transition: background 0.2s ease;
-}
-
-.frd-checkbox-label:hover {
-    background: var(--frd-background);
-}
-
-.frd-checkbox-label input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    cursor: pointer;
-}
-
-.frd-checkbox-label span {
-    font-size: 14px;
-}
 
 /* Filter Actions */
 .frd-filter-actions {
@@ -626,11 +621,11 @@
         align-items: flex-start;
         gap: 12px;
     }
-    
-    .frd-checkbox-group {
+
+    .frd-filters-row {
         grid-template-columns: 1fr;
     }
-    
+
     .frd-filter-actions {
         flex-direction: column;
     }
