@@ -263,9 +263,12 @@ class Food_Resource_Directory {
             error_log('FRD: Using cached coordinates: ' . print_r($coordinates, true));
         }
         
+        // Get special hours note (for "Appointment Only", etc.)
+        $hours_other_hours = get_field('hours_other_hours', $post_id);
+
         // Get hours
         $hours = $this->format_hours($post_id);
-        
+
         // Get services
         $services = get_field('services', $post_id);
         if (!is_array($services)) {
@@ -294,7 +297,8 @@ class Food_Resource_Directory {
             'notes' => get_field('notes', $post_id),
             'county' => get_field('county', $post_id),
             'hours' => $hours,
-            'hours_text' => $this->get_hours_text($post_id),
+            'hours_other_hours' => $hours_other_hours,
+            'hours_text' => $this->get_hours_text($post_id, $hours_other_hours),
             'latitude' => isset($coordinates['lat']) ? $coordinates['lat'] : null,
             'longitude' => isset($coordinates['lng']) ? $coordinates['lng'] : null,
             'distance' => null
@@ -330,7 +334,12 @@ class Food_Resource_Directory {
     /**
      * Get hours as readable text
      */
-    private function get_hours_text($post_id) {
+    private function get_hours_text($post_id, $hours_other_hours = null) {
+        // If there's a special hours note, return that instead
+        if (!empty($hours_other_hours)) {
+            return $hours_other_hours;
+        }
+
         $days = array(
             'monday' => 'Monday',
             'tuesday' => 'Tuesday',
@@ -340,19 +349,19 @@ class Food_Resource_Directory {
             'saturday' => 'Saturday',
             'sunday' => 'Sunday'
         );
-        
+
         $hours_text = array();
-        
+
         foreach ($days as $key => $label) {
             $is_open = get_field('hours_' . $key . '_open', $post_id);
             if ($is_open) {
                 $open_time = get_field('hours_' . $key . '_open_time', $post_id);
                 $close_time = get_field('hours_' . $key . '_close_time', $post_id);
-                
+
                 $hours_text[] = $label . ': ' . $open_time . ' - ' . $close_time;
             }
         }
-        
+
         return !empty($hours_text) ? implode('<br>', $hours_text) : 'Hours not available';
     }
     

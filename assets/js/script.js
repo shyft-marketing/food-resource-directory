@@ -627,11 +627,16 @@
         }
 
         // Hours
-        if (location.hours) {
-            html += '<div class="frd-modal-section">';
-            html += '<h4>Hours</h4>';
+        html += '<div class="frd-modal-section">';
+        html += '<h4>Hours</h4>';
+
+        // Check if there's a special hours note (Appointment only, Hours unknown, etc.)
+        if (location.hours_other_hours) {
+            html += '<p>' + location.hours_other_hours + '</p>';
+        } else if (location.hours) {
+            // Display normal hours table
             html += '<div class="frd-modal-hours">';
-            
+
             const dayLabels = {
                 monday: 'Monday',
                 tuesday: 'Tuesday',
@@ -655,8 +660,11 @@
             });
 
             html += '</div>';
-            html += '</div>';
+        } else {
+            html += '<p>Hours not available</p>';
         }
+
+        html += '</div>';
 
         // Languages
         if (location.languages && location.languages.length > 0) {
