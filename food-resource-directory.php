@@ -22,17 +22,54 @@ define('FRD_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('FRD_PLUGIN_URL', plugin_dir_url(__FILE__));
 
 class Food_Resource_Directory {
-    
+
     /**
      * Constructor
      */
     public function __construct() {
-        add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'));
-        add_shortcode('food_resource_directory', array($this, 'render_directory'));
-        add_action('wp_ajax_frd_get_locations', array($this, 'ajax_get_locations'));
-        add_action('wp_ajax_nopriv_frd_get_locations', array($this, 'ajax_get_locations'));
-        add_action('wp_ajax_frd_geocode', array($this, 'ajax_geocode'));
-        add_action('wp_ajax_nopriv_frd_geocode', array($this, 'ajax_geocode'));
+        // Check for ACF dependency
+        add_action('admin_init', array($this, 'check_dependencies'));
+        add_action('admin_notices', array($this, 'dependency_notice'));
+
+        // Only initialize if ACF is active
+        if ($this->is_acf_active()) {
+            add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'));
+            add_shortcode('food_resource_directory', array($this, 'render_directory'));
+            add_action('wp_ajax_frd_get_locations', array($this, 'ajax_get_locations'));
+            add_action('wp_ajax_nopriv_frd_get_locations', array($this, 'ajax_get_locations'));
+            add_action('wp_ajax_frd_geocode', array($this, 'ajax_geocode'));
+            add_action('wp_ajax_nopriv_frd_geocode', array($this, 'ajax_geocode'));
+        }
+    }
+
+    /**
+     * Check if ACF is active
+     */
+    private function is_acf_active() {
+        return class_exists('ACF');
+    }
+
+    /**
+     * Check plugin dependencies
+     */
+    public function check_dependencies() {
+        if (!$this->is_acf_active()) {
+            set_transient('frd_missing_acf', true, 5);
+        }
+    }
+
+    /**
+     * Show admin notice if dependencies are missing
+     */
+    public function dependency_notice() {
+        if (get_transient('frd_missing_acf')) {
+            ?>
+            <div class="notice notice-error">
+                <p><strong>Food Resource Directory:</strong> This plugin requires Advanced Custom Fields (ACF) or ACF PRO to be installed and activated. <a href="<?php echo admin_url('plugin-install.php?s=advanced+custom+fields&tab=search&type=term'); ?>">Install ACF now</a>.</p>
+            </div>
+            <?php
+            delete_transient('frd_missing_acf');
+        }
     }
     
     /**
@@ -398,7 +435,45 @@ class Food_Resource_Directory {
         
         return round($distance, 2);
     }
+    /**
+     * Plugin activation hook
+     */
+    public static function activate() {
+        // Check PHP version
+        if (version_compare(PHP_VERSION, '7.4', '<')) {
+            deactivate_plugins(plugin_basename(__FILE__));
+            wp_die('Food Resource Directory requires PHP 7.4 or higher. You are running PHP ' . PHP_VERSION);
+        }
+
+        // Check WordPress version
+        if (version_compare(get_bloginfo('version'), '6.0', '<')) {
+            deactivate_plugins(plugin_basename(__FILE__));
+            wp_die('Food Resource Directory requires WordPress 6.0 or higher. You are running WordPress ' . get_bloginfo('version'));
+        }
+
+        // Check for ACF
+        if (!class_exists('ACF')) {
+            set_transient('frd_activation_notice', 'acf_missing', 60);
+        } else {
+            set_transient('frd_activation_notice', 'success', 60);
+        }
+
+        // Flush rewrite rules for custom post type
+        flush_rewrite_rules();
+    }
+
+    /**
+     * Plugin deactivation hook
+     */
+    public static function deactivate() {
+        // Flush rewrite rules
+        flush_rewrite_rules();
+    }
 }
+
+// Activation and deactivation hooks
+register_activation_hook(__FILE__, array('Food_Resource_Directory', 'activate'));
+register_deactivation_hook(__FILE__, array('Food_Resource_Directory', 'deactivate'));
 
 // Initialize the plugin
 new Food_Resource_Directory();
