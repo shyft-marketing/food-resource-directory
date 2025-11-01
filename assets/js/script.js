@@ -29,6 +29,15 @@
             width: '100%'
         });
 
+        // Fix clear button to properly clear all selections
+        $(document).on('click', '.select2-selection__clear', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const $container = $(this).closest('.select2-container');
+            const $select = $('#' + $container.attr('id').replace('select2-', '').replace('-container', ''));
+            $select.val(null).trigger('change');
+        });
+
         // Initialize map
         try {
             initializeMap();
