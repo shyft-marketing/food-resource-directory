@@ -385,11 +385,22 @@
 }
 
 .mapboxgl-ctrl-group button {
-    background-color: white !important;
+    width: 29px !important;
+    height: 29px !important;
+    display: block !important;
 }
 
 .mapboxgl-ctrl-group button + button {
     border-top: 1px solid var(--frd-border) !important;
+}
+
+/* Ensure icon spans are visible */
+.mapboxgl-ctrl-group button .mapboxgl-ctrl-icon {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
 }
 
 .mapboxgl-ctrl-group button:hover {
