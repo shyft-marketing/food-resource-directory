@@ -395,22 +395,10 @@
     border-top: 1px solid var(--frd-border) !important;
 }
 
-/* Ensure icon spans are visible */
+/* Ensure icon spans are visible - minimal override */
 .mapboxgl-ctrl-group button .mapboxgl-ctrl-icon {
-    display: inline-block !important;
     width: 29px !important;
     height: 29px !important;
-    background-color: transparent !important;
-    background-repeat: no-repeat !important;
-    background-position: center !important;
-    background-size: 70% !important;
-}
-
-/* Override any specific positioning from Mapbox */
-.mapboxgl-ctrl-zoom-in .mapboxgl-ctrl-icon,
-.mapboxgl-ctrl-zoom-out .mapboxgl-ctrl-icon,
-.mapboxgl-ctrl-compass .mapboxgl-ctrl-icon {
-    background-position: center center !important;
 }
 
 .mapboxgl-ctrl-group button:hover {
