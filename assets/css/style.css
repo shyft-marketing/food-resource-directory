@@ -380,16 +380,16 @@
 
 /* Mapbox Control Buttons */
 .mapboxgl-ctrl-group {
-    background: white;
-    box-shadow: var(--frd-shadow);
+    background: white !important;
+    box-shadow: var(--frd-shadow) !important;
 }
 
 .mapboxgl-ctrl-group button {
-    background-color: white;
+    background-color: white !important;
 }
 
 .mapboxgl-ctrl-group button + button {
-    border-top: 1px solid var(--frd-border);
+    border-top: 1px solid var(--frd-border) !important;
 }
 
 /* Force map control icons to be visible with inverted filter */
@@ -398,7 +398,7 @@
 }
 
 .mapboxgl-ctrl-group button:hover {
-    background-color: var(--frd-background);
+    background-color: var(--frd-background) !important;
 }
 
 /* Mapbox Popup Customization */
