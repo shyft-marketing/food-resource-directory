@@ -53,30 +53,6 @@
 
             <!-- Main Filters Row -->
             <div class="frd-filters-row">
-                <!-- Services Filter -->
-                <div class="frd-filter-group">
-                    <label for="frd-services">Services</label>
-                    <select id="frd-services" name="services[]" multiple>
-                        <option value="Food Pantry">Food Pantry</option>
-                        <option value="Soup Kitchen">Soup Kitchen</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div>
-
-                <!-- Days Filter -->
-                <div class="frd-filter-group">
-                    <label for="frd-days">Open On</label>
-                    <select id="frd-days" name="days[]" multiple>
-                        <option value="monday">Monday</option>
-                        <option value="tuesday">Tuesday</option>
-                        <option value="wednesday">Wednesday</option>
-                        <option value="thursday">Thursday</option>
-                        <option value="friday">Friday</option>
-                        <option value="saturday">Saturday</option>
-                        <option value="sunday">Sunday</option>
-                    </select>
-                </div>
-
                 <!-- County Filter -->
                 <div class="frd-filter-group">
                     <label for="frd-county">County</label>
@@ -86,6 +62,76 @@
                         <option value="Oakland County">Oakland County</option>
                         <option value="Wayne County">Wayne County</option>
                     </select>
+                </div>
+
+                <!-- Services Filter (Custom Dropdown) -->
+                <div class="frd-filter-group">
+                    <label>Services</label>
+                    <div class="frd-custom-dropdown">
+                        <button type="button" class="frd-dropdown-toggle" data-dropdown="services">
+                            <span class="frd-dropdown-text">All Services</span>
+                            <svg class="frd-dropdown-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6 9 12 15 18 9"/>
+                            </svg>
+                        </button>
+                        <div class="frd-dropdown-menu" id="frd-services-dropdown">
+                            <label class="frd-dropdown-option">
+                                <input type="checkbox" name="services[]" value="Food Pantry" />
+                                <span>Food Pantry</span>
+                            </label>
+                            <label class="frd-dropdown-option">
+                                <input type="checkbox" name="services[]" value="Soup Kitchen" />
+                                <span>Soup Kitchen</span>
+                            </label>
+                            <label class="frd-dropdown-option">
+                                <input type="checkbox" name="services[]" value="Other" />
+                                <span>Other</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Days Filter (Custom Dropdown) -->
+                <div class="frd-filter-group">
+                    <label>Open On</label>
+                    <div class="frd-custom-dropdown">
+                        <button type="button" class="frd-dropdown-toggle" data-dropdown="days">
+                            <span class="frd-dropdown-text">Any Day</span>
+                            <svg class="frd-dropdown-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6 9 12 15 18 9"/>
+                            </svg>
+                        </button>
+                        <div class="frd-dropdown-menu" id="frd-days-dropdown">
+                            <label class="frd-dropdown-option">
+                                <input type="checkbox" name="days[]" value="monday" />
+                                <span>Monday</span>
+                            </label>
+                            <label class="frd-dropdown-option">
+                                <input type="checkbox" name="days[]" value="tuesday" />
+                                <span>Tuesday</span>
+                            </label>
+                            <label class="frd-dropdown-option">
+                                <input type="checkbox" name="days[]" value="wednesday" />
+                                <span>Wednesday</span>
+                            </label>
+                            <label class="frd-dropdown-option">
+                                <input type="checkbox" name="days[]" value="thursday" />
+                                <span>Thursday</span>
+                            </label>
+                            <label class="frd-dropdown-option">
+                                <input type="checkbox" name="days[]" value="friday" />
+                                <span>Friday</span>
+                            </label>
+                            <label class="frd-dropdown-option">
+                                <input type="checkbox" name="days[]" value="saturday" />
+                                <span>Saturday</span>
+                            </label>
+                            <label class="frd-dropdown-option">
+                                <input type="checkbox" name="days[]" value="sunday" />
+                                <span>Sunday</span>
+                            </label>
+                        </div>
+                    </div>
                 </div>
             </div>
 
