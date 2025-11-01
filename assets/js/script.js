@@ -30,12 +30,20 @@
         });
 
         // Fix clear button to properly clear all selections
-        $(document).on('click', '.select2-selection__clear', function(e) {
+        $(document).on('mousedown', '.select2-selection__clear', function(e) {
             e.preventDefault();
             e.stopPropagation();
+            e.stopImmediatePropagation();
+
             const $container = $(this).closest('.select2-container');
-            const $select = $('#' + $container.attr('id').replace('select2-', '').replace('-container', ''));
-            $select.val(null).trigger('change');
+            const selectId = $container.attr('id').replace('select2-', '').replace('-container', '');
+            const $select = $('#' + selectId);
+
+            // Clear all selections by setting to empty array
+            $select.val([]).trigger('change');
+
+            // Prevent dropdown from opening
+            return false;
         });
 
         // Initialize map
