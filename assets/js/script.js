@@ -30,20 +30,33 @@
         });
 
         // Fix clear button to properly clear all selections
-        $(document).on('mousedown', '.select2-selection__clear', function(e) {
+        let clearingAll = false;
+
+        $(document).on('click', '.select2-selection__clear', function(e) {
             e.preventDefault();
             e.stopPropagation();
-            e.stopImmediatePropagation();
 
+            clearingAll = true;
             const $container = $(this).closest('.select2-container');
             const selectId = $container.attr('id').replace('select2-', '').replace('-container', '');
             const $select = $('#' + selectId);
 
-            // Clear all selections by setting to empty array
-            $select.val([]).trigger('change');
+            // Clear all selections
+            $select.val(null).trigger('change');
+            clearingAll = false;
 
-            // Prevent dropdown from opening
             return false;
+        });
+
+        // Override Select2's unselect to clear all when using clear button
+        $('#frd-services, #frd-days').on('select2:unselecting', function(e) {
+            if (clearingAll) {
+                return;
+            }
+            if ($(this).val() && $(this).val().length === 1) {
+                e.preventDefault();
+                $(this).val(null).trigger('change');
+            }
         });
 
         // Initialize map
