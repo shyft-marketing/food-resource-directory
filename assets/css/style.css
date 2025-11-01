@@ -388,6 +388,7 @@
     width: 29px !important;
     height: 29px !important;
     display: block !important;
+    background-color: white !important;
 }
 
 .mapboxgl-ctrl-group button + button {
@@ -399,6 +400,7 @@
     display: block !important;
     width: 100% !important;
     height: 100% !important;
+    background-color: transparent !important;
     background-repeat: no-repeat !important;
     background-position: center !important;
 }
