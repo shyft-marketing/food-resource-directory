@@ -389,6 +389,8 @@
     height: 29px !important;
     display: block !important;
     background-color: white !important;
+    padding: 0 !important;
+    box-sizing: content-box !important;
 }
 
 .mapboxgl-ctrl-group button + button {
