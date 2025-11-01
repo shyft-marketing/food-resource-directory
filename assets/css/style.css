@@ -232,10 +232,18 @@
     vertical-align: baseline;
     position: relative;
     top: 1px;
+    border: none;
+    border-right: none !important;
 }
 
 .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
     color: white;
+    background-color: transparent;
+}
+
+/* Hide dropdown arrow when selections exist */
+.select2-container--default .select2-selection--multiple:has(.select2-selection__choice)::after {
+    display: none !important;
 }
 
 .select2-dropdown {
