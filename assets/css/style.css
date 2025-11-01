@@ -234,11 +234,26 @@
     top: 1px;
     border: none;
     border-right: none !important;
+    font-size: 1.3em;
+    line-height: 1;
 }
 
 .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
     color: white;
     background-color: transparent;
+}
+
+/* Style the red clear X button */
+.select2-container--default .select2-selection--multiple .select2-selection__clear {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    line-height: 1;
+    margin-top: 0;
+    padding: 0;
+    height: auto;
 }
 
 /* Hide dropdown arrow when selections exist */
