@@ -164,6 +164,17 @@
     transition: border-color 0.2s ease;
 }
 
+.frd-filter-group select {
+    padding-right: 32px;
+    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8"><path fill="%231e293b" d="M6 8L0 0h12z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 12px 8px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
 .frd-filter-group input[type="text"]:focus,
 .frd-filter-group select:focus {
     outline: none;
@@ -187,21 +198,18 @@
     right: 12px;
     top: 50%;
     transform: translateY(-50%);
-    width: 0;
-    height: 0;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    border-top: 6px solid var(--frd-text);
+    width: 12px;
+    height: 8px;
+    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8"><path fill="%231e293b" d="M6 8L0 0h12z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 12px 8px;
     pointer-events: none;
-    transition: transform 0.2s ease, border-top-color 0.2s ease;
+    transition: transform 0.2s ease;
 }
 
 .select2-container--default.select2-container--open .select2-selection--multiple::after {
     transform: translateY(-50%) rotate(180deg);
-}
-
-.select2-container--default.select2-container--focus .select2-selection--multiple::after {
-    border-top-color: var(--frd-primary);
 }
 
 .select2-container--default.select2-container--focus .select2-selection--multiple {
@@ -384,13 +392,12 @@
     border-top: 1px solid var(--frd-border);
 }
 
-.mapboxgl-ctrl-icon {
-    filter: invert(0) brightness(0);
-    opacity: 0.8;
+.mapboxgl-ctrl-group button .mapboxgl-ctrl-icon {
+    background-color: var(--frd-text) !important;
 }
 
-.mapboxgl-ctrl-group button:hover .mapboxgl-ctrl-icon {
-    opacity: 1;
+.mapboxgl-ctrl-group button:disabled .mapboxgl-ctrl-icon {
+    background-color: var(--frd-text-light) !important;
 }
 
 .mapboxgl-ctrl-group button:hover {
