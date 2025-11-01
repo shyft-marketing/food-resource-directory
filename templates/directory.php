@@ -25,7 +25,7 @@
     <!-- Filters -->
     <div class="frd-filters">
         <div class="frd-filters-header">
-            <h3>Filter Resources</h3>
+            <span class="frd-filters-title">Filter Resources</span>
             <button class="frd-filters-toggle">
                 <span class="frd-filters-toggle-text">Show Filters</span>
                 <svg class="frd-filters-toggle-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

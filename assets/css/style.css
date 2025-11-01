@@ -82,7 +82,7 @@
     border-bottom: 1px solid var(--frd-border);
 }
 
-.frd-filters-header h3 {
+.frd-filters-title {
     margin: 0;
     font-size: 18px;
     font-weight: 600;
@@ -610,14 +610,6 @@
     font-size: 16px;
     font-weight: 600;
     color: var(--frd-text);
-}
-
-.frd-modal-section h4 {
-    font-size: 14px;
-    font-weight: 600;
-    text-transform: uppercase;
-    color: var(--frd-text-light);
-    margin: 0 0 8px 0;
 }
 
 .frd-modal-section p {
