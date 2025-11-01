@@ -234,7 +234,7 @@
     top: 0 !important;
     border: none !important;
     border-right: none !important;
-    font-size: 16px !important;
+    font-size: 18px !important;
     line-height: 1 !important;
     font-weight: bold !important;
 }
@@ -250,14 +250,13 @@
     right: 12px !important;
     top: 50% !important;
     transform: translateY(-50%) !important;
-    font-size: 20px !important;
-    line-height: 1 !important;
+    font-size: 24px !important;
+    line-height: 0 !important;
     margin: 0 !important;
-    padding: 0 !important;
+    padding: 4px !important;
     height: auto !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
+    width: auto !important;
+    display: inline-block !important;
     color: #dc2626 !important;
 }
 
@@ -275,16 +274,17 @@
     border: 1px solid var(--frd-border);
     border-radius: 6px;
     box-shadow: var(--frd-shadow-lg);
-    margin-top: 4px;
+    margin-top: 8px !important;
 }
 
-/* Ensure dropdown appears below the selection box */
+/* Ensure dropdown appears below the selection box with proper spacing */
 .select2-container--default.select2-container--open .select2-dropdown--below {
-    margin-top: 4px;
+    margin-top: 8px !important;
+    top: 100% !important;
 }
 
 .select2-container--default.select2-container--open .select2-dropdown--above {
-    margin-bottom: 4px;
+    margin-bottom: 8px !important;
 }
 
 .select2-container--default .select2-results__option--highlighted[aria-selected] {
