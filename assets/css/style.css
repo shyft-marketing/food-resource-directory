@@ -82,7 +82,7 @@
     border-bottom: 1px solid var(--frd-border);
 }
 
-.frd-filters-header h3 {
+.frd-filters-title {
     margin: 0;
     font-size: 18px;
     font-weight: 600;
@@ -176,7 +176,32 @@
     border: 1px solid var(--frd-border);
     border-radius: 6px;
     min-height: 42px;
-    padding: 4px 8px;
+    padding: 4px 32px 4px 8px;
+    position: relative;
+}
+
+/* Dropdown arrow indicator for multi-select */
+.select2-container--default .select2-selection--multiple::after {
+    content: '';
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid var(--frd-text);
+    pointer-events: none;
+    transition: transform 0.2s ease, border-top-color 0.2s ease;
+}
+
+.select2-container--default.select2-container--open .select2-selection--multiple::after {
+    transform: translateY(-50%) rotate(180deg);
+}
+
+.select2-container--default.select2-container--focus .select2-selection--multiple::after {
+    border-top-color: var(--frd-primary);
 }
 
 .select2-container--default.select2-container--focus .select2-selection--multiple {
@@ -359,10 +384,13 @@
     border-top: 1px solid var(--frd-border);
 }
 
-.mapboxgl-ctrl button.mapboxgl-ctrl-zoom-in .mapboxgl-ctrl-icon,
-.mapboxgl-ctrl button.mapboxgl-ctrl-zoom-out .mapboxgl-ctrl-icon,
-.mapboxgl-ctrl button.mapboxgl-ctrl-compass .mapboxgl-ctrl-icon {
-    background-color: var(--frd-text);
+.mapboxgl-ctrl-icon {
+    filter: invert(0) brightness(0);
+    opacity: 0.8;
+}
+
+.mapboxgl-ctrl-group button:hover .mapboxgl-ctrl-icon {
+    opacity: 1;
 }
 
 .mapboxgl-ctrl-group button:hover {
@@ -610,14 +638,6 @@
     font-size: 16px;
     font-weight: 600;
     color: var(--frd-text);
-}
-
-.frd-modal-section h4 {
-    font-size: 14px;
-    font-weight: 600;
-    text-transform: uppercase;
-    color: var(--frd-text-light);
-    margin: 0 0 8px 0;
 }
 
 .frd-modal-section p {
