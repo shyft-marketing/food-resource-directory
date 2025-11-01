@@ -65,20 +65,6 @@
         // Add navigation controls
         map.addControl(new mapboxgl.NavigationControl(), 'top-right');
 
-        // Fix map control icon visibility after map loads
-        map.on('load', function() {
-            setTimeout(function() {
-                $('.mapboxgl-ctrl-icon').each(function() {
-                    $(this).css({
-                        'background-color': '#333',
-                        'opacity': '1',
-                        'display': 'inline-block'
-                    });
-                });
-                console.log('FRD: Map control icons styled');
-            }, 100);
-        });
-
         // Add geocoder for location search (this will be integrated with our custom search)
         const geocoder = new MapboxGeocoder({
             accessToken: mapboxgl.accessToken,
