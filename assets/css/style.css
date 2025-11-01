@@ -392,22 +392,9 @@
     border-top: 1px solid var(--frd-border) !important;
 }
 
-/* Force map control icons to be visible */
-.mapboxgl-ctrl-group button span.mapboxgl-ctrl-icon {
-    background-color: #333 !important;
-    display: inline-block !important;
-    width: 100% !important;
-    height: 100% !important;
-}
-
-.mapboxgl-ctrl-icon {
-    background-color: #333 !important;
-}
-
-button.mapboxgl-ctrl-zoom-in .mapboxgl-ctrl-icon,
-button.mapboxgl-ctrl-zoom-out .mapboxgl-ctrl-icon,
-button.mapboxgl-ctrl-compass .mapboxgl-ctrl-icon {
-    background-color: #333 !important;
+/* Force map control icons to be visible with inverted filter */
+.mapboxgl-ctrl button .mapboxgl-ctrl-icon {
+    filter: invert(1) !important;
 }
 
 .mapboxgl-ctrl-group button:hover {
