@@ -92,8 +92,8 @@ class Food_Resource_Directory {
             wp_enqueue_style('select2', 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css', array(), '4.1.0');
             wp_enqueue_script('select2', 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js', array('jquery'), '4.1.0', true);
 
-            // Plugin styles
-            wp_enqueue_style('frd-styles', FRD_PLUGIN_URL . 'assets/css/style.css', array('select2'), FRD_VERSION);
+            // Plugin styles (load after Mapbox and Select2)
+            wp_enqueue_style('frd-styles', FRD_PLUGIN_URL . 'assets/css/style.css', array('mapbox-gl', 'select2'), FRD_VERSION);
 
             // Plugin script
             wp_enqueue_script('frd-script', FRD_PLUGIN_URL . 'assets/js/script.js', array('jquery', 'mapbox-gl', 'mapbox-geocoder', 'select2'), FRD_VERSION, true);

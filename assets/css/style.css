@@ -392,9 +392,12 @@
     border-top: 1px solid var(--frd-border) !important;
 }
 
-/* Force map control icons to be visible with inverted filter */
+/* Force map control icons to be visible */
 .mapboxgl-ctrl button .mapboxgl-ctrl-icon {
     filter: invert(1) !important;
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
 .mapboxgl-ctrl-group button:hover {
