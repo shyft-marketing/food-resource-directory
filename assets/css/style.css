@@ -187,7 +187,7 @@
     border: 1px solid var(--frd-border);
     border-radius: 6px;
     min-height: 42px;
-    padding: 4px 32px 4px 8px;
+    padding: 4px 40px 4px 8px;
     position: relative;
 }
 
@@ -227,33 +227,43 @@
 }
 
 .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
-    color: white;
-    margin-right: 8px;
-    vertical-align: baseline;
-    position: relative;
-    top: 1px;
-    border: none;
+    color: white !important;
+    margin-right: 4px !important;
+    vertical-align: middle !important;
+    position: relative !important;
+    top: 0 !important;
+    border: none !important;
     border-right: none !important;
-    font-size: 1.3em;
-    line-height: 1;
+    font-size: 16px !important;
+    line-height: 1 !important;
+    font-weight: bold !important;
 }
 
 .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
-    color: white;
-    background-color: transparent;
+    color: white !important;
+    background-color: transparent !important;
 }
 
 /* Style the red clear X button */
 .select2-container--default .select2-selection--multiple .select2-selection__clear {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 18px;
-    line-height: 1;
-    margin-top: 0;
-    padding: 0;
-    height: auto;
+    position: absolute !important;
+    right: 12px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    font-size: 20px !important;
+    line-height: 1 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    height: auto !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: #dc2626 !important;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__clear:hover {
+    color: #b91c1c !important;
+    background-color: transparent !important;
 }
 
 /* Hide dropdown arrow when selections exist */
@@ -265,6 +275,16 @@
     border: 1px solid var(--frd-border);
     border-radius: 6px;
     box-shadow: var(--frd-shadow-lg);
+    margin-top: 4px;
+}
+
+/* Ensure dropdown appears below the selection box */
+.select2-container--default.select2-container--open .select2-dropdown--below {
+    margin-top: 4px;
+}
+
+.select2-container--default.select2-container--open .select2-dropdown--above {
+    margin-bottom: 4px;
 }
 
 .select2-container--default .select2-results__option--highlighted[aria-selected] {
