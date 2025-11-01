@@ -228,7 +228,7 @@
 
 .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
     color: white !important;
-    margin-right: 8px !important;
+    margin-right: 4px !important;
     vertical-align: middle !important;
     position: relative !important;
     top: 0 !important;
@@ -258,6 +258,12 @@
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
+    color: #dc2626 !important;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__clear:hover {
+    color: #b91c1c !important;
+    background-color: transparent !important;
 }
 
 /* Hide dropdown arrow when selections exist */
