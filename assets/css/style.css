@@ -275,6 +275,16 @@
     border: 1px solid var(--frd-border);
     border-radius: 6px;
     box-shadow: var(--frd-shadow-lg);
+    margin-top: 4px;
+}
+
+/* Ensure dropdown appears below the selection box */
+.select2-container--default.select2-container--open .select2-dropdown--below {
+    margin-top: 4px;
+}
+
+.select2-container--default.select2-container--open .select2-dropdown--above {
+    margin-bottom: 4px;
 }
 
 .select2-container--default .select2-results__option--highlighted[aria-selected] {
