@@ -19,6 +19,16 @@
     function initializeDirectory() {
         console.log('FRD: Starting initialization...');
 
+        // Initialize Select2 on multi-select dropdowns
+        $('#frd-services, #frd-days').select2({
+            placeholder: function() {
+                return $(this).attr('id') === 'frd-services' ? 'All Services' : 'Any Day';
+            },
+            allowClear: true,
+            closeOnSelect: false,
+            width: '100%'
+        });
+
         // Initialize map
         try {
             initializeMap();
@@ -121,36 +131,6 @@
         // Sort dropdown
         $('#frd-sort').on('change', function() {
             sortLocations($(this).val());
-        });
-
-        // Custom dropdown toggles
-        $('.frd-dropdown-toggle').on('click', function(e) {
-            e.stopPropagation();
-            const $dropdown = $(this).closest('.frd-custom-dropdown');
-            const isOpen = $dropdown.hasClass('open');
-
-            // Close all dropdowns
-            $('.frd-custom-dropdown').removeClass('open');
-
-            // Toggle this dropdown
-            if (!isOpen) {
-                $dropdown.addClass('open');
-            }
-        });
-
-        // Checkbox changes in custom dropdowns
-        $('.frd-dropdown-option input[type="checkbox"]').on('change', function() {
-            updateDropdownText($(this).closest('.frd-custom-dropdown'));
-        });
-
-        // Prevent dropdown from closing when clicking inside
-        $('.frd-dropdown-menu').on('click', function(e) {
-            e.stopPropagation();
-        });
-
-        // Close dropdowns when clicking outside
-        $(document).on('click', function() {
-            $('.frd-custom-dropdown').removeClass('open');
         });
 
         // Modal close
@@ -388,17 +368,9 @@
     }
 
     function getFilters() {
-        // Get selected values from checkbox dropdowns
-        const services = [];
-        $('input[name="services[]"]:checked').each(function() {
-            services.push($(this).val());
-        });
-
-        const days = [];
-        $('input[name="days[]"]:checked').each(function() {
-            days.push($(this).val());
-        });
-
+        // Get selected values from Select2 dropdowns
+        const services = $('#frd-services').val() || [];
+        const days = $('#frd-days').val() || [];
         const county = $('#frd-county').val();
 
         return {
@@ -408,40 +380,10 @@
         };
     }
 
-    function updateDropdownText($dropdown) {
-        const $button = $dropdown.find('.frd-dropdown-toggle');
-        const $text = $button.find('.frd-dropdown-text');
-        const $checkedBoxes = $dropdown.find('input[type="checkbox"]:checked');
-        const count = $checkedBoxes.length;
-
-        // Get the dropdown type from button data attribute
-        const dropdownType = $button.data('dropdown');
-
-        if (count === 0) {
-            // No selections
-            if (dropdownType === 'services') {
-                $text.text('All Services');
-            } else if (dropdownType === 'days') {
-                $text.text('Any Day');
-            }
-        } else if (count === 1) {
-            // One selection - show the label
-            $text.text($checkedBoxes.first().next('span').text());
-        } else {
-            // Multiple selections - show count
-            $text.text(count + ' selected');
-        }
-    }
-
     function resetFilters() {
-        // Clear checkboxes in custom dropdowns
-        $('input[name="services[]"]').prop('checked', false);
-        $('input[name="days[]"]').prop('checked', false);
-
-        // Update dropdown button text
-        $('.frd-custom-dropdown').each(function() {
-            updateDropdownText($(this));
-        });
+        // Clear Select2 dropdowns
+        $('#frd-services').val(null).trigger('change');
+        $('#frd-days').val(null).trigger('change');
 
         // Clear county select
         $('#frd-county').val('');
@@ -539,7 +481,7 @@
 
     function createPopupContent(location) {
         let html = '<div class="frd-popup">';
-        html += '<h3 style="margin: 0 0 10px 0; font-size: 16px; font-weight: 600;">' + location.title + '</h3>';
+        html += '<span class="frd-popup-title" style="display: block; margin: 0 0 10px 0; font-size: 16px; font-weight: 600;">' + location.title + '</span>';
 
         if (location.distance !== null) {
             html += '<p style="margin: 0 0 8px 0; font-weight: 600; color: #2563eb;">' + location.distance + ' miles away</p>';
@@ -586,7 +528,7 @@
         const $header = $('<div class="frd-location-header"></div>');
         
         const $titleContainer = $('<div></div>');
-        const $title = $('<h3 class="frd-location-title">' + location.title + '</h3>');
+        const $title = $('<span class="frd-location-title">' + location.title + '</span>');
         $titleContainer.append($title);
         $header.append($titleContainer);
 
@@ -674,7 +616,7 @@
     }
 
     function showLocationDetails(location) {
-        let html = '<h2 class="frd-modal-title">' + location.title + '</h2>';
+        let html = '<span class="frd-modal-title">' + location.title + '</span>';
 
         // Distance
         if (location.distance !== null) {
@@ -685,14 +627,14 @@
 
         // Address
         html += '<div class="frd-modal-section">';
-        html += '<h4>Address</h4>';
+        html += '<span class="frd-modal-section-title">Address</span>';
         html += '<p>' + location.full_address + '</p>';
         html += '</div>';
 
         // Contact Info
         if (location.phone || location.website) {
             html += '<div class="frd-modal-section">';
-            html += '<h4>Contact</h4>';
+            html += '<span class="frd-modal-section-title">Contact</span>';
             if (location.phone) {
                 html += '<p><strong>Phone:</strong> <a href="tel:' + location.phone_link + '">' + location.phone + '</a></p>';
             }
@@ -705,14 +647,14 @@
         // Services
         if (location.services && location.services.length > 0) {
             html += '<div class="frd-modal-section">';
-            html += '<h4>Services</h4>';
+            html += '<span class="frd-modal-section-title">Services</span>';
             html += '<p>' + location.services.join(', ') + '</p>';
             html += '</div>';
         }
 
         // Hours
         html += '<div class="frd-modal-section">';
-        html += '<h4>Hours</h4>';
+        html += '<span class="frd-modal-section-title">Hours</span>';
 
         // Check if there's a special hours note (Appointment only, Hours unknown, etc.)
         // Skip if it's "Regular hours" (the default value)
@@ -754,7 +696,7 @@
         // Languages
         if (location.languages && location.languages.length > 0) {
             html += '<div class="frd-modal-section">';
-            html += '<h4>Languages Spoken</h4>';
+            html += '<span class="frd-modal-section-title">Languages Spoken</span>';
             html += '<p>' + location.languages.join(', ') + '</p>';
             html += '</div>';
         }
@@ -762,7 +704,7 @@
         // Eligibility
         if (location.eligibility) {
             html += '<div class="frd-modal-section">';
-            html += '<h4>Eligibility Requirements</h4>';
+            html += '<span class="frd-modal-section-title">Eligibility Requirements</span>';
             html += '<p>' + nl2br(location.eligibility) + '</p>';
             html += '</div>';
         }
@@ -770,7 +712,7 @@
         // Notes
         if (location.notes) {
             html += '<div class="frd-modal-section">';
-            html += '<h4>Additional Notes</h4>';
+            html += '<span class="frd-modal-section-title">Additional Notes</span>';
             html += '<p>' + nl2br(location.notes) + '</p>';
             html += '</div>';
         }
