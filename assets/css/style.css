@@ -345,6 +345,30 @@
     height: 600px;
 }
 
+/* Mapbox Control Buttons */
+.mapboxgl-ctrl-group {
+    background: white;
+    box-shadow: var(--frd-shadow);
+}
+
+.mapboxgl-ctrl-group button {
+    background-color: white;
+}
+
+.mapboxgl-ctrl-group button + button {
+    border-top: 1px solid var(--frd-border);
+}
+
+.mapboxgl-ctrl button.mapboxgl-ctrl-zoom-in .mapboxgl-ctrl-icon,
+.mapboxgl-ctrl button.mapboxgl-ctrl-zoom-out .mapboxgl-ctrl-icon,
+.mapboxgl-ctrl button.mapboxgl-ctrl-compass .mapboxgl-ctrl-icon {
+    background-color: var(--frd-text);
+}
+
+.mapboxgl-ctrl-group button:hover {
+    background-color: var(--frd-background);
+}
+
 /* Mapbox Popup Customization */
 .mapboxgl-popup-content {
     padding: 20px;
@@ -437,6 +461,7 @@
 }
 
 .frd-location-title {
+    display: block;
     font-size: 18px;
     font-weight: 600;
     margin: 0 0 4px 0;
@@ -564,6 +589,7 @@
 
 /* Modal Content Styles */
 .frd-modal-title {
+    display: block;
     font-size: 24px;
     font-weight: 600;
     margin: 0 0 20px 0;
@@ -576,6 +602,14 @@
 
 .frd-modal-section:last-child {
     margin-bottom: 0;
+}
+
+.frd-modal-section-title {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--frd-text);
 }
 
 .frd-modal-section h4 {

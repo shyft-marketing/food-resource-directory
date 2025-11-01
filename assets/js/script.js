@@ -481,7 +481,7 @@
 
     function createPopupContent(location) {
         let html = '<div class="frd-popup">';
-        html += '<h3 style="margin: 0 0 10px 0; font-size: 16px; font-weight: 600;">' + location.title + '</h3>';
+        html += '<span class="frd-popup-title" style="display: block; margin: 0 0 10px 0; font-size: 16px; font-weight: 600;">' + location.title + '</span>';
 
         if (location.distance !== null) {
             html += '<p style="margin: 0 0 8px 0; font-weight: 600; color: #2563eb;">' + location.distance + ' miles away</p>';
@@ -528,7 +528,7 @@
         const $header = $('<div class="frd-location-header"></div>');
         
         const $titleContainer = $('<div></div>');
-        const $title = $('<h3 class="frd-location-title">' + location.title + '</h3>');
+        const $title = $('<span class="frd-location-title">' + location.title + '</span>');
         $titleContainer.append($title);
         $header.append($titleContainer);
 
@@ -616,7 +616,7 @@
     }
 
     function showLocationDetails(location) {
-        let html = '<h2 class="frd-modal-title">' + location.title + '</h2>';
+        let html = '<span class="frd-modal-title">' + location.title + '</span>';
 
         // Distance
         if (location.distance !== null) {
@@ -627,14 +627,14 @@
 
         // Address
         html += '<div class="frd-modal-section">';
-        html += '<h4>Address</h4>';
+        html += '<span class="frd-modal-section-title">Address</span>';
         html += '<p>' + location.full_address + '</p>';
         html += '</div>';
 
         // Contact Info
         if (location.phone || location.website) {
             html += '<div class="frd-modal-section">';
-            html += '<h4>Contact</h4>';
+            html += '<span class="frd-modal-section-title">Contact</span>';
             if (location.phone) {
                 html += '<p><strong>Phone:</strong> <a href="tel:' + location.phone_link + '">' + location.phone + '</a></p>';
             }
@@ -647,14 +647,14 @@
         // Services
         if (location.services && location.services.length > 0) {
             html += '<div class="frd-modal-section">';
-            html += '<h4>Services</h4>';
+            html += '<span class="frd-modal-section-title">Services</span>';
             html += '<p>' + location.services.join(', ') + '</p>';
             html += '</div>';
         }
 
         // Hours
         html += '<div class="frd-modal-section">';
-        html += '<h4>Hours</h4>';
+        html += '<span class="frd-modal-section-title">Hours</span>';
 
         // Check if there's a special hours note (Appointment only, Hours unknown, etc.)
         // Skip if it's "Regular hours" (the default value)
@@ -696,7 +696,7 @@
         // Languages
         if (location.languages && location.languages.length > 0) {
             html += '<div class="frd-modal-section">';
-            html += '<h4>Languages Spoken</h4>';
+            html += '<span class="frd-modal-section-title">Languages Spoken</span>';
             html += '<p>' + location.languages.join(', ') + '</p>';
             html += '</div>';
         }
@@ -704,7 +704,7 @@
         // Eligibility
         if (location.eligibility) {
             html += '<div class="frd-modal-section">';
-            html += '<h4>Eligibility Requirements</h4>';
+            html += '<span class="frd-modal-section-title">Eligibility Requirements</span>';
             html += '<p>' + nl2br(location.eligibility) + '</p>';
             html += '</div>';
         }
@@ -712,7 +712,7 @@
         // Notes
         if (location.notes) {
             html += '<div class="frd-modal-section">';
-            html += '<h4>Additional Notes</h4>';
+            html += '<span class="frd-modal-section-title">Additional Notes</span>';
             html += '<p>' + nl2br(location.notes) + '</p>';
             html += '</div>';
         }
