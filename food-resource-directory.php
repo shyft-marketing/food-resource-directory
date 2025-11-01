@@ -80,9 +80,9 @@ class Food_Resource_Directory {
         global $post;
         if (is_a($post, 'WP_Post') && has_shortcode($post->post_content, 'food_resource_directory')) {
             
-            // Mapbox GL JS
-            wp_enqueue_style('mapbox-gl', 'https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css', array(), '2.15.0');
-            wp_enqueue_script('mapbox-gl', 'https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js', array(), '2.15.0', true);
+            // Mapbox GL JS v3
+            wp_enqueue_style('mapbox-gl', 'https://api.mapbox.com/mapbox-gl-js/v3.16.0/mapbox-gl.css', array(), '3.16.0');
+            wp_enqueue_script('mapbox-gl', 'https://api.mapbox.com/mapbox-gl-js/v3.16.0/mapbox-gl.js', array(), '3.16.0', true);
             
             // Mapbox GL Geocoder
             wp_enqueue_style('mapbox-geocoder', 'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css', array(), '5.0.0');
