@@ -19,6 +19,16 @@
     function initializeDirectory() {
         console.log('FRD: Starting initialization...');
 
+        // Initialize Select2 on multi-select dropdowns
+        $('#frd-services, #frd-days').select2({
+            placeholder: function() {
+                return $(this).attr('id') === 'frd-services' ? 'All Services' : 'Any Day';
+            },
+            allowClear: true,
+            closeOnSelect: false,
+            width: '100%'
+        });
+
         // Initialize map
         try {
             initializeMap();
@@ -121,36 +131,6 @@
         // Sort dropdown
         $('#frd-sort').on('change', function() {
             sortLocations($(this).val());
-        });
-
-        // Custom dropdown toggles
-        $('.frd-dropdown-toggle').on('click', function(e) {
-            e.stopPropagation();
-            const $dropdown = $(this).closest('.frd-custom-dropdown');
-            const isOpen = $dropdown.hasClass('open');
-
-            // Close all dropdowns
-            $('.frd-custom-dropdown').removeClass('open');
-
-            // Toggle this dropdown
-            if (!isOpen) {
-                $dropdown.addClass('open');
-            }
-        });
-
-        // Checkbox changes in custom dropdowns
-        $('.frd-dropdown-option input[type="checkbox"]').on('change', function() {
-            updateDropdownText($(this).closest('.frd-custom-dropdown'));
-        });
-
-        // Prevent dropdown from closing when clicking inside
-        $('.frd-dropdown-menu').on('click', function(e) {
-            e.stopPropagation();
-        });
-
-        // Close dropdowns when clicking outside
-        $(document).on('click', function() {
-            $('.frd-custom-dropdown').removeClass('open');
         });
 
         // Modal close
@@ -388,17 +368,9 @@
     }
 
     function getFilters() {
-        // Get selected values from checkbox dropdowns
-        const services = [];
-        $('input[name="services[]"]:checked').each(function() {
-            services.push($(this).val());
-        });
-
-        const days = [];
-        $('input[name="days[]"]:checked').each(function() {
-            days.push($(this).val());
-        });
-
+        // Get selected values from Select2 dropdowns
+        const services = $('#frd-services').val() || [];
+        const days = $('#frd-days').val() || [];
         const county = $('#frd-county').val();
 
         return {
@@ -408,40 +380,10 @@
         };
     }
 
-    function updateDropdownText($dropdown) {
-        const $button = $dropdown.find('.frd-dropdown-toggle');
-        const $text = $button.find('.frd-dropdown-text');
-        const $checkedBoxes = $dropdown.find('input[type="checkbox"]:checked');
-        const count = $checkedBoxes.length;
-
-        // Get the dropdown type from button data attribute
-        const dropdownType = $button.data('dropdown');
-
-        if (count === 0) {
-            // No selections
-            if (dropdownType === 'services') {
-                $text.text('All Services');
-            } else if (dropdownType === 'days') {
-                $text.text('Any Day');
-            }
-        } else if (count === 1) {
-            // One selection - show the label
-            $text.text($checkedBoxes.first().next('span').text());
-        } else {
-            // Multiple selections - show count
-            $text.text(count + ' selected');
-        }
-    }
-
     function resetFilters() {
-        // Clear checkboxes in custom dropdowns
-        $('input[name="services[]"]').prop('checked', false);
-        $('input[name="days[]"]').prop('checked', false);
-
-        // Update dropdown button text
-        $('.frd-custom-dropdown').each(function() {
-            updateDropdownText($(this));
-        });
+        // Clear Select2 dropdowns
+        $('#frd-services').val(null).trigger('change');
+        $('#frd-days').val(null).trigger('change');
 
         // Clear county select
         $('#frd-county').val('');
