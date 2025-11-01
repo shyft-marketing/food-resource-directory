@@ -398,11 +398,12 @@
 /* Ensure icon spans are visible */
 .mapboxgl-ctrl-group button .mapboxgl-ctrl-icon {
     display: block !important;
-    width: 100% !important;
-    height: 100% !important;
+    width: 29px !important;
+    height: 29px !important;
     background-color: transparent !important;
     background-repeat: no-repeat !important;
     background-position: center !important;
+    background-size: cover !important;
 }
 
 .mapboxgl-ctrl-group button:hover {
