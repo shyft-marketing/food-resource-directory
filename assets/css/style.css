@@ -1731,6 +1731,20 @@ button.select2-selection__clear span {
         flex-direction: column;
     }
 
+    /* Search container - stack vertically */
+    .frd-search-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .frd-search-wrapper {
+        width: 100%;
+    }
+
+    .frd-filters-toggle-btn {
+        justify-content: center !important;
+    }
+
     .frd-filters-header {
         flex-direction: column;
         align-items: flex-start;
@@ -1739,14 +1753,20 @@ button.select2-selection__clear span {
 
     .frd-filters-row {
         grid-template-columns: 1fr;
+        gap: calc(var(--frd-spacing-xl) / 2);
     }
 
     .frd-filter-actions {
         flex-direction: column;
+        align-items: center;
     }
 
     .frd-btn {
         width: 100%;
+    }
+
+    .frd-btn-secondary {
+        justify-content: center !important;
     }
 
     #frd-map {
@@ -1762,6 +1782,15 @@ button.select2-selection__clear span {
         margin-top: var(--frd-spacing-xs);
     }
 
+    /* Service chips - stack below title on mobile */
+    .frd-popup-title-row,
+    .frd-location-title-row,
+    .frd-modal-title-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--frd-spacing-sm);
+    }
+
     .frd-modal-content {
         max-width: 90vw;
         width: 90%;
@@ -1774,6 +1803,10 @@ button.select2-selection__clear span {
         overflow-x: hidden;
     }
 
+    .frd-modal-hours {
+        gap: 0.25em;
+    }
+
     .frd-modal-hours-row {
         flex-direction: column;
         align-items: flex-start;
@@ -1783,6 +1816,10 @@ button.select2-selection__clear span {
 
     .frd-modal-hours-time {
         text-align: left;
+    }
+
+    .frd-modal-buttons {
+        grid-template-columns: 1fr;
     }
 
     .frd-modal-actions {
