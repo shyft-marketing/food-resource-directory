@@ -41,13 +41,13 @@
     --frd-radius-full: 50%;
 
     /* === Typography === */
-    --frd-font-xs: 12px;
-    --frd-font-sm: 14px;
-    --frd-font-base: 16px;
-    --frd-font-lg: 18px;
-    --frd-font-xl: 28px;
-    --frd-font-2xl: 40px;
-    --frd-font-3xl: 60px;
+    --frd-font-xs: 0.5rem;
+    --frd-font-sm: 0.75rem;
+    --frd-font-base: 1rem;
+    --frd-font-lg: 1.25rem;
+    --frd-font-xl: 1.5rem;
+    --frd-font-2xl: 1.75rem;
+    --frd-font-3xl: 2rem;
     
     --frd-weight-medium: 500;
     --frd-weight-semibold: 600;
@@ -68,7 +68,7 @@
     --frd-border-width-thick: 2px;
 
     /* === Transitions === */
-    --frd-transition: all 0.2s ease;
+    --frd-transition: all 0.3s ease;
 
     /* === Z-Index Layers === */
     --frd-z-above: 10;
@@ -1054,7 +1054,7 @@ button.select2-selection__clear span {
     gap: var(--frd-spacing-md);
     margin-bottom: var(--frd-spacing-xl);
     padding-bottom: var(--frd-spacing-xl);
-    border-bottom: var(--frd-border-width) solid var(--frd-border);
+    border-bottom: var(--frd-border-width) solid #263447;
 }
 
 .frd-list-controls label {
