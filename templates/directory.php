@@ -25,14 +25,12 @@
     <!-- Location Search Bar -->
     <div class="frd-search-container">
         <div class="frd-search-wrapper">
-            <label for="frd-location-search">Your Location</label>
             <div class="frd-search-input-group">
-                <input type="text" id="frd-location-search" placeholder="Enter address, city, or ZIP code" />
+                <input type="text" id="frd-location-search" placeholder="Enter your address or ZIP code to find nearby locations" />
                 <button class="frd-search-btn" id="frd-search-btn" aria-label="Search">
                     <img src="<?php echo plugin_dir_url(dirname(__FILE__)) . 'assets/icons/Search Icon.svg'; ?>" alt="Search" />
                 </button>
             </div>
-            <small>Enter a location to see distances and sort by proximity</small>
         </div>
         <button class="frd-filters-toggle-btn" id="frd-filters-toggle-btn">
             <img src="<?php echo plugin_dir_url(dirname(__FILE__)) . 'assets/icons/Filter Icon.svg'; ?>" alt="Filters" />
