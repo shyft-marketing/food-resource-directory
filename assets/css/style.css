@@ -1465,7 +1465,7 @@ button.select2-selection__clear span {
     font-size: 3rem;
     font-weight: var(--frd-weight-bold);
     margin: 0;
-    line-height: var(--frd-leading-tight);
+    line-height: 0.9em;
     font-family: 'Tungsten', sans-serif;
     text-transform: uppercase;
 }
@@ -1715,6 +1715,13 @@ button.select2-selection__clear span {
 }
 
 /* Responsive Design */
+@media (min-width: 769px) and (max-width: 1024px) {
+    /* Tablet styles */
+    .frd-modal-content {
+        max-width: 80vw;
+    }
+}
+
 @media (max-width: 768px) {
     .frd-directory {
         padding: 15px;
