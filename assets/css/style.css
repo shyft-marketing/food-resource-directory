@@ -741,7 +741,6 @@ button.select2-selection__clear span {
     padding: 20px;
     margin-bottom: 15px;
     transition: all 0.2s ease;
-    cursor: pointer;
 }
 
 .frd-location-card:hover {
