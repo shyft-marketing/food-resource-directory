@@ -3,21 +3,11 @@
     <!-- View Toggle -->
     <div class="frd-view-toggle">
         <button class="frd-toggle-btn active" data-view="map">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M1 6v16l7-4 8 4 7-4V2l-7 4-8-4-7 4z"/>
-                <path d="M8 2v16M16 6v16"/>
-            </svg>
+            <img src="<?php echo plugin_dir_url(dirname(__FILE__)) . 'assets/icons/Map Icon.svg'; ?>" alt="Map" />
             Map View
         </button>
         <button class="frd-toggle-btn" data-view="list">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="8" y1="6" x2="21" y2="6"/>
-                <line x1="8" y1="12" x2="21" y2="12"/>
-                <line x1="8" y1="18" x2="21" y2="18"/>
-                <line x1="3" y1="6" x2="3.01" y2="6"/>
-                <line x1="3" y1="12" x2="3.01" y2="12"/>
-                <line x1="3" y1="18" x2="3.01" y2="18"/>
-            </svg>
+            <img src="<?php echo plugin_dir_url(dirname(__FILE__)) . 'assets/icons/List Icon.svg'; ?>" alt="List" />
             List View
         </button>
     </div>

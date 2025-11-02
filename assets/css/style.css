@@ -62,8 +62,14 @@
     color: white;
 }
 
-.frd-toggle-btn svg {
-    flex-shrink: 0;
+.frd-toggle-btn.active img {
+    filter: brightness(0) invert(1);
+}
+
+.frd-toggle-btn img {
+    width: 20px;
+    height: 20px;
+    display: block;
 }
 
 /* Search Container */
