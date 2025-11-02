@@ -2,22 +2,22 @@
 
 :root {
     /* === Colors === */
-    --frd-primary: #2563eb;
-    --frd-primary-dark: #1e40af;
-    --frd-secondary: #64748b;
-    --frd-success: #16a34a;
-    --frd-danger: #dc2626;
-    --frd-border: #e2e8f0;
-    --frd-background: #f8fafc;
-    --frd-text: #1e293b;
-    --frd-text-light: #64748b;
-    --frd-white: #ffffff;
+    --frd-primary: #3A5780;
+    --frd-primary-dark: #263447;
+    --frd-secondary: #7A7A7A;
+    --frd-success: #FFC107;
+    --frd-danger: #FF4081;
+    --frd-border: #ACCBE1;
+    --frd-background: #F4F1E9;
+    --frd-text: #263447;
+    --frd-text-light: #7A7A7A;
+    --frd-white: #FFFFFF;
     --frd-dark: #263447;
     --frd-dark-hover: #1a2433;
     --frd-accent: #FF4081;
-    --frd-hover-bg: #F5F7FA;
-    --frd-focus-ring: rgba(37, 99, 235, 0.1);
-    --frd-danger-dark: #b91c1c;
+    --frd-hover-bg: #F4F1E9;
+    --frd-focus-ring: rgba(58, 87, 128, 0.1);
+    --frd-danger-dark: #e6005c;
     
     /* === Shadows === */
     --frd-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
@@ -299,7 +299,7 @@
 
 .frd-filter-group select {
     padding-right: 32px;
-    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8"><path fill="%231e293b" d="M6 8L0 0h12z"/></svg>');
+    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8"><path fill="%23263447" d="M6 8L0 0h12z"/></svg>');
     background-repeat: no-repeat;
     background-position: right 12px center;
     background-size: 12px 8px;
@@ -353,7 +353,7 @@
     transform: translateY(-50%);
     width: var(--frd-spacing-md);
     height: var(--frd-spacing-sm);
-    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8"><path fill="%231e293b" d="M6 8L0 0h12z"/></svg>');
+    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8"><path fill="%23263447" d="M6 8L0 0h12z"/></svg>');
     background-repeat: no-repeat;
     background-position: center;
     background-size: var(--frd-spacing-md) var(--frd-spacing-sm);
