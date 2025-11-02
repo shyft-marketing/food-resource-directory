@@ -324,29 +324,28 @@ button.select2-selection__clear span {
     margin-bottom: 16px !important;
 }
 
-/* DROPDOWN OPTIONS STYLING - Very specific selectors to override Select2 defaults */
+/* DROPDOWN OPTIONS STYLING - Target Select2's actual classes */
 
-/* Remove Select2's default styling first */
-.select2-container--default .select2-results__option[aria-selected],
+/* Base: All options start with white background */
 .select2-container--default .select2-results__option {
     background-color: white !important;
     color: var(--frd-text) !important;
 }
 
-/* Selected items that are NOT being hovered - blue background */
-.select2-container--default .select2-results__option[aria-selected="true"]:not(.select2-results__option--highlighted) {
+/* State 1: Selected items (not hovered) - blue background */
+.select2-container--default .select2-results__option--selected:not(.select2-results__option--highlighted) {
     background-color: #263447 !important;
     color: white !important;
 }
 
-/* Non-selected items being hovered - light gray background */  
-.select2-container--default .select2-results__option--highlighted:not([aria-selected="true"]) {
+/* State 2: Non-selected items being hovered - light gray background */  
+.select2-container--default .select2-results__option--highlighted:not(.select2-results__option--selected) {
     background-color: #F5F7FA !important;
     color: var(--frd-text) !important;
 }
 
-/* Selected items being hovered - pink background (HIGHEST specificity) */
-.select2-container--default .select2-results__option[aria-selected="true"].select2-results__option--highlighted {
+/* State 3: Selected items being hovered - pink background (most specific) */
+.select2-container--default .select2-results__option--selected.select2-results__option--highlighted {
     background-color: #FF4081 !important;
     color: white !important;
 }
