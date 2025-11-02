@@ -295,7 +295,7 @@
         el.style.width = '30px';
         el.style.height = '30px';
         el.style.borderRadius = '50%';
-        el.style.backgroundColor = '#3b82f6';
+        el.style.backgroundColor = '#3A5780';
         el.style.border = '3px solid white';
         el.style.boxShadow = '0 2px 4px rgba(0,0,0,0.3)';
 
@@ -497,7 +497,7 @@
 
             // Create marker
             const marker = new mapboxgl.Marker({
-                color: '#dc2626' // Red color for food resource markers
+                color: '#FF4081' // Hot pink color for food resource markers
             })
             .setLngLat([location.longitude, location.latitude])
             .addTo(map);
@@ -538,20 +538,20 @@
         html += '<span class="frd-popup-title" style="display: block; margin: 0 0 10px 0; font-size: 16px; font-weight: 600;">' + location.title + '</span>';
 
         if (location.distance !== null) {
-            html += '<p style="margin: 0 0 8px 0; font-weight: 600; color: #2563eb;">' + location.distance + ' miles away</p>';
+            html += '<p style="margin: 0 0 8px 0; font-weight: 600; color: #3A5780;">' + location.distance + ' miles away</p>';
         }
 
         // Services above address
         if (location.services && location.services.length > 0) {
             html += '<div style="margin-bottom: 8px;">';
             location.services.forEach(function(service) {
-                html += '<span style="display: inline-block; padding: 2px 8px; background: #f1f5f9; border-radius: 4px; font-size: 12px; margin-right: 4px; margin-bottom: 4px;">' + service + '</span>';
+                html += '<span style="display: inline-block; padding: 2px 8px; background: #F4F1E9; border: 1px solid #ACCBE1; border-radius: 4px; font-size: 12px; margin-right: 4px; margin-bottom: 4px;">' + service + '</span>';
             });
             html += '</div>';
         }
 
         // Address
-        html += '<p style="margin: 0 0 12px 0; font-size: 14px; color: #64748b;">' + location.full_address + '</p>';
+        html += '<p style="margin: 0 0 12px 0; font-size: 14px; color: #7A7A7A;">' + location.full_address + '</p>';
 
         // Icon buttons
         html += '<div class="frd-popup-actions">';
@@ -576,7 +576,7 @@
         html += '</div>';
 
         // Add "More Info" button
-        html += '<button class="frd-popup-more-info" data-location-id="' + location.id + '" style="width: 100%; margin-top: 12px; padding: 8px 12px; background: #2563eb; color: white; border: none; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px;">';
+        html += '<button class="frd-popup-more-info" data-location-id="' + location.id + '" style="width: 100%; margin-top: 12px; padding: 8px 12px; background: #3A5780; color: white; border: none; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px;">';
         html += '<span>More Info</span>';
         html += '<img src="' + frdData.pluginUrl + '/assets/icons/Read More Icon.svg" alt="" style="width: 1em; height: 1em; filter: brightness(0) invert(1);">';
         html += '</button>';
