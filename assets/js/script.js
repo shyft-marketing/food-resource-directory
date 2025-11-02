@@ -31,8 +31,24 @@
 
         // Force dropdown to have proper spacing when it opens
         $('#frd-services, #frd-days').on('select2:open', function() {
+            const $select = $(this);
+            const $container = $select.data('select2').$container;
+            const $selection = $container.find('.select2-selection--multiple');
+
             setTimeout(function() {
-                $('.select2-dropdown').css('margin-top', '16px');
+                // Get the actual height of the selection box (which changes with pills)
+                const selectionHeight = $selection.outerHeight();
+                const $dropdown = $('.select2-dropdown');
+
+                // Position dropdown below the selection box with some spacing
+                const topPosition = selectionHeight + 8;
+
+                console.log('FRD Dropdown: Selection height:', selectionHeight, 'Setting dropdown top to:', topPosition);
+
+                $dropdown.css({
+                    'margin-top': topPosition + 'px',
+                    'position': 'absolute'
+                });
             }, 1);
         });
 
