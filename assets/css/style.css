@@ -1300,6 +1300,12 @@ button.select2-selection__clear span {
     white-space: nowrap !important;
     text-decoration: none !important;
     box-shadow: none !important;
+    font-family: "Tungsten", sans-serif !important;
+}
+
+.frd-list-more-info,
+.frd-list-more-info * {
+    font-family: "Tungsten", sans-serif !important;
 }
 
 .frd-list-more-info:hover:not(:disabled) {
@@ -1310,6 +1316,7 @@ button.select2-selection__clear span {
     outline: none !important;
     box-shadow: none !important;
     transform: none !important;
+    font-family: "Tungsten", sans-serif !important;
 }
 
 .frd-list-more-info img {
@@ -1328,6 +1335,7 @@ button.select2-selection__clear span {
     border: none !important;
     outline: none !important;
     box-shadow: none !important;
+    font-family: "Tungsten", sans-serif !important;
 }
 
 .frd-list-more-info:active:not(:disabled) {
@@ -1337,12 +1345,14 @@ button.select2-selection__clear span {
     border: none !important;
     outline: none !important;
     box-shadow: none !important;
+    font-family: "Tungsten", sans-serif !important;
 }
 
 .frd-list-more-info:disabled {
     opacity: 0.5;
     cursor: not-allowed;
     pointer-events: none;
+    font-family: "Tungsten", sans-serif !important;
 }
 
 /* Modal */
