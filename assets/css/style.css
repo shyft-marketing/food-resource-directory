@@ -324,26 +324,29 @@ button.select2-selection__clear span {
     margin-bottom: 16px !important;
 }
 
-/* Non-selected options (not hovered) - white background */
-.select2-container--default .select2-results__option[aria-selected="false"] {
+/* DROPDOWN OPTIONS STYLING - Very specific selectors to override Select2 defaults */
+
+/* Remove Select2's default styling first */
+.select2-container--default .select2-results__option[aria-selected],
+.select2-container--default .select2-results__option {
     background-color: white !important;
     color: var(--frd-text) !important;
 }
 
-/* Non-selected options on hover - light gray */
-.select2-container--default .select2-results__option--highlighted[aria-selected="false"] {
-    background-color: #F5F7FA !important;
-    color: var(--frd-text) !important;
-}
-
-/* Selected options (not hovered) - blue background */
+/* Selected items that are NOT being hovered - blue background */
 .select2-container--default .select2-results__option[aria-selected="true"]:not(.select2-results__option--highlighted) {
     background-color: #263447 !important;
     color: white !important;
 }
 
-/* Selected options on hover - pink to indicate removal */
-.select2-container--default .select2-results__option--highlighted[aria-selected="true"] {
+/* Non-selected items being hovered - light gray background */  
+.select2-container--default .select2-results__option--highlighted:not([aria-selected="true"]) {
+    background-color: #F5F7FA !important;
+    color: var(--frd-text) !important;
+}
+
+/* Selected items being hovered - pink background (HIGHEST specificity) */
+.select2-container--default .select2-results__option[aria-selected="true"].select2-results__option--highlighted {
     background-color: #FF4081 !important;
     color: white !important;
 }
