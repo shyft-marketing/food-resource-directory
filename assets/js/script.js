@@ -37,41 +37,21 @@
         });
 
         // Fix clear button to properly clear all selections
-        $(document).on('click', 'button.select2-selection__clear', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
+        console.log('FRD Clear: Setting up clear button handler');
 
-            const $container = $(this).closest('.select2-container');
-            const selectId = $container.attr('id').replace('select2-', '').replace('-container', '');
-            const $select = $('#' + selectId);
+        $('#frd-services, #frd-days').on('select2:unselect', function(e) {
+            const $select = $(this);
 
-            console.log('FRD Clear: Button clicked for', selectId);
+            setTimeout(function() {
+                const currentValues = $select.val() || [];
+                console.log('FRD Clear: After unselect, remaining:', currentValues.length);
 
-            // Close dropdown if open
-            $select.select2('close');
-
-            // Get current selections and total options
-            const currentValues = $select.val() || [];
-            const totalOptions = $select.find('option').length;
-
-            console.log('FRD Clear: Current selections:', currentValues.length, 'Total options:', totalOptions);
-
-            // If all options are selected, Select2 has a bug - force clear differently
-            if (currentValues.length === totalOptions) {
-                console.log('FRD Clear: All selected - using two-step clear');
-                // First remove all but one, then clear the last one
-                $select.val([currentValues[0]]).trigger('change');
-                setTimeout(function() {
+                // If exactly 1 item remains, clear it too (this is the clear-all bug)
+                if (currentValues.length === 1) {
+                    console.log('FRD Clear: Clearing last remaining item');
                     $select.val([]).trigger('change');
-                    console.log('FRD Clear: Second step completed');
-                }, 10);
-            } else {
-                console.log('FRD Clear: Normal clear');
-                // Normal clear
-                $select.val([]).trigger('change');
-            }
-
-            return false;
+                }
+            }, 10);
         });
 
         // Initialize map
