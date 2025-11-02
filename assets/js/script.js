@@ -632,11 +632,7 @@
         if (location.hours_text) {
             const hoursLines = location.hours_text.split('<br>');
             const previewHours = hoursLines.slice(0, 2).join('<br>');
-            const $hours = $('<div class="frd-location-hours">' + previewHours);
-            if (hoursLines.length > 2) {
-                $hours.append('<br><em>+ more...</em>');
-            }
-            $hours.append('</div>');
+            const $hours = $('<div class="frd-location-hours">' + previewHours + '</div>');
             $card.append($hours);
         }
 
@@ -674,14 +670,6 @@
         $footer.append($moreInfoBtn);
         
         $card.append($footer);
-
-        // Click to show details
-        $card.on('click', function(e) {
-            // Don't trigger if clicking a link or button
-            if (!$(e.target).is('a') && !$(e.target).is('button')) {
-                showLocationDetails(location);
-            }
-        });
 
         return $card;
     }
