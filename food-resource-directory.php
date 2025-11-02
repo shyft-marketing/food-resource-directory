@@ -3,12 +3,13 @@
     * Plugin Name: Food Resource Directory
     * Plugin URI: https://github.com/shyft-marketing/food-resource-directory
     * Description: Interactive map and filterable directory of food pantries and soup kitchens with ACF integration
-    * Version: 1.0.86
+    * Version: 1.0.87
     * Author: SHYFT
     * Author URI: https://shyft.wtf
     * License: GPL v2 or later
     * GitHub Plugin URI: shyft-marketing/food-resource-directory
     * Primary Branch: main
+    * Plugin Icon: assets/icon-256x256.png
 */
 
 // Exit if accessed directly
