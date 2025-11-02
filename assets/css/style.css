@@ -593,38 +593,46 @@ button.select2-selection__clear span {
 
 /* Mapbox Popup Customization */
 .mapboxgl-popup-content {
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: var(--frd-shadow-lg);
-    max-width: 350px;
+    padding: 20px !important;
+    border-radius: 8px !important;
+    box-shadow: var(--frd-shadow-lg) !important;
+    max-width: 350px !important;
+    overflow: visible !important;
 }
 
 .mapboxgl-popup-close-button {
-    position: absolute;
-    right: -12px;
-    top: -12px;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background: white;
-    box-shadow: var(--frd-shadow-lg);
-    border: 2px solid var(--frd-border);
-    font-size: 20px;
-    line-height: 1;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--frd-text);
-    cursor: pointer;
-    transition: all 0.2s ease;
+    position: absolute !important;
+    right: -12px !important;
+    top: -12px !important;
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    min-height: 28px !important;
+    border-radius: 50% !important;
+    background: white !important;
+    background-color: white !important;
+    box-shadow: var(--frd-shadow-lg) !important;
+    border: 2px solid var(--frd-border) !important;
+    font-size: 20px !important;
+    line-height: 1 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: var(--frd-text) !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    z-index: 10 !important;
+    overflow: visible !important;
 }
 
 .mapboxgl-popup-close-button:hover {
-    background: var(--frd-danger);
-    color: white;
-    border-color: var(--frd-danger);
-    transform: scale(1.1);
+    background: var(--frd-danger) !important;
+    background-color: var(--frd-danger) !important;
+    color: white !important;
+    border-color: var(--frd-danger) !important;
+    transform: scale(1.1) !important;
 }
 
 /* Popup More Info Button */
