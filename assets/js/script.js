@@ -45,6 +45,8 @@
             const selectId = $container.attr('id').replace('select2-', '').replace('-container', '');
             const $select = $('#' + selectId);
 
+            console.log('FRD Clear: Button clicked for', selectId);
+
             // Close dropdown if open
             $select.select2('close');
 
@@ -52,14 +54,19 @@
             const currentValues = $select.val() || [];
             const totalOptions = $select.find('option').length;
 
+            console.log('FRD Clear: Current selections:', currentValues.length, 'Total options:', totalOptions);
+
             // If all options are selected, Select2 has a bug - force clear differently
             if (currentValues.length === totalOptions) {
+                console.log('FRD Clear: All selected - using two-step clear');
                 // First remove all but one, then clear the last one
                 $select.val([currentValues[0]]).trigger('change');
                 setTimeout(function() {
                     $select.val([]).trigger('change');
+                    console.log('FRD Clear: Second step completed');
                 }, 10);
             } else {
+                console.log('FRD Clear: Normal clear');
                 // Normal clear
                 $select.val([]).trigger('change');
             }

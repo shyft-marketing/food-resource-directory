@@ -188,7 +188,7 @@
     border-radius: 6px;
     min-height: 42px;
     padding: 4px 40px 4px 8px;
-    position: relative;
+    position: relative !important;
 }
 
 /* Dropdown arrow indicator for multi-select */
