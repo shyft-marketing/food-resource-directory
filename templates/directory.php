@@ -22,27 +22,29 @@
         </button>
     </div>
 
+    <!-- Location Search Bar -->
+    <div class="frd-search-container">
+        <div class="frd-search-wrapper">
+            <label for="frd-location-search">Your Location</label>
+            <div class="frd-search-input-group">
+                <input type="text" id="frd-location-search" placeholder="Enter address, city, or ZIP code" />
+                <button class="frd-search-btn" id="frd-search-btn" aria-label="Search">
+                    <img src="<?php echo plugin_dir_url(dirname(__FILE__)) . 'assets/icons/Search Icon.svg'; ?>" alt="Search" />
+                </button>
+            </div>
+            <small>Enter a location to see distances and sort by proximity</small>
+        </div>
+        <button class="frd-filters-toggle-btn" id="frd-filters-toggle-btn">
+            <img src="<?php echo plugin_dir_url(dirname(__FILE__)) . 'assets/icons/Filter Icon.svg'; ?>" alt="Filters" />
+            Filters
+        </button>
+    </div>
+
     <!-- Filters -->
     <div class="frd-filters">
-        <div class="frd-filters-header">
-            <span class="frd-filters-title">Filter Resources</span>
-            <button class="frd-filters-toggle">
-                <span class="frd-filters-toggle-text">Show Filters</span>
-                <svg class="frd-filters-toggle-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="6 9 12 15 18 9"/>
-                </svg>
-            </button>
-        </div>
-        
         <div class="frd-filters-content">
-            <!-- Location Search -->
-            <div class="frd-filter-group">
-                <label for="frd-location-search">Your Location</label>
-                <input type="text" id="frd-location-search" placeholder="Enter address, city, or ZIP code" />
-                <small>Enter a location to see distances and sort by proximity</small>
-            </div>
 
-            <!-- Distance Filter -->
+            <!-- Distance Filter (shown after location search) -->
             <div class="frd-filter-group" id="frd-distance-filter" style="display: none;">
                 <label for="frd-distance">Maximum Distance</label>
                 <div class="frd-distance-slider">

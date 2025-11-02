@@ -95,11 +95,7 @@
         // Bind event handlers
         bindEvents();
 
-        // Open filters by default on desktop
-        if ($(window).width() > 768) {
-            $('.frd-filters').addClass('expanded');
-            $('.frd-filters-toggle-text').text('Hide Filters');
-        }
+        // Filters are hidden by default now with the new layout
 
         console.log('FRD: Initialization complete');
     }
@@ -141,14 +137,18 @@
             switchView(view);
         });
 
-        // Filters toggle
-        $('.frd-filters-toggle').on('click', function() {
+        // Filters toggle (new button)
+        $('#frd-filters-toggle-btn').on('click', function() {
             $('.frd-filters').toggleClass('expanded');
-            const isExpanded = $('.frd-filters').hasClass('expanded');
-            $('.frd-filters-toggle-text').text(isExpanded ? 'Hide Filters' : 'Show Filters');
+            $(this).toggleClass('active');
         });
 
-        // Location search
+        // Search button click
+        $('#frd-search-btn').on('click', function() {
+            searchLocation();
+        });
+
+        // Location search (Enter key)
         $('#frd-location-search').on('keypress', function(e) {
             if (e.which === 13) { // Enter key
                 e.preventDefault();
