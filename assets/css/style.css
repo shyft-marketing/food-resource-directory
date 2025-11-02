@@ -1401,7 +1401,7 @@ button.select2-selection__clear span {
 }
 
 .frd-modal-title {
-    font-size: var(--frd-font-2xl);
+    font-size: 3rem;
     font-weight: var(--frd-weight-bold);
     margin: 0;
     line-height: var(--frd-leading-tight);

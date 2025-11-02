@@ -624,7 +624,7 @@
         $header.append($titleContainer);
 
         if (location.distance !== null) {
-            const $distance = $('<div class="frd-location-distance">' + location.distance + ' miles</div>');
+            const $distance = $('<div class="frd-location-distance">' + location.distance + ' miles away</div>');
             $header.append($distance);
         }
 
