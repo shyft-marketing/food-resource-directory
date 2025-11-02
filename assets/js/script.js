@@ -561,7 +561,7 @@
         }
 
         // Address
-        html += '<p style="margin: 0 0 12px 0; font-size: 0.75rem; color: #3A5780;">' + location.full_address + '</p>';
+        html += '<p style="margin: 0 0 12px 0; font-size: 1rem; color: #3A5780;">' + location.full_address + '</p>';
 
         // Icon buttons
         html += '<div class="frd-popup-actions">';
@@ -712,7 +712,7 @@
         
         // Title with inline service chip
         html += '<div class="frd-modal-title-row">';
-        html += '<h2 class="frd-modal-title">' + location.title + '</h2>';
+        html += '<div class="frd-modal-title">' + location.title + '</div>';
         if (location.services && location.services.length > 0) {
             html += '<span class="frd-modal-service">' + location.services[0] + '</span>';
         }
@@ -748,8 +748,8 @@
         // Languages Spoken
         if (location.languages && location.languages.length > 0) {
             html += '<div class="frd-modal-section frd-modal-section-languages">';
-            html += '<span class="frd-modal-section-heading">Languages Spoken:</span> ';
-            html += '<span class="frd-modal-section-body">' + location.languages.join(', ') + '</span>';
+            html += '<span class="frd-modal-section-heading">Languages Spoken</span>';
+            html += '<div class="frd-modal-section-body">' + location.languages.join(', ') + '</div>';
             html += '</div>';
         }
 

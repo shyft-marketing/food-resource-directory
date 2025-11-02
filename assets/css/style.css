@@ -1470,6 +1470,7 @@ button.select2-selection__clear span {
     font-family: 'Tungsten', sans-serif;
     font-weight: 600;
     text-transform: uppercase;
+    font-size: var(--frd-font-lg);
 }
 
 .frd-modal-section-body {
