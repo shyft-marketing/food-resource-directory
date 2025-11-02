@@ -147,7 +147,7 @@ class Food_Resource_Directory {
      * Render section info for Mapbox settings
      */
     public function render_mapbox_section_info() {
-        echo '<p>Configure your Mapbox API token. If you provide a Secret Token, it will be used. Otherwise, the plugin will use the default Public Token.</p>';
+        echo '<p>Configure your Mapbox API token for server-side operations (geocoding). The default Public Token will continue to be used for displaying the map in the browser.</p>';
     }
 
     /**
@@ -163,25 +163,36 @@ class Food_Resource_Directory {
                class="regular-text"
                placeholder="sk.ey...">
         <p class="description">
-            Enter your Mapbox Secret Token here. Leave blank to use the default Public Token.<br>
+            <strong>Optional:</strong> Enter your Mapbox Secret Token for server-side geocoding operations.<br>
+            Leave blank to use the default Public Token for all operations.<br>
+            <em>Note: Secret tokens can only be used server-side; the Public Token will always be used for the client-side map display.</em><br>
             Get your token from <a href="https://account.mapbox.com/access-tokens/" target="_blank">Mapbox Account</a>.
         </p>
         <?php
     }
 
     /**
-     * Get Mapbox token with fallback logic
+     * Get Mapbox public token for client-side use
+     * Always returns the public token (secret tokens cannot be used in browser)
+     */
+    private function get_mapbox_public_token() {
+        // Default Public Token (always used for client-side JavaScript)
+        return 'pk.eyJ1IjoibWFjb21iZGVmZW5kZXJzIiwiYSI6ImNtaGU0bDlrejBhMXQybnB2Zng5aW85M3UifQ.dsT7ITwivyDeR0j07AZkgA';
+    }
+
+    /**
+     * Get Mapbox token for server-side use
      * Returns Secret Token if set, otherwise returns Public Token
      */
-    private function get_mapbox_token() {
+    private function get_mapbox_server_token() {
         $secret_token = get_option('frd_mapbox_secret_token', '');
         
         if (!empty($secret_token)) {
             return $secret_token;
         }
         
-        // Default Public Token
-        return 'pk.eyJ1IjoibWFjb21iZGVmZW5kZXJzIiwiYSI6ImNtaGU0bDlrejBhMXQybnB2Zng5aW85M3UifQ.dsT7ITwivyDeR0j07AZkgA';
+        // Fallback to Public Token
+        return $this->get_mapbox_public_token();
     }
     
     /**
@@ -214,7 +225,7 @@ class Food_Resource_Directory {
             wp_localize_script('frd-script', 'frdData', array(
                 'ajaxUrl' => admin_url('admin-ajax.php'),
                 'nonce' => wp_create_nonce('frd_nonce'),
-                'mapboxToken' => $this->get_mapbox_token(),
+                'mapboxToken' => $this->get_mapbox_public_token(),
                 'defaultCenter' => array(-83.0458, 42.5803), // Center of the three counties
                 'defaultZoom' => 9
             ));
@@ -543,7 +554,7 @@ class Food_Resource_Directory {
     private function geocode_address($address) {
         error_log('FRD: Geocoding address: ' . $address);
 
-        $mapbox_token = $this->get_mapbox_token();
+        $mapbox_token = $this->get_mapbox_server_token();
         $url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' . urlencode($address) . '.json?access_token=' . $mapbox_token . '&country=US&proximity=-83.0458,42.5803';
 
         error_log('FRD: Geocoding URL: ' . $url);
