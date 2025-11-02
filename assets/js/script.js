@@ -39,26 +39,27 @@
                 const $selection = $container.find('.select2-selection--multiple');
                 const $dropdown = $('.select2-dropdown');
 
-                // Get the actual rendered height using getBoundingClientRect
+                // Get positions to calculate the gap
                 const selectionRect = $selection[0].getBoundingClientRect();
-                const selectionHeight = selectionRect.height;
+                const dropdownRect = $dropdown[0].getBoundingClientRect();
 
-                console.log('FRD Dropdown: Selection height (getBoundingClientRect):', selectionHeight);
-                console.log('FRD Dropdown: Selection outerHeight:', $selection.outerHeight());
+                console.log('FRD Dropdown: Selection bottom:', selectionRect.bottom);
+                console.log('FRD Dropdown: Dropdown top:', dropdownRect.top);
 
-                // Get current dropdown position
-                const currentTop = parseFloat($dropdown.css('top')) || 0;
-                console.log('FRD Dropdown: Current top CSS:', currentTop);
+                // Calculate the gap between selection bottom and dropdown top
+                const gap = dropdownRect.top - selectionRect.bottom;
+                console.log('FRD Dropdown: Current gap:', gap);
 
-                // Calculate new position - add the full selection height plus spacing
-                const newTop = selectionRect.bottom - selectionRect.top + 8;
+                // If there's a gap or overlap, adjust the dropdown position
+                if (gap !== 0) {
+                    const currentTop = parseFloat($dropdown.css('top')) || 0;
+                    const adjustment = -gap; // Negative gap means overlap, positive means too much space
+                    const newTop = currentTop + adjustment;
 
-                console.log('FRD Dropdown: Setting top to:', newTop);
+                    console.log('FRD Dropdown: Adjusting top from', currentTop, 'to', newTop, '(adjustment:', adjustment, ')');
 
-                $dropdown.css({
-                    'top': newTop + 'px',
-                    'position': 'absolute'
-                });
+                    $dropdown.css('top', newTop + 'px');
+                }
             }, 50);
         });
 
