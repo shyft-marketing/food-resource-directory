@@ -817,6 +817,12 @@
         
         html += '</div>';
 
+        // Suggest edits link
+        html += '<a href="https://macombdefenders.com/contact/" target="_blank" rel="noopener noreferrer" class="frd-modal-suggest-edits">';
+        html += 'Suggest edits';
+        html += '<img src="' + frdData.pluginUrl + '/assets/icons/Edit Icon.svg" alt="">';
+        html += '</a>';
+
         $('#frd-modal-body').html(html);
         $('#frd-modal').addClass('active');
         $('body').css('overflow', 'hidden');

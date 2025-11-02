@@ -1122,6 +1122,33 @@ button.select2-selection__clear span {
     border-color: #263447;
 }
 
+/* Suggest Edits Link */
+.frd-modal-suggest-edits {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+    color: var(--frd-text-light);
+    text-decoration: none;
+    margin-top: 12px;
+    transition: all 0.2s ease;
+}
+
+.frd-modal-suggest-edits:hover {
+    color: var(--frd-primary);
+}
+
+.frd-modal-suggest-edits img {
+    width: 0.75rem;
+    height: 0.75rem;
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+}
+
+.frd-modal-suggest-edits:hover img {
+    opacity: 1;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .frd-directory {
