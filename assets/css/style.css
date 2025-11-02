@@ -903,7 +903,7 @@ button.select2-selection__clear span {
     align-items: center;
     gap: var(--frd-spacing-md);
     margin-bottom: var(--frd-spacing-md);
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
 }
 
 .frd-popup-title {
@@ -1149,7 +1149,7 @@ button.select2-selection__clear span {
     display: flex;
     align-items: center;
     gap: var(--frd-spacing-md);
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
 }
 
 .frd-location-title {
@@ -1447,7 +1447,7 @@ button.select2-selection__clear span {
     align-items: center;
     gap: var(--frd-spacing-md);
     margin-bottom: var(--frd-spacing-xl);
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
 }
 
 .frd-modal-title {
