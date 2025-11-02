@@ -628,14 +628,6 @@
             $card.append($services);
         }
 
-        // Hours (abbreviated)
-        if (location.hours_text) {
-            const hoursLines = location.hours_text.split('<br>');
-            const previewHours = hoursLines.slice(0, 2).join('<br>');
-            const $hours = $('<div class="frd-location-hours">' + previewHours + '</div>');
-            $card.append($hours);
-        }
-
         // Footer with icon buttons
         const $footer = $('<div class="frd-location-footer"></div>');
 
