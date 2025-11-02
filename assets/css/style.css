@@ -34,10 +34,10 @@
     --frd-spacing-3xl: 30px;
 
     /* === Border Radius === */
-    --frd-radius-sm: 4px;
-    --frd-radius-md: 6px;
-    --frd-radius-lg: 8px;
-    --frd-radius-xl: 12px;
+    --frd-radius-sm: 0px;
+    --frd-radius-md: 0px;
+    --frd-radius-lg: 0px;
+    --frd-radius-xl: 0px;
     --frd-radius-full: 50%;
 
     /* === Typography === */
@@ -1707,7 +1707,7 @@ button.select2-selection__clear span {
 .frd-modal-suggest-edits:focus {
     outline: 2px solid var(--frd-primary) !important;
     outline-offset: 2px !important;
-    border-radius: 2px !important;
+    border-radius: 0px !important;
 }
 
 .frd-modal-suggest-edits:active {
