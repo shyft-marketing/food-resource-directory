@@ -545,7 +545,7 @@
 
     function createPopupContent(location) {
         let html = '<div class="frd-popup">';
-        html += '<span class="frd-popup-title" style="display: block; margin: 0 0 10px 0; font-size: 1.25rem; font-weight: 600;">' + location.title + '</span>';
+        html += '<span class="frd-popup-title" style="display: block; margin: 0 0 10px 0; font-size: 1.25rem; font-weight: 700; font-family: 'Tungsten', sans-serif; text-transform: uppercase;">' + location.title + '</span>';
 
         if (location.distance !== null) {
             html += '<p style="margin: 0 0 8px 0; font-weight: 600; color: #3A5780;">' + location.distance + ' miles away</p>';
@@ -561,7 +561,7 @@
         }
 
         // Address
-        html += '<p style="margin: 0 0 12px 0; font-size: 1rem; color: #3A5780;">' + location.full_address + '</p>';
+        html += '<p style="margin: 0 0 12px 0; font-size: 0.75rem; color: #3A5780;">' + location.full_address + '</p>';
 
         // Icon buttons
         html += '<div class="frd-popup-actions">';
@@ -586,7 +586,7 @@
         html += '</div>';
 
         // Add "More Info" button
-        html += '<button class="frd-popup-more-info" data-location-id="' + location.id + '" style="width: 100%; margin-top: 12px; padding: 8px 12px; background: #263447; color: white; border: none; border-radius: 0px; font-size: 1.25rem; font-weight: 600; font-family: \'Tungsten\', sans-serif; cursor: pointer; transition: background 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px;">';
+        html += '<button class="frd-popup-more-info" data-location-id="' + location.id + '" style="width: 100%; margin-top: 12px; padding: 8px 12px; background: #263447; color: white; border: none; border-radius: 0px; font-size: 1rem; font-weight: 600; font-family: \'Tungsten\', sans-serif; cursor: pointer; transition: background 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px;">';
         html += '<span>More Info</span>';
         html += '<img src="' + frdData.pluginUrl + '/assets/icons/Read More Icon.svg" alt="" style="width: 1em; height: 1em; filter: brightness(0) invert(1);">';
         html += '</button>';
