@@ -187,8 +187,13 @@
     border: 1px solid var(--frd-border);
     border-radius: 6px;
     min-height: 42px;
-    padding: 4px 80px 4px 8px;
+    padding: 4px 8px;
     position: relative !important;
+}
+
+/* Add padding to the inner pills container to force wrapping before clear button */
+.select2-container--default .select2-selection--multiple .select2-selection__rendered {
+    padding-right: 50px !important;
 }
 
 /* Dropdown arrow indicator for multi-select */
