@@ -1763,7 +1763,26 @@ button.select2-selection__clear span {
     }
 
     .frd-modal-content {
-        padding: var(--frd-spacing-xl);
+        max-width: 90vw;
+        width: 90%;
+        overflow: hidden;
+    }
+
+    #frd-modal-body {
+        padding: 15px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .frd-modal-hours-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+        padding: 8px 0;
+    }
+
+    .frd-modal-hours-time {
+        text-align: left;
     }
 
     .frd-modal-actions {
