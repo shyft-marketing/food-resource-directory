@@ -1240,6 +1240,7 @@ button.select2-selection__clear span {
     background: transparent !important;
     background-color: transparent !important;
     border: none !important;
+    outline: none !important;
     font-size: var(--frd-font-base) !important;
     font-weight: var(--frd-weight-medium) !important;
     color: var(--frd-dark) !important;
@@ -1255,6 +1256,7 @@ button.select2-selection__clear span {
     background: transparent !important;
     background-color: transparent !important;
     border: none !important;
+    outline: none !important;
     box-shadow: none !important;
     transform: none !important;
 }
@@ -1269,11 +1271,11 @@ button.select2-selection__clear span {
 }
 
 .frd-list-more-info:focus {
-    outline: 2px solid var(--frd-primary) !important;
-    outline-offset: 2px !important;
-    border-radius: 2px !important;
+    color: var(--frd-dark) !important;
     background: transparent !important;
     background-color: transparent !important;
+    border: none !important;
+    outline: none !important;
     box-shadow: none !important;
 }
 
@@ -1282,6 +1284,7 @@ button.select2-selection__clear span {
     background: transparent !important;
     background-color: transparent !important;
     border: none !important;
+    outline: none !important;
     box-shadow: none !important;
 }
 
