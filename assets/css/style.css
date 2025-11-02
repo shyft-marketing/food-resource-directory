@@ -263,6 +263,7 @@
     background: transparent !important;
     background-color: transparent !important;
     border: none !important;
+    outline: none !important;
     color: var(--frd-text) !important;
     cursor: pointer !important;
     transition: var(--frd-transition) !important;
@@ -277,17 +278,18 @@
     background: transparent !important;
     background-color: transparent !important;
     border: none !important;
+    outline: none !important;
     box-shadow: none !important;
     text-decoration: none !important;
     transform: none !important;
 }
 
 .frd-filters-toggle-btn:focus {
-    outline: 2px solid var(--frd-primary) !important;
-    outline-offset: 2px !important;
-    border-radius: 2px !important;
+    color: var(--frd-text) !important;
     background: transparent !important;
     background-color: transparent !important;
+    border: none !important;
+    outline: none !important;
     box-shadow: none !important;
 }
 
@@ -296,6 +298,7 @@
     background: transparent !important;
     background-color: transparent !important;
     border: none !important;
+    outline: none !important;
     box-shadow: none !important;
 }
 
@@ -751,6 +754,7 @@ button.select2-selection__clear span {
     background: transparent !important;
     background-color: transparent !important;
     border: none !important;
+    outline: none !important;
     color: var(--frd-text) !important;
     cursor: pointer !important;
     transition: var(--frd-transition) !important;
@@ -764,15 +768,16 @@ button.select2-selection__clear span {
     background: transparent !important;
     background-color: transparent !important;
     border: none !important;
+    outline: none !important;
     box-shadow: none !important;
 }
 
 .frd-btn-secondary:focus {
-    outline: 2px solid var(--frd-primary) !important;
-    outline-offset: 2px !important;
-    border-radius: 2px !important;
+    color: var(--frd-text) !important;
     background: transparent !important;
     background-color: transparent !important;
+    border: none !important;
+    outline: none !important;
     box-shadow: none !important;
 }
 
@@ -781,6 +786,7 @@ button.select2-selection__clear span {
     background: transparent !important;
     background-color: transparent !important;
     border: none !important;
+    outline: none !important;
     box-shadow: none !important;
 }
 
@@ -1094,7 +1100,7 @@ button.select2-selection__clear span {
 
 /* Location Cards */
 .frd-location-card {
-    border: var(--frd-border-width) solid var(--frd-border);
+    border: var(--frd-border-width) solid var(--frd-dark);
     border-radius: var(--frd-radius-lg);
     padding: var(--frd-spacing-xl);
     margin-bottom: 15px;
