@@ -191,16 +191,17 @@
     position: relative !important;
 }
 
-/* Remove extra padding - the clear button is positioned absolutely so it doesn't need space */
+/* Add padding to force pills to wrap before the clear button, but won't affect cursor */
 .select2-container--default .select2-selection--multiple .select2-selection__rendered {
-    padding-right: 0 !important;
+    padding-right: 40px !important;
     display: block !important;
     width: 100% !important;
 }
 
-/* Style the inline search input field that appears after selections */
+/* Style the inline search input field - counteract the padding so cursor appears correctly */
 .select2-container--default .select2-selection--multiple .select2-search--inline {
     display: inline-block !important;
+    margin-right: -40px !important;
 }
 
 .select2-container--default .select2-selection--multiple .select2-search--inline .select2-search__field {
