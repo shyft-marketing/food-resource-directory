@@ -244,6 +244,7 @@
     border-radius: 4px;
     padding: 2px 8px;
     margin-top: 4px;
+    font-size: 15px !important;
 }
 
 .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
@@ -254,7 +255,8 @@
     top: 0 !important;
     border: none !important;
     border-right: none !important;
-    font-size: 22px !important;
+    font-size: 15px !important;
+    font-family: "Public Sans", sans-serif !important;
     line-height: 1 !important;
     font-weight: bold !important;
 }
@@ -273,7 +275,8 @@ button.select2-selection__clear {
     right: 12px !important;
     top: 50% !important;
     transform: translateY(-50%) !important;
-    font-size: 28px !important;
+    font-size: 15px !important;
+    font-family: "Public Sans", sans-serif !important;
     line-height: 1 !important;
     margin: 0 !important;
     padding: 0 !important;
@@ -330,6 +333,7 @@ button.select2-selection__clear span {
 .select2-container--default .select2-results__option {
     background-color: white !important;
     color: var(--frd-text) !important;
+    font-size: 15px !important;
 }
 
 /* State 1: Selected items (not hovered) - blue background */
