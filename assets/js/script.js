@@ -545,19 +545,17 @@
 
     function createPopupContent(location) {
         let html = '<div class="frd-popup">';
-        html += '<span class="frd-popup-title" style="display: block; margin: 0 0 10px 0; font-size: 1.5rem; font-weight: 700; font-family: \'Tungsten\', sans-serif; text-transform: uppercase;">' + location.title + '</span>';
+        
+        // Title with inline service chip
+        html += '<div class="frd-popup-title-row">';
+        html += '<span class="frd-popup-title">' + location.title + '</span>';
+        if (location.services && location.services.length > 0) {
+            html += '<span class="frd-popup-service-chip">' + location.services[0] + '</span>';
+        }
+        html += '</div>';
 
         if (location.distance !== null) {
             html += '<p style="margin: 0 0 8px 0; font-weight: 600; color: #ff6f61; font-size: 0.75rem !important;">' + location.distance + ' miles away</p>';
-        }
-
-        // Services above address
-        if (location.services && location.services.length > 0) {
-            html += '<div style="margin-bottom: 8px;">';
-            location.services.forEach(function(service) {
-                html += '<span style="display: inline-block; padding: 2px 8px; background: #F4F1E9; border: 1px solid #dcd9d2; border-radius: 4px; font-size: 0.75rem; margin-right: 4px; margin-bottom: 4px;">' + service + '</span>';
-            });
-            html += '</div>';
         }
 
         // Address
@@ -615,12 +613,20 @@
     function createLocationCard(location) {
         const $card = $('<div class="frd-location-card"></div>');
 
-        // Header
+        // Header with title and distance
         const $header = $('<div class="frd-location-header"></div>');
         
-        const $titleContainer = $('<div></div>');
+        // Title container with inline service chip
+        const $titleContainer = $('<div class="frd-location-title-row"></div>');
         const $title = $('<span class="frd-location-title">' + location.title + '</span>');
         $titleContainer.append($title);
+        
+        // Add first service chip inline with title
+        if (location.services && location.services.length > 0) {
+            const $serviceChip = $('<span class="frd-location-service-chip">' + location.services[0] + '</span>');
+            $titleContainer.append($serviceChip);
+        }
+        
         $header.append($titleContainer);
 
         if (location.distance !== null) {
@@ -629,15 +635,6 @@
         }
 
         $card.append($header);
-
-        // Services (moved above address to match map tooltip order)
-        if (location.services && location.services.length > 0) {
-            const $services = $('<div class="frd-location-services"></div>');
-            location.services.forEach(function(service) {
-                $services.append('<span class="frd-service-tag">' + service + '</span>');
-            });
-            $card.append($services);
-        }
 
         // Address
         const $address = $('<div class="frd-location-address">' + location.full_address + '</div>');

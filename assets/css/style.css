@@ -891,11 +891,41 @@ button.select2-selection__clear span {
 
 /* Mapbox Popup Customization */
 .mapboxgl-popup-content {
-    padding: 1rem !important;
+    padding: var(--frd-spacing-sm) !important;
     border-radius: var(--frd-radius-lg) !important;
     box-shadow: var(--frd-shadow-lg) !important;
     max-width: var(--frd-popup-max) !important;
     overflow: visible !important;
+}
+
+.frd-popup-title-row {
+    display: flex;
+    align-items: center;
+    gap: var(--frd-spacing-md);
+    margin-bottom: var(--frd-spacing-md);
+    flex-wrap: wrap;
+}
+
+.frd-popup-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    font-family: 'Tungsten', sans-serif;
+    text-transform: uppercase;
+    margin: 0;
+    line-height: var(--frd-leading-tight);
+}
+
+.frd-popup-service-chip {
+    display: inline-block;
+    padding: 2px 8px;
+    background: var(--frd-background);
+    border: var(--frd-border-width) solid var(--frd-service-border);
+    border-radius: var(--frd-radius-sm);
+    font-size: var(--frd-font-sm);
+    font-weight: var(--frd-weight-medium);
+    color: var(--frd-text);
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .mapboxgl-popup-close-button {
@@ -1115,14 +1145,34 @@ button.select2-selection__clear span {
     margin-bottom: var(--frd-spacing-md);
 }
 
+.frd-location-title-row {
+    display: flex;
+    align-items: center;
+    gap: var(--frd-spacing-md);
+    flex-wrap: wrap;
+}
+
 .frd-location-title {
-    display: block;
     font-size: var(--frd-font-xl);
-    margin: 0 0 var(--frd-spacing-xs) 0;
+    margin: 0;
     color: var(--frd-text);
     font-family: 'Tungsten', sans-serif;
     font-weight: 700;
     text-transform: uppercase;
+    line-height: var(--frd-leading-tight);
+}
+
+.frd-location-service-chip {
+    display: inline-block;
+    padding: 2px 8px;
+    background: var(--frd-background);
+    border: var(--frd-border-width) solid var(--frd-service-border);
+    border-radius: var(--frd-radius-sm);
+    font-size: var(--frd-font-sm);
+    font-weight: var(--frd-weight-medium);
+    color: var(--frd-text);
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .frd-location-distance {
