@@ -533,48 +533,117 @@
 
     function createPopupContent(location) {
         let html = '<div class="frd-popup">';
-        html += '<span class="frd-popup-title" style="display: block; margin: 0 0 10px 0; font-size: 16px; font-weight: 600;">' + location.title + '</span>';
-
-        if (location.distance !== null) {
-            html += '<p style="margin: 0 0 8px 0; font-weight: 600; color: #2563eb;">' + location.distance + ' miles away</p>';
-        }
-
-        // Services above address
+        
+        // Header with title and service type
+        html += '<div class="frd-popup-header">';
+        html += '<h3 class="frd-popup-title">' + location.title + '</h3>';
         if (location.services && location.services.length > 0) {
-            html += '<div style="margin-bottom: 8px;">';
-            location.services.forEach(function(service) {
-                html += '<span style="display: inline-block; padding: 2px 8px; background: #f1f5f9; border-radius: 4px; font-size: 12px; margin-right: 4px; margin-bottom: 4px;">' + service + '</span>';
-            });
+            html += '<span class="frd-popup-service">' + location.services[0] + '</span>';
+        }
+        html += '</div>';
+
+        // Contact info row with icons
+        html += '<div class="frd-popup-contact">';
+        
+        // Address
+        html += '<div class="frd-popup-contact-item">';
+        html += '<img src="' + frdData.pluginUrl + '/assets/icons/Map Marker Icon.svg" alt="" class="frd-popup-icon">';
+        html += '<span>' + location.full_address + '</span>';
+        html += '</div>';
+        
+        // Phone
+        if (location.phone) {
+            html += '<div class="frd-popup-contact-item">';
+            html += '<img src="' + frdData.pluginUrl + '/assets/icons/Phone Icon.svg" alt="" class="frd-popup-icon">';
+            html += '<a href="tel:' + location.phone_link + '">' + location.phone + '</a>';
+            html += '</div>';
+        }
+        
+        // Website
+        if (location.website) {
+            html += '<div class="frd-popup-contact-item">';
+            html += '<img src="' + frdData.pluginUrl + '/assets/icons/Link Icon.svg" alt="" class="frd-popup-icon">';
+            html += '<a href="' + location.website + '" target="_blank">' + location.website.replace(/^https?:\/\/(www\.)?/, '') + '</a>';
+            html += '</div>';
+        }
+        
+        html += '</div>';
+
+        // Languages Spoken
+        if (location.languages && location.languages.length > 0) {
+            html += '<div class="frd-popup-section">';
+            html += '<strong>Languages Spoken:</strong> ' + location.languages.join(', ');
             html += '</div>';
         }
 
-        // Address
-        html += '<p style="margin: 0 0 12px 0; font-size: 14px; color: #64748b;">' + location.full_address + '</p>';
+        // Eligibility Requirements
+        if (location.eligibility) {
+            html += '<div class="frd-popup-section">';
+            html += '<strong>Eligibility Requirements</strong>';
+            html += '<p>' + location.eligibility + '</p>';
+            html += '</div>';
+        }
 
-        // Icon buttons
-        html += '<div class="frd-popup-actions">';
+        // Additional Notes
+        if (location.notes) {
+            html += '<div class="frd-popup-section">';
+            html += '<strong>Additional Notes</strong>';
+            html += '<p>' + location.notes + '</p>';
+            html += '</div>';
+        }
+
+        // Hours
+        html += '<div class="frd-popup-section">';
+        html += '<strong>Hours</strong>';
+        
+        // Check if there's a special hours note
+        if (location.hours_other_hours && location.hours_other_hours !== 'Regular hours') {
+            html += '<p>' + location.hours_other_hours + '</p>';
+        } else if (location.hours) {
+            html += '<div class="frd-popup-hours">';
+            const dayLabels = {
+                monday: 'Monday',
+                tuesday: 'Tuesday',
+                wednesday: 'Wednesday',
+                thursday: 'Thursday',
+                friday: 'Friday',
+                saturday: 'Saturday',
+                sunday: 'Sunday'
+            };
+
+            Object.keys(dayLabels).forEach(function(day) {
+                const dayData = location.hours[day];
+                html += '<div class="frd-popup-hours-row">';
+                html += '<span class="frd-popup-hours-day">' + dayLabels[day] + '</span>';
+                if (dayData && dayData.open) {
+                    html += '<span class="frd-popup-hours-time">' + dayData.open_time + ' - ' + dayData.close_time + '</span>';
+                } else {
+                    html += '<span class="frd-popup-hours-time">Closed</span>';
+                }
+                html += '</div>';
+            });
+            html += '</div>';
+        }
+        html += '</div>';
+
+        // Action buttons
+        html += '<div class="frd-popup-buttons">';
         
         if (location.phone) {
-            html += '<a href="tel:' + location.phone_link + '" class="frd-popup-icon-btn" title="Call">';
-            html += '<img src="' + frdData.pluginUrl + '/assets/icons/Phone Icon.svg" alt="Call">';
-            html += '</a>';
-        }
-        
-        if (location.website) {
-            html += '<a href="' + location.website + '" target="_blank" class="frd-popup-icon-btn" title="Website">';
-            html += '<img src="' + frdData.pluginUrl + '/assets/icons/Link Icon.svg" alt="Website">';
+            html += '<a href="tel:' + location.phone_link + '" class="frd-popup-btn frd-popup-btn-primary">';
+            html += '<img src="' + frdData.pluginUrl + '/assets/icons/Phone Icon.svg" alt="">';
+            html += 'CALL';
             html += '</a>';
         }
         
         const directionsUrl = 'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(location.full_address);
-        html += '<a href="' + directionsUrl + '" target="_blank" class="frd-popup-icon-btn" title="Directions">';
-        html += '<img src="' + frdData.pluginUrl + '/assets/icons/Directions Icon.svg" alt="Directions">';
+        html += '<a href="' + directionsUrl + '" target="_blank" class="frd-popup-btn frd-popup-btn-secondary">';
+        html += '<img src="' + frdData.pluginUrl + '/assets/icons/Directions Icon.svg" alt="">';
+        html += 'DIRECTIONS';
         html += '</a>';
         
         html += '</div>';
 
-        // Add "More Info" button
-        html += '<button class="frd-popup-more-info" data-location-id="' + location.id + '" style="width: 100%; margin-top: 12px; padding: 8px 12px; background: #2563eb; color: white; border: none; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; transition: background 0.2s;">More Info</button>';
         html += '</div>';
 
         return html;

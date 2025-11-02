@@ -593,7 +593,7 @@ button.select2-selection__clear span {
 
 /* Mapbox Popup Customization */
 .mapboxgl-popup-content {
-    padding: 20px !important;
+    padding: 8px !important;
     border-radius: 8px !important;
     box-shadow: var(--frd-shadow-lg) !important;
     max-width: 350px !important;
@@ -612,7 +612,7 @@ button.select2-selection__clear span {
     background: white !important;
     background-color: white !important;
     box-shadow: var(--frd-shadow-lg) !important;
-    border: 3px solid var(--frd-border) !important;
+    border: none !important;
     font-size: 40px !important;
     line-height: 1 !important;
     padding: 0 !important;
@@ -631,51 +631,160 @@ button.select2-selection__clear span {
     background: var(--frd-danger) !important;
     background-color: var(--frd-danger) !important;
     color: white !important;
-    border-color: var(--frd-danger) !important;
     transform: scale(1.1) !important;
 }
 
-/* Popup Actions (Icon Buttons) */
-.frd-popup-actions {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    justify-content: flex-start;
+/* Popup Content Styles */
+.frd-popup {
+    padding: 16px;
 }
 
-.frd-popup-icon-btn {
+.frd-popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+    gap: 12px;
+}
+
+.frd-popup-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0;
+    flex: 1;
+    line-height: 1.3;
+}
+
+.frd-popup-service {
+    font-size: 14px;
+    color: var(--frd-text-light);
+    white-space: nowrap;
+    padding-top: 2px;
+}
+
+.frd-popup-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--frd-border);
+}
+
+.frd-popup-contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.frd-popup-icon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    opacity: 0.6;
+}
+
+.frd-popup-contact-item a {
+    color: var(--frd-primary);
+    text-decoration: none;
+}
+
+.frd-popup-contact-item a:hover {
+    text-decoration: underline;
+}
+
+.frd-popup-section {
+    margin-bottom: 16px;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.frd-popup-section strong {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.frd-popup-section p {
+    margin: 0;
+    color: var(--frd-text-light);
+}
+
+.frd-popup-hours {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 8px;
+}
+
+.frd-popup-hours-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+}
+
+.frd-popup-hours-day {
+    font-weight: 500;
+}
+
+.frd-popup-hours-time {
+    color: var(--frd-text-light);
+    text-align: right;
+}
+
+.frd-popup-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--frd-border);
+}
+
+.frd-popup-btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 36px;
-    height: 36px;
-    border: 1px solid var(--frd-border);
-    border-radius: 6px;
-    background: white;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
     transition: all 0.2s ease;
+    border: none;
     cursor: pointer;
 }
 
-.frd-popup-icon-btn:hover {
-    background: var(--frd-primary);
-    border-color: var(--frd-primary);
-    transform: translateY(-2px);
-    box-shadow: var(--frd-shadow);
+.frd-popup-btn img {
+    width: 18px;
+    height: 18px;
 }
 
-.frd-popup-icon-btn img {
-    width: 20px;
-    height: 20px;
-    display: block;
+.frd-popup-btn-primary {
+    background: #263447;
+    color: white;
 }
 
-.frd-popup-icon-btn:hover img {
+.frd-popup-btn-primary:hover {
+    background: #1a2433;
+}
+
+.frd-popup-btn-primary img {
     filter: brightness(0) invert(1);
 }
 
-/* Popup More Info Button */
-.frd-popup-more-info:hover {
-    background: var(--frd-primary-dark) !important;
+.frd-popup-btn-secondary {
+    background: white;
+    color: #263447;
+    border: 1px solid var(--frd-border);
+}
+
+.frd-popup-btn-secondary:hover {
+    background: var(--frd-background);
+    border-color: #263447;
 }
 
 /* List View */
