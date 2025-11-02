@@ -1797,8 +1797,14 @@ button.select2-selection__clear span {
         overflow: hidden;
     }
 
+    .frd-modal-close {
+        top: 10px !important;
+        right: 10px !important;
+    }
+
     #frd-modal-body {
         padding: 15px;
+        padding-top: 50px;
         overflow-y: auto;
         overflow-x: hidden;
     }
