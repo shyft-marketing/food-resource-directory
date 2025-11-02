@@ -349,7 +349,7 @@
 .frd-filter-group label {
     display: block;
     margin-bottom: var(--frd-spacing-sm);
-    font-weight: 700;
+    font-weight: 700 !important;
     font-size: var(--frd-font-sm);
     color: var(--frd-text);
 
@@ -649,6 +649,7 @@ button.select2-selection__clear span {
     border-radius: var(--frd-radius-full);
     background: #ff6f61;
     cursor: pointer;
+    border: 1px solid #263447;
 }
 
 .frd-distance-slider input[type="range"]::-moz-range-thumb {
@@ -810,7 +811,7 @@ button.select2-selection__clear span {
 
 .frd-results-count span {
     font-weight: var(--frd-weight-semibold);
-    color: var(--frd-primary);
+    color: #ff6f61;
 }
 
 /* Views */
@@ -890,7 +891,7 @@ button.select2-selection__clear span {
 
 /* Mapbox Popup Customization */
 .mapboxgl-popup-content {
-    padding: var(--frd-spacing-sm) !important;
+    padding: 1rem !important;
     border-radius: var(--frd-radius-lg) !important;
     box-shadow: var(--frd-shadow-lg) !important;
     max-width: var(--frd-popup-max) !important;
