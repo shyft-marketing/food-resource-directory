@@ -639,6 +639,7 @@ button.select2-selection__clear span {
     background: #f4f1e9;
     outline: none;
     -webkit-appearance: none;
+    border: 1px solid #dcd9d2;
 }
 
 .frd-distance-slider input[type="range"]::-webkit-slider-thumb {
@@ -697,9 +698,9 @@ button.select2-selection__clear span {
 .frd-distance-value {
     min-width: 70px;
     text-align: right;
-    font-weight: 400;
-    color: var(--frd-primary);
-    font-size: var(--frd-font-sm);
+    font-weight: 600;
+    color: #ff6f61;
+    font-size: var(--frd-font-base);
 }
 
 
@@ -1128,7 +1129,7 @@ button.select2-selection__clear span {
 .frd-location-distance {
     font-size: var(--frd-font-sm);
     font-weight: var(--frd-weight-semibold);
-    color: var(--frd-primary);
+    color: #ff6f61;
     white-space: nowrap;
     margin-left: var(--frd-spacing-md);
 }
