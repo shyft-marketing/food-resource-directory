@@ -689,8 +689,21 @@ button.select2-selection__clear span {
 }
 
 /* Popup More Info Button */
+.frd-popup-more-info {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+}
+
 .frd-popup-more-info:hover {
     background: var(--frd-primary-dark) !important;
+}
+
+.frd-popup-more-info img {
+    width: 16px !important;
+    height: 16px !important;
+    filter: brightness(0) invert(1) !important;
 }
 
 /* List View */
@@ -848,6 +861,10 @@ button.select2-selection__clear span {
 
 /* More Info button */
 .frd-list-more-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
     padding: 8px 16px;
     background: white;
     border: 1px solid var(--frd-border);
@@ -866,6 +883,16 @@ button.select2-selection__clear span {
     color: white;
     transform: translateY(-2px);
     box-shadow: var(--frd-shadow);
+}
+
+.frd-list-more-info img {
+    width: 16px;
+    height: 16px;
+    transition: filter 0.2s ease;
+}
+
+.frd-list-more-info:hover img {
+    filter: brightness(0) invert(1);
 }
 
 /* Modal */
