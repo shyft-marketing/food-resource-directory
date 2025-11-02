@@ -593,23 +593,38 @@ button.select2-selection__clear span {
 
 /* Mapbox Popup Customization */
 .mapboxgl-popup-content {
-    padding: 20px 50px 20px 20px;
+    padding: 20px;
     border-radius: 8px;
     box-shadow: var(--frd-shadow-lg);
     max-width: 350px;
 }
 
 .mapboxgl-popup-close-button {
-    font-size: 24px;
-    padding: 8px;
-    color: var(--frd-text-light);
-    right: 8px;
-    top: 8px;
+    position: absolute;
+    right: -12px;
+    top: -12px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: white;
+    box-shadow: var(--frd-shadow-lg);
+    border: 2px solid var(--frd-border);
+    font-size: 20px;
+    line-height: 1;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--frd-text);
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
 
 .mapboxgl-popup-close-button:hover {
-    background: var(--frd-background);
-    color: var(--frd-text);
+    background: var(--frd-danger);
+    color: white;
+    border-color: var(--frd-danger);
+    transform: scale(1.1);
 }
 
 /* Popup More Info Button */
