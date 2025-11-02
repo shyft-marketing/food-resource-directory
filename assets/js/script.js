@@ -666,8 +666,8 @@
         $footer.append($iconButtons);
 
         // More Info button
-        const $moreInfoBtn = $('<button class="frd-list-more-info"></button>');
-        $moreInfoBtn.append('<span>More Info</span>');
+        const $moreInfoBtn = $('<button class="frd-list-more-info" style="font-family: \'Tungsten\', sans-serif;"></button>');
+        $moreInfoBtn.append('<span style="font-family: \'Tungsten\', sans-serif;">More Info</span>');
         $moreInfoBtn.append('<img src="' + frdData.pluginUrl + '/assets/icons/Read More Icon.svg" alt="">');
         $moreInfoBtn.on('click', function(e) {
             e.stopPropagation();
