@@ -844,7 +844,7 @@ button.select2-selection__clear span {
     background: white;
     border-radius: 12px;
     box-shadow: var(--frd-shadow-lg);
-    max-width: 600px;
+    max-width: 60vw;
     width: 90%;
     max-height: 90vh;
     overflow-y: auto;
@@ -853,23 +853,36 @@ button.select2-selection__clear span {
 
 .frd-modal-close {
     position: absolute;
-    top: 15px;
-    right: 15px;
-    width: 32px;
-    height: 32px;
-    border: none;
-    background: var(--frd-background);
+    top: -12px;
+    right: -12px;
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    min-height: 28px;
+    border: 2px solid var(--frd-border);
+    background: white;
+    background-color: white;
     border-radius: 50%;
-    font-size: 24px;
+    font-size: 20px;
     line-height: 1;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
-    color: var(--frd-text-light);
+    color: var(--frd-text);
     transition: all 0.2s ease;
+    box-shadow: var(--frd-shadow-lg);
+    z-index: 10;
 }
 
 .frd-modal-close:hover {
-    background: var(--frd-border);
-    color: var(--frd-text);
+    background: var(--frd-danger);
+    background-color: var(--frd-danger);
+    color: white;
+    border-color: var(--frd-danger);
+    transform: scale(1.1);
 }
 
 /* Modal Content Styles */
