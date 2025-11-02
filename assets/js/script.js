@@ -545,7 +545,7 @@
 
     function createPopupContent(location) {
         let html = '<div class="frd-popup">';
-        html += '<span class="frd-popup-title" style="display: block; margin: 0 0 10px 0; font-size: 1.25rem; font-weight: 700; font-family: 'Tungsten', sans-serif; text-transform: uppercase;">' + location.title + '</span>';
+        html += '<span class="frd-popup-title" style="display: block; margin: 0 0 10px 0; font-size: 1.25rem; font-weight: 700; font-family: \'Tungsten\', sans-serif; text-transform: uppercase;">' + location.title + '</span>';
 
         if (location.distance !== null) {
             html += '<p style="margin: 0 0 8px 0; font-weight: 600; color: #3A5780;">' + location.distance + ' miles away</p>';
