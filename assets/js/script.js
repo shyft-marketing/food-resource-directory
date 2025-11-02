@@ -640,26 +640,45 @@
             $card.append($hours);
         }
 
-        // Footer with links
+        // Footer with icon buttons
         const $footer = $('<div class="frd-location-footer"></div>');
 
+        // Icon buttons container
+        const $iconButtons = $('<div class="frd-list-icon-buttons"></div>');
+
         if (location.phone) {
-            $footer.append('<a href="tel:' + location.phone_link + '" class="frd-location-link">📞 Call</a>');
-        }
-        
-        if (location.website) {
-            $footer.append('<a href="' + location.website + '" target="_blank" class="frd-location-link">🌐 Website</a>');
+            const $phoneBtn = $('<a href="tel:' + location.phone_link + '" class="frd-list-icon-btn" title="Call"></a>');
+            $phoneBtn.append('<img src="' + frdData.pluginUrl + '/assets/icons/Phone Icon.svg" alt="Call">');
+            $iconButtons.append($phoneBtn);
         }
         
         const directionsUrl = 'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(location.full_address);
-        $footer.append('<a href="' + directionsUrl + '" target="_blank" class="frd-location-link">🗺️ Directions</a>');
+        const $directionsBtn = $('<a href="' + directionsUrl + '" target="_blank" class="frd-list-icon-btn" title="Directions"></a>');
+        $directionsBtn.append('<img src="' + frdData.pluginUrl + '/assets/icons/Directions Icon.svg" alt="Directions">');
+        $iconButtons.append($directionsBtn);
+        
+        if (location.website) {
+            const $websiteBtn = $('<a href="' + location.website + '" target="_blank" class="frd-list-icon-btn" title="Website"></a>');
+            $websiteBtn.append('<img src="' + frdData.pluginUrl + '/assets/icons/Link Icon.svg" alt="Website">');
+            $iconButtons.append($websiteBtn);
+        }
+
+        $footer.append($iconButtons);
+
+        // More Info button
+        const $moreInfoBtn = $('<button class="frd-list-more-info">More Info</button>');
+        $moreInfoBtn.on('click', function(e) {
+            e.stopPropagation();
+            showLocationDetails(location);
+        });
+        $footer.append($moreInfoBtn);
         
         $card.append($footer);
 
         // Click to show details
         $card.on('click', function(e) {
-            // Don't trigger if clicking a link
-            if (!$(e.target).is('a')) {
+            // Don't trigger if clicking a link or button
+            if (!$(e.target).is('a') && !$(e.target).is('button')) {
                 showLocationDetails(location);
             }
         });

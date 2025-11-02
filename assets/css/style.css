@@ -808,23 +808,72 @@ button.select2-selection__clear span {
 
 .frd-location-footer {
     display: flex;
+    align-items: center;
+    justify-content: space-between;
     gap: 12px;
     margin-top: 12px;
     padding-top: 12px;
     border-top: 1px solid var(--frd-border);
 }
 
-.frd-location-link {
-    font-size: 14px;
-    color: var(--frd-primary);
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.2s ease;
+/* Icon buttons container */
+.frd-list-icon-buttons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
 }
 
-.frd-location-link:hover {
-    color: var(--frd-primary-dark);
-    text-decoration: underline;
+/* Icon buttons - matching map popup style */
+.frd-list-icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--frd-border);
+    border-radius: 6px;
+    background: white;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.frd-list-icon-btn:hover {
+    background: var(--frd-primary);
+    border-color: var(--frd-primary);
+    transform: translateY(-2px);
+    box-shadow: var(--frd-shadow);
+}
+
+.frd-list-icon-btn img {
+    width: 20px;
+    height: 20px;
+    display: block;
+}
+
+.frd-list-icon-btn:hover img {
+    filter: brightness(0) invert(1);
+}
+
+/* More Info button */
+.frd-list-more-info {
+    padding: 8px 16px;
+    background: white;
+    border: 1px solid var(--frd-border);
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--frd-text);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.frd-list-more-info:hover {
+    background: var(--frd-primary);
+    border-color: var(--frd-primary);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--frd-shadow);
 }
 
 /* Modal */
