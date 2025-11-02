@@ -182,12 +182,26 @@
     transition: border-color 0.2s ease;
 }
 
+.frd-search-input-group input:hover:not(:disabled) {
+    border-color: var(--frd-primary);
+}
+
 .frd-search-input-group input:focus {
     outline: none;
     border-color: var(--frd-primary);
     box-shadow: 0 0 0 3px var(--frd-focus-ring);
     position: relative;
     z-index: 1;
+}
+
+.frd-search-input-group input:active {
+    border-color: var(--frd-primary);
+}
+
+.frd-search-input-group input:disabled {
+    background-color: var(--frd-hover-bg);
+    cursor: not-allowed;
+    opacity: 0.6;
 }
 
 .frd-search-btn {
@@ -203,7 +217,7 @@
     min-width: 48px;
 }
 
-.frd-search-btn:hover {
+.frd-search-btn:hover:not(:disabled) {
     background: #1e2a39;
     border-color: #1e2a39;
 }
@@ -213,8 +227,9 @@
     box-shadow: 0 0 0 3px var(--frd-focus-ring);
 }
 
-.frd-search-btn:active {
-    transform: scale(0.98);
+.frd-search-btn:active:not(:disabled) {
+    background: var(--frd-dark);
+    border-color: var(--frd-dark);
 }
 
 .frd-search-btn:disabled {
@@ -480,11 +495,30 @@ button.select2-selection__clear {
     color: var(--frd-danger) !important;
     background: transparent !important;
     border: none !important;
+    cursor: pointer !important;
+    transition: var(--frd-transition) !important;
 }
 
 button.select2-selection__clear:hover {
     color: var(--frd-danger-dark) !important;
     background-color: transparent !important;
+}
+
+button.select2-selection__clear:focus {
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(255, 64, 129, 0.3) !important;
+    border-radius: var(--frd-radius-sm) !important;
+}
+
+button.select2-selection__clear:active {
+    color: var(--frd-danger) !important;
+    background-color: transparent !important;
+    transform: translateY(-50%) scale(0.95) !important;
+}
+
+button.select2-selection__clear:disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
 }
 
 button.select2-selection__clear span {
@@ -670,7 +704,7 @@ button.select2-selection__clear span {
     color: var(--frd-white);
 }
 
-.frd-btn-primary:hover {
+.frd-btn-primary:hover:not(:disabled) {
     background: var(--frd-primary-dark);
 }
 
@@ -679,8 +713,9 @@ button.select2-selection__clear span {
     box-shadow: 0 0 0 3px var(--frd-focus-ring);
 }
 
-.frd-btn-primary:active {
-    transform: scale(0.98);
+.frd-btn-primary:active:not(:disabled) {
+    background: var(--frd-primary);
+    color: var(--frd-white);
 }
 
 .frd-btn-primary:disabled {
@@ -694,7 +729,7 @@ button.select2-selection__clear span {
     border: var(--frd-border-width) solid var(--frd-border);
 }
 
-.frd-btn-secondary:hover {
+.frd-btn-secondary:hover:not(:disabled) {
     background: var(--frd-background);
 }
 
@@ -703,8 +738,10 @@ button.select2-selection__clear span {
     box-shadow: 0 0 0 3px var(--frd-focus-ring);
 }
 
-.frd-btn-secondary:active {
-    transform: scale(0.98);
+.frd-btn-secondary:active:not(:disabled) {
+    background: var(--frd-white);
+    color: var(--frd-text);
+    border-color: var(--frd-border);
 }
 
 .frd-btn-secondary:disabled {
@@ -754,6 +791,15 @@ button.select2-selection__clear span {
 .mapboxgl-marker {
     transform: scale(0.75);
     cursor: pointer;
+}
+
+/* Remove shadow from map markers */
+.mapboxgl-marker svg g[filter] {
+    filter: none !important;
+}
+
+.mapboxgl-marker svg g[fill-opacity] {
+    fill-opacity: 1 !important;
 }
 
 /* Mapbox Control Buttons */
@@ -868,7 +914,7 @@ button.select2-selection__clear span {
     cursor: pointer;
 }
 
-.frd-popup-icon-btn:hover {
+.frd-popup-icon-btn:hover:not(:disabled) {
     background: var(--frd-primary);
     border-color: var(--frd-primary);
     transform: translateY(-2px);
@@ -881,7 +927,7 @@ button.select2-selection__clear span {
     display: block;
 }
 
-.frd-popup-icon-btn:hover img {
+.frd-popup-icon-btn:hover:not(:disabled) img {
     filter: brightness(0) invert(1);
 }
 
@@ -891,8 +937,9 @@ button.select2-selection__clear span {
     border-color: var(--frd-primary);
 }
 
-.frd-popup-icon-btn:active {
-    transform: scale(0.95);
+.frd-popup-icon-btn:active:not(:disabled) {
+    background: var(--frd-white);
+    border-color: var(--frd-text);
 }
 
 .frd-popup-icon-btn:disabled {
@@ -907,6 +954,7 @@ button.select2-selection__clear span {
     align-items: center !important;
     justify-content: center !important;
     gap: var(--frd-spacing-sm) !important;
+    font-family: "Tungsten", sans-serif !important;
 }
 
 .frd-popup-more-info:hover {
@@ -1087,7 +1135,7 @@ button.select2-selection__clear span {
     cursor: pointer;
 }
 
-.frd-list-icon-btn:hover {
+.frd-list-icon-btn:hover:not(:disabled) {
     background: var(--frd-primary);
     border-color: var(--frd-primary);
     transform: translateY(-2px);
@@ -1100,7 +1148,7 @@ button.select2-selection__clear span {
     display: block;
 }
 
-.frd-list-icon-btn:hover img {
+.frd-list-icon-btn:hover:not(:disabled) img {
     filter: brightness(0) invert(1);
 }
 
@@ -1110,8 +1158,9 @@ button.select2-selection__clear span {
     border-color: var(--frd-primary);
 }
 
-.frd-list-icon-btn:active {
-    transform: scale(0.95);
+.frd-list-icon-btn:active:not(:disabled) {
+    background: var(--frd-white);
+    border-color: var(--frd-text);
 }
 
 .frd-list-icon-btn:disabled {
@@ -1138,7 +1187,7 @@ button.select2-selection__clear span {
     white-space: nowrap;
 }
 
-.frd-list-more-info:hover {
+.frd-list-more-info:hover:not(:disabled) {
     background: var(--frd-primary);
     border-color: var(--frd-primary);
     color: var(--frd-white);
@@ -1152,7 +1201,7 @@ button.select2-selection__clear span {
     transition: filter 0.2s ease;
 }
 
-.frd-list-more-info:hover img {
+.frd-list-more-info:hover:not(:disabled) img {
     filter: brightness(0) invert(1);
 }
 
@@ -1162,8 +1211,10 @@ button.select2-selection__clear span {
     border-color: var(--frd-primary);
 }
 
-.frd-list-more-info:active {
-    transform: scale(0.98);
+.frd-list-more-info:active:not(:disabled) {
+    background: var(--frd-white);
+    border-color: var(--frd-border);
+    color: var(--frd-text);
 }
 
 .frd-list-more-info:disabled {
@@ -1259,7 +1310,14 @@ button.select2-selection__clear span {
 }
 
 .frd-modal-close:active {
-    transform: scale(1.05) !important;
+    background: var(--frd-white) !important;
+    background-color: var(--frd-white) !important;
+    color: var(--frd-text) !important;
+}
+
+.frd-modal-close:disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
 }
 
 /* Modal Content Styles */
@@ -1309,10 +1367,12 @@ button.select2-selection__clear span {
 .frd-modal-contact-item a {
     color: var(--frd-primary);
     text-decoration: none;
+    transition: var(--frd-transition);
 }
 
 .frd-modal-contact-item a:hover {
     text-decoration: underline;
+    color: var(--frd-primary-dark);
 }
 
 .frd-modal-contact-item a:focus {
@@ -1322,7 +1382,8 @@ button.select2-selection__clear span {
 }
 
 .frd-modal-contact-item a:active {
-    color: var(--frd-primary-dark);
+    color: var(--frd-primary);
+    text-decoration: none;
 }
 
 .frd-modal-section {
@@ -1401,7 +1462,7 @@ button.select2-selection__clear span {
     color: var(--frd-white);
 }
 
-.frd-modal-btn-primary:hover {
+.frd-modal-btn-primary:hover:not(:disabled) {
     background: var(--frd-dark-hover);
 }
 
@@ -1410,8 +1471,9 @@ button.select2-selection__clear span {
     box-shadow: 0 0 0 3px rgba(38, 52, 71, 0.2);
 }
 
-.frd-modal-btn-primary:active {
-    transform: scale(0.98);
+.frd-modal-btn-primary:active:not(:disabled) {
+    background: var(--frd-dark);
+    color: var(--frd-white);
 }
 
 .frd-modal-btn-primary:disabled {
@@ -1429,7 +1491,7 @@ button.select2-selection__clear span {
     border: var(--frd-border-width) solid var(--frd-border);
 }
 
-.frd-modal-btn-secondary:hover {
+.frd-modal-btn-secondary:hover:not(:disabled) {
     background: var(--frd-background);
     border-color: var(--frd-dark);
 }
@@ -1439,8 +1501,10 @@ button.select2-selection__clear span {
     box-shadow: 0 0 0 3px var(--frd-focus-ring);
 }
 
-.frd-modal-btn-secondary:active {
-    transform: scale(0.98);
+.frd-modal-btn-secondary:active:not(:disabled) {
+    background: var(--frd-white);
+    color: var(--frd-dark);
+    border-color: var(--frd-border);
 }
 
 .frd-modal-btn-secondary:disabled {
