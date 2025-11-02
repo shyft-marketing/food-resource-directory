@@ -666,9 +666,9 @@
         $footer.append($iconButtons);
 
         // More Info button - create as HTML string like map popup
-        const moreInfoHtml = '<button class="frd-list-more-info" style="padding: 0; background: transparent; color: #263447; border: none; font-size: 1rem; font-weight: 600; font-family: \'Tungsten\', sans-serif; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">' +
-            '<span>More Info</span>' +
-            '<img src="' + frdData.pluginUrl + '/assets/icons/Read More Icon.svg" alt="" style="width: 1em; height: 1em;">' +
+        const moreInfoHtml = '<button class="frd-list-more-info" style="padding: 0 !important; background: transparent !important; color: #263447 !important; border: none !important; font-size: 1rem !important; font-weight: 600 !important; font-family: \'Tungsten\', sans-serif !important; cursor: pointer !important; display: inline-flex !important; align-items: center !important; justify-content: center !important; gap: 8px !important;">' +
+            '<span style="font-family: \'Tungsten\', sans-serif !important;">More Info</span>' +
+            '<img src="' + frdData.pluginUrl + '/assets/icons/Read More Icon.svg" alt="" style="width: 1em !important; height: 1em !important;">' +
             '</button>';
         const $moreInfoBtn = $(moreInfoHtml);
         $moreInfoBtn.on('click', function(e) {
