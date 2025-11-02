@@ -29,34 +29,42 @@
             width: '100%'
         });
 
-        // Fix clear button to properly clear all selections
-        let clearingAll = false;
+        // Force dropdown to have proper spacing when it opens
+        $('#frd-services, #frd-days').on('select2:open', function() {
+            setTimeout(function() {
+                $('.select2-dropdown').css('margin-top', '16px');
+            }, 1);
+        });
 
-        $(document).on('click', '.select2-selection__clear', function(e) {
+        // Fix clear button to properly clear all selections
+        $(document).on('click', 'button.select2-selection__clear', function(e) {
             e.preventDefault();
             e.stopPropagation();
 
-            clearingAll = true;
             const $container = $(this).closest('.select2-container');
             const selectId = $container.attr('id').replace('select2-', '').replace('-container', '');
             const $select = $('#' + selectId);
 
-            // Clear all selections
-            $select.val(null).trigger('change');
-            clearingAll = false;
+            // Close dropdown if open
+            $select.select2('close');
+
+            // Get current selections and total options
+            const currentValues = $select.val() || [];
+            const totalOptions = $select.find('option').length;
+
+            // If all options are selected, Select2 has a bug - force clear differently
+            if (currentValues.length === totalOptions) {
+                // First remove all but one, then clear the last one
+                $select.val([currentValues[0]]).trigger('change');
+                setTimeout(function() {
+                    $select.val([]).trigger('change');
+                }, 10);
+            } else {
+                // Normal clear
+                $select.val([]).trigger('change');
+            }
 
             return false;
-        });
-
-        // Override Select2's unselect to clear all when using clear button
-        $('#frd-services, #frd-days').on('select2:unselecting', function(e) {
-            if (clearingAll) {
-                return;
-            }
-            if ($(this).val() && $(this).val().length === 1) {
-                e.preventDefault();
-                $(this).val(null).trigger('change');
-            }
         });
 
         // Initialize map
