@@ -117,9 +117,8 @@
     transition: var(--frd-transition);
 }
 
-.frd-toggle-btn:hover {
+.frd-toggle-btn:hover:not(.active) {
     background: var(--frd-background);
-    border-color: var(--frd-primary);
 }
 
 .frd-toggle-btn:focus {
@@ -137,8 +136,8 @@
 }
 
 .frd-toggle-btn.active {
-    background: var(--frd-primary);
-    border-color: var(--frd-primary);
+    background: var(--frd-dark);
+    border-color: var(--frd-dark);
     color: var(--frd-white);
 }
 
@@ -196,8 +195,8 @@
     align-items: center;
     justify-content: center;
     padding: var(--frd-spacing-md) var(--frd-spacing-lg);
-    background: var(--frd-primary);
-    border: var(--frd-border-width) solid var(--frd-primary);
+    background: var(--frd-dark);
+    border: var(--frd-border-width) solid var(--frd-dark);
     border-radius: 0 var(--frd-radius-md) var(--frd-radius-md) 0;
     cursor: pointer;
     transition: var(--frd-transition);
@@ -205,8 +204,8 @@
 }
 
 .frd-search-btn:hover {
-    background: var(--frd-primary-dark);
-    border-color: var(--frd-primary-dark);
+    background: #1e2a39;
+    border-color: #1e2a39;
 }
 
 .frd-search-btn:focus {
@@ -234,46 +233,34 @@
     display: flex;
     align-items: center;
     gap: var(--frd-spacing-sm);
-    padding: var(--frd-spacing-md) var(--frd-spacing-xl);
-    background: var(--frd-white);
-    border: var(--frd-border-width-thick) solid var(--frd-border);
-    border-radius: var(--frd-radius-md);
+    padding: 0;
+    background: transparent;
+    border: none;
     color: var(--frd-text);
     font-size: var(--frd-font-base);
     font-weight: var(--frd-weight-medium);
     cursor: pointer;
     transition: var(--frd-transition);
     white-space: nowrap;
-    min-height: var(--frd-icon-xl);
 }
 
 .frd-filters-toggle-btn:hover {
-    background: var(--frd-background);
-    border-color: var(--frd-primary);
+    color: #1e2a39;
 }
 
 .frd-filters-toggle-btn:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px var(--frd-focus-ring);
+    outline: 2px solid var(--frd-primary);
+    outline-offset: 2px;
+    border-radius: 2px;
 }
 
 .frd-filters-toggle-btn:active {
-    transform: scale(0.98);
+    color: #1e2a39;
 }
 
 .frd-filters-toggle-btn:disabled {
     opacity: 0.5;
     cursor: not-allowed;
-}
-
-.frd-filters-toggle-btn.active {
-    background: var(--frd-primary);
-    border-color: var(--frd-primary);
-    color: var(--frd-white);
-}
-
-.frd-filters-toggle-btn.active img {
-    filter: brightness(0) invert(1);
 }
 
 .frd-filters-toggle-btn img {
@@ -747,6 +734,12 @@ button.select2-selection__clear span {
     height: 600px;
 }
 
+/* Mapbox Markers */
+.mapboxgl-marker {
+    transform: scale(0.75);
+    cursor: pointer;
+}
+
 /* Mapbox Control Buttons */
 .mapboxgl-ctrl-group {
     background: var(--frd-white) !important;
@@ -852,7 +845,7 @@ button.select2-selection__clear span {
     justify-content: center;
     width: var(--frd-icon-lg);
     height: var(--frd-icon-lg);
-    border: var(--frd-border-width) solid var(--frd-border);
+    border: var(--frd-border-width) solid var(--frd-text);
     border-radius: var(--frd-radius-md);
     background: var(--frd-white);
     transition: var(--frd-transition);
@@ -1071,7 +1064,7 @@ button.select2-selection__clear span {
     justify-content: center;
     width: var(--frd-icon-lg);
     height: var(--frd-icon-lg);
-    border: var(--frd-border-width) solid var(--frd-border);
+    border: var(--frd-border-width) solid var(--frd-text);
     border-radius: var(--frd-radius-md);
     background: var(--frd-white);
     transition: var(--frd-transition);

@@ -497,7 +497,7 @@
 
             // Create marker
             const marker = new mapboxgl.Marker({
-                color: '#FF4081' // Hot pink color for food resource markers
+                color: '#ff6f61' // Coral color for food resource markers
             })
             .setLngLat([location.longitude, location.latitude])
             .addTo(map);
