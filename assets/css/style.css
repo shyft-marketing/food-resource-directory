@@ -276,6 +276,8 @@ button.select2-selection__clear span {
     line-height: 1 !important;
     width: 100% !important;
     height: 100% !important;
+    position: relative !important;
+    top: 2px !important;
 }
 
 /* Hide dropdown arrow when selections exist */
