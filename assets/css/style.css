@@ -401,10 +401,6 @@ button.select2-selection__clear span {
 
 /* Results Info */
 .frd-results-info {
-    background: white;
-    padding: 15px 20px;
-    border-radius: 8px;
-    box-shadow: var(--frd-shadow);
     margin-bottom: 20px;
 }
 
