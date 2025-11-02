@@ -309,13 +309,22 @@ button.select2-selection__clear span {
     margin-bottom: 16px !important;
 }
 
-.select2-container--default .select2-results__option--highlighted[aria-selected] {
-    background-color: var(--frd-primary);
+/* Unselected options - highlight in blue on hover */
+.select2-container--default .select2-results__option--highlighted[aria-selected=false] {
+    background-color: var(--frd-primary) !important;
+    color: white !important;
 }
 
+/* Selected options - show in darker gray (normal state) */
 .select2-container--default .select2-results__option[aria-selected=true] {
-    background-color: var(--frd-background);
-    color: var(--frd-text);
+    background-color: #94a3b8 !important;
+    color: white !important;
+}
+
+/* Selected options - show in red on hover to indicate removal */
+.select2-container--default .select2-results__option--highlighted[aria-selected=true] {
+    background-color: #dc2626 !important;
+    color: white !important;
 }
 
 .select2-container--default .select2-search--dropdown .select2-search__field {
