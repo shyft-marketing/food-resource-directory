@@ -694,15 +694,15 @@
     function showLocationDetails(location) {
         let html = '';
         
-        // Header with title and service type
-        html += '<div class="frd-modal-header">';
-        html += '<h3 class="frd-modal-title">' + location.title + '</h3>';
+        // Title
+        html += '<div class="frd-modal-title">' + location.title + '</div>';
+        
+        // Service type below title
         if (location.services && location.services.length > 0) {
-            html += '<span class="frd-modal-service">' + location.services[0] + '</span>';
+            html += '<div class="frd-modal-service">' + location.services[0] + '</div>';
         }
-        html += '</div>';
 
-        // Contact info row with icons
+        // Contact info row with icons (horizontal)
         html += '<div class="frd-modal-contact">';
         
         // Address
