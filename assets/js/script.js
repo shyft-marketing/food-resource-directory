@@ -263,11 +263,12 @@
                     // Add marker to map
                     addUserMarker();
                     
+                    // Enable sort by distance and switch to it
+                    $('#frd-sort option[value="distance"]').prop('disabled', false);
+                    $('#frd-sort').val('distance');
+                    
                     // Reload locations with distance calculation
                     loadLocations();
-                    
-                    // Enable sort by distance
-                    $('#frd-sort option[value="distance"]').prop('disabled', false);
                     
                 } else {
                     alert('Could not find that location. Please try a different address or ZIP code.');
@@ -353,8 +354,9 @@
                     // Update map markers
                     updateMapMarkers();
 
-                    // Update list
-                    updateList();
+                    // Sort and update list (apply default sorting)
+                    const currentSort = $('#frd-sort').val();
+                    sortLocations(currentSort);
                 } else {
                     console.error('FRD: Error loading locations - success=false', response);
                     alert('Error loading locations. Check console for details.');

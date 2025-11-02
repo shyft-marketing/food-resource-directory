@@ -104,8 +104,8 @@
         <div class="frd-list-controls">
             <label for="frd-sort">Sort by:</label>
             <select id="frd-sort">
-                <option value="distance">Distance</option>
-                <option value="name">Name (A-Z)</option>
+                <option value="distance" disabled>Distance</option>
+                <option value="name" selected>Name (A-Z)</option>
                 <option value="county">County</option>
             </select>
         </div>
