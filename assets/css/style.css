@@ -886,8 +886,8 @@ button.select2-selection__clear span {
 }
 
 .frd-list-more-info img {
-    width: 16px;
-    height: 16px;
+    width: 1em;
+    height: 1em;
     transition: filter 0.2s ease;
 }
 
