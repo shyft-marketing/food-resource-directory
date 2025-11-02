@@ -1147,7 +1147,7 @@ button.select2-selection__clear span {
     background: var(--frd-background);
     border: var(--frd-border-width) solid var(--frd-service-border);
     border-radius: var(--frd-radius-sm);
-    font-size: var(--frd-font-s);
+    font-size: var(--frd-font-sm);
     font-weight: var(--frd-weight-medium);
     color: var(--frd-text);
 }
