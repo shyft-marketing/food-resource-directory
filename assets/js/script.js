@@ -32,24 +32,34 @@
         // Force dropdown to have proper spacing when it opens
         $('#frd-services, #frd-days').on('select2:open', function() {
             const $select = $(this);
-            const $container = $select.data('select2').$container;
-            const $selection = $container.find('.select2-selection--multiple');
 
+            // Use a longer delay to ensure layout has settled
             setTimeout(function() {
-                // Get the actual height of the selection box (which changes with pills)
-                const selectionHeight = $selection.outerHeight();
+                const $container = $select.data('select2').$container;
+                const $selection = $container.find('.select2-selection--multiple');
                 const $dropdown = $('.select2-dropdown');
 
-                // Position dropdown below the selection box with some spacing
-                const topPosition = selectionHeight + 8;
+                // Get the actual rendered height using getBoundingClientRect
+                const selectionRect = $selection[0].getBoundingClientRect();
+                const selectionHeight = selectionRect.height;
 
-                console.log('FRD Dropdown: Selection height:', selectionHeight, 'Setting dropdown top to:', topPosition);
+                console.log('FRD Dropdown: Selection height (getBoundingClientRect):', selectionHeight);
+                console.log('FRD Dropdown: Selection outerHeight:', $selection.outerHeight());
+
+                // Get current dropdown position
+                const currentTop = parseFloat($dropdown.css('top')) || 0;
+                console.log('FRD Dropdown: Current top CSS:', currentTop);
+
+                // Calculate new position - add the full selection height plus spacing
+                const newTop = selectionRect.bottom - selectionRect.top + 8;
+
+                console.log('FRD Dropdown: Setting top to:', newTop);
 
                 $dropdown.css({
-                    'margin-top': topPosition + 'px',
+                    'top': newTop + 'px',
                     'position': 'absolute'
                 });
-            }, 1);
+            }, 50);
         });
 
         // Fix clear button to properly clear all selections
