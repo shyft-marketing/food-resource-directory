@@ -732,7 +732,7 @@
         // Languages Spoken
         if (location.languages && location.languages.length > 0) {
             html += '<div class="frd-modal-section">';
-            html += '<strong>Languages Spoken:</strong> ' + location.languages.join(', ');
+            html += '<strong style="display: inline;">Languages Spoken:</strong> ' + location.languages.join(', ');
             html += '</div>';
         }
 
