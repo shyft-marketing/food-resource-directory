@@ -1471,7 +1471,7 @@ button.select2-selection__clear span {
     font-family: 'Tungsten', sans-serif;
     font-weight: 600;
     text-transform: uppercase;
-    font-size: var(--frd-font-lg);
+    font-size: var(--frd-font-xl);
 }
 
 .frd-modal-section-body {
@@ -1499,7 +1499,7 @@ button.select2-selection__clear span {
 .frd-modal-hours {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 0.5em;
     margin-top: var(--frd-spacing-md);
 }
 
@@ -1507,7 +1507,7 @@ button.select2-selection__clear span {
     display: flex;
     justify-content: space-between;
     font-size: var(--frd-font-base);
-    padding: var(--frd-spacing-xs) 0;
+    padding: 0;
 }
 
 .frd-modal-hours-day {
