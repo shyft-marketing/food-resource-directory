@@ -8,6 +8,7 @@
     --frd-success: #FFC107;
     --frd-danger: #FF4081;
     --frd-border: #ACCBE1;
+    --frd-service-border: #dcd9d2;
     --frd-background: #F4F1E9;
     --frd-text: #263447;
     --frd-text-light: #7A7A7A;
@@ -679,8 +680,9 @@ button.select2-selection__clear span {
     box-shadow: var(--frd-shadow-lg) !important;
     border: none !important;
     font-size: var(--frd-font-2xl) !important;
-    line-height: var(--frd-leading-none) !important;
+    line-height: 1 !important;
     padding: 0 !important;
+    padding-top: 2px !important;
     margin: 0 !important;
     display: flex !important;
     align-items: center !important;
@@ -864,7 +866,7 @@ button.select2-selection__clear span {
     display: inline-block;
     padding: var(--frd-spacing-xs) var(--frd-spacing-md);
     background: var(--frd-background);
-    border: var(--frd-border-width) solid var(--frd-border);
+    border: var(--frd-border-width) solid var(--frd-service-border);
     border-radius: var(--frd-radius-sm);
     font-size: var(--frd-font-xs);
     font-weight: var(--frd-weight-medium);
@@ -1018,8 +1020,9 @@ button.select2-selection__clear span {
     background-color: var(--frd-white) !important;
     border-radius: var(--frd-radius-full) !important;
     font-size: var(--frd-font-3xl) !important;
-    line-height: var(--frd-leading-none) !important;
+    line-height: 1 !important;
     padding: 0 !important;
+    padding-top: 3px !important;
     margin: 0 !important;
     display: flex !important;
     align-items: center !important;
@@ -1051,7 +1054,7 @@ button.select2-selection__clear span {
     display: inline-block;
     padding: var(--frd-spacing-xs) var(--frd-spacing-md);
     background: var(--frd-background);
-    border: var(--frd-border-width) solid var(--frd-border);
+    border: var(--frd-border-width) solid var(--frd-service-border);
     border-radius: var(--frd-radius-sm);
     font-size: var(--frd-font-xs);
     font-weight: var(--frd-weight-medium);

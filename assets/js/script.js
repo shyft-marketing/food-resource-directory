@@ -545,7 +545,7 @@
         if (location.services && location.services.length > 0) {
             html += '<div style="margin-bottom: 8px;">';
             location.services.forEach(function(service) {
-                html += '<span style="display: inline-block; padding: 2px 8px; background: #F4F1E9; border: 1px solid #ACCBE1; border-radius: 4px; font-size: 12px; margin-right: 4px; margin-bottom: 4px;">' + service + '</span>';
+                html += '<span style="display: inline-block; padding: 2px 8px; background: #F4F1E9; border: 1px solid #dcd9d2; border-radius: 4px; font-size: 12px; margin-right: 4px; margin-bottom: 4px;">' + service + '</span>';
             });
             html += '</div>';
         }
