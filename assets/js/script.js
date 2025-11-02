@@ -586,7 +586,7 @@
         html += '</div>';
 
         // Add "More Info" button
-        html += '<button class="frd-popup-more-info" data-location-id="' + location.id + '" style="width: 100%; margin-top: 12px; padding: 8px 12px; background: #263447; color: white; border: none; border-radius: 0px; font-size: 1rem; font-weight: 600; font-family: \'Tungsten\', sans-serif; cursor: pointer; transition: background 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px;">';
+        html += '<button class="frd-popup-more-info" data-location-id="' + location.id + '" style="width: 100%; margin-top: 12px; padding: 8px 12px; background: #263447; color: white; border: none; border-radius: 0px; font-size: 1.25rem; font-weight: 600; font-family: \'Tungsten\', sans-serif; cursor: pointer; transition: background 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px;">';
         html += '<span>More Info</span>';
         html += '<img src="' + frdData.pluginUrl + '/assets/icons/Read More Icon.svg" alt="" style="width: 1em; height: 1em; filter: brightness(0) invert(1);">';
         html += '</button>';
