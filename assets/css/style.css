@@ -957,11 +957,13 @@ button.select2-selection__clear span {
 
 .frd-modal-service {
     display: inline-block;
-    font-size: 14px;
-    color: var(--frd-text-light);
+    padding: 4px 10px;
     background: var(--frd-background);
-    padding: 4px 12px;
+    border: 1px solid var(--frd-border);
     border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--frd-text);
     margin-bottom: 20px;
 }
 
