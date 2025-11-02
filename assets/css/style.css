@@ -1562,11 +1562,12 @@ button.select2-selection__clear span {
 }
 
 .frd-modal-hours-day {
-    font-weight: var(--frd-weight-medium);
+    font-weight: 600;
+    color: #263447;
 }
 
 .frd-modal-hours-time {
-    color: var(--frd-text-light);
+    color: #3a5780;
     text-align: right;
 }
 
