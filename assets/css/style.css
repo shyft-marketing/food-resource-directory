@@ -1387,12 +1387,21 @@ button.select2-selection__clear span {
 }
 
 /* Modal Content Styles */
+.frd-modal-title-row {
+    display: flex;
+    align-items: center;
+    gap: var(--frd-spacing-md);
+    margin-bottom: var(--frd-spacing-xl);
+    flex-wrap: wrap;
+}
+
 .frd-modal-title {
-    font-size: var(--frd-font-xl);
+    font-size: var(--frd-font-2xl);
     font-weight: var(--frd-weight-bold);
-    margin: 0 0 var(--frd-spacing-md) 0;
+    margin: 0;
     line-height: var(--frd-leading-tight);
     font-family: 'Tungsten', sans-serif;
+    text-transform: uppercase;
 }
 
 .frd-modal-service {
@@ -1404,7 +1413,8 @@ button.select2-selection__clear span {
     font-size: var(--frd-font-sm);
     font-weight: var(--frd-weight-medium);
     color: var(--frd-text);
-    margin-bottom: var(--frd-spacing-xl);
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .frd-modal-contact {
@@ -1412,22 +1422,20 @@ button.select2-selection__clear span {
     flex-wrap: wrap;
     gap: var(--frd-spacing-lg);
     margin-bottom: var(--frd-spacing-2xl);
-    padding-bottom: var(--frd-spacing-2xl);
-    border-bottom: var(--frd-border-width) solid var(--frd-dark);
 }
 
 .frd-modal-contact-item {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: var(--frd-spacing-md);
     font-size: var(--frd-font-base);
+    color: var(--frd-primary);
 }
 
 .frd-modal-icon {
     width: var(--frd-icon-sm);
     height: var(--frd-icon-sm);
     flex-shrink: 0;
-    margin-top: 2px;
     opacity: 1;
     filter: invert(64%) sepia(31%) saturate(1346%) hue-rotate(318deg) brightness(101%) contrast(99%);
 }
@@ -1500,8 +1508,8 @@ button.select2-selection__clear span {
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: var(--frd-spacing-md);
     margin-top: var(--frd-spacing-2xl);
-    padding-top: var(--frd-spacing-2xl);
-    border-top: var(--frd-border-width) solid var(--frd-dark);
+    font-size: 1.25rem;
+    font-weight: 600;
 }
 
 .frd-modal-btn {

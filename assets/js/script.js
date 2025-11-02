@@ -561,7 +561,7 @@
         }
 
         // Address
-        html += '<p style="margin: 0 0 12px 0; font-size: 14px; color: #7A7A7A;">' + location.full_address + '</p>';
+        html += '<p style="margin: 0 0 12px 0; font-size: 0.75rem; color: #3A5780;">' + location.full_address + '</p>';
 
         // Icon buttons
         html += '<div class="frd-popup-actions">';
@@ -630,11 +630,7 @@
 
         $card.append($header);
 
-        // Address
-        const $address = $('<div class="frd-location-address">' + location.full_address + '</div>');
-        $card.append($address);
-
-        // Services
+        // Services (moved above address to match map tooltip order)
         if (location.services && location.services.length > 0) {
             const $services = $('<div class="frd-location-services"></div>');
             location.services.forEach(function(service) {
@@ -642,6 +638,10 @@
             });
             $card.append($services);
         }
+
+        // Address
+        const $address = $('<div class="frd-location-address">' + location.full_address + '</div>');
+        $card.append($address);
 
         // Footer with icon buttons
         const $footer = $('<div class="frd-location-footer"></div>');
@@ -710,15 +710,15 @@
     function showLocationDetails(location) {
         let html = '';
         
-        // Title
-        html += '<div class="frd-modal-title">' + location.title + '</div>';
-        
-        // Service type below title
+        // Title with inline service chip
+        html += '<div class="frd-modal-title-row">';
+        html += '<h2 class="frd-modal-title">' + location.title + '</h2>';
         if (location.services && location.services.length > 0) {
-            html += '<div class="frd-modal-service">' + location.services[0] + '</div>';
+            html += '<span class="frd-modal-service">' + location.services[0] + '</span>';
         }
+        html += '</div>';
 
-        // Contact info row with icons (horizontal)
+        // Contact info row with icons (horizontal) - no divider
         html += '<div class="frd-modal-contact">';
         
         // Address
@@ -747,36 +747,37 @@
 
         // Languages Spoken
         if (location.languages && location.languages.length > 0) {
-            html += '<div class="frd-modal-section">';
-            html += '<strong style="display: inline;">Languages Spoken:</strong> ' + location.languages.join(', ');
+            html += '<div class="frd-modal-section frd-modal-section-languages">';
+            html += '<span class="frd-modal-section-heading">Languages Spoken:</span> ';
+            html += '<span class="frd-modal-section-body">' + location.languages.join(', ') + '</span>';
             html += '</div>';
         }
 
         // Eligibility Requirements
         if (location.eligibility) {
-            html += '<div class="frd-modal-section">';
-            html += '<strong>Eligibility Requirements</strong>';
-            html += '<p>' + nl2br(location.eligibility) + '</p>';
+            html += '<div class="frd-modal-section frd-modal-section-eligibility">';
+            html += '<span class="frd-modal-section-heading">Eligibility Requirements</span>';
+            html += '<div class="frd-modal-section-body">' + nl2br(location.eligibility) + '</div>';
             html += '</div>';
         }
 
         // Additional Notes
         if (location.notes) {
-            html += '<div class="frd-modal-section">';
-            html += '<strong>Additional Notes</strong>';
-            html += '<p>' + nl2br(location.notes) + '</p>';
+            html += '<div class="frd-modal-section frd-modal-section-notes">';
+            html += '<span class="frd-modal-section-heading">Additional Notes</span>';
+            html += '<div class="frd-modal-section-body">' + nl2br(location.notes) + '</div>';
             html += '</div>';
         }
 
         // Hours
-        html += '<div class="frd-modal-section">';
-        html += '<strong>Hours</strong>';
+        html += '<div class="frd-modal-section frd-modal-section-hours">';
+        html += '<span class="frd-modal-section-heading">Hours</span>';
         
         // Check if there's a special hours note
         if (location.hours_other_hours && location.hours_other_hours !== 'Regular hours') {
-            html += '<p>' + location.hours_other_hours + '</p>';
+            html += '<div class="frd-modal-section-body">' + location.hours_other_hours + '</div>';
         } else if (location.hours) {
-            html += '<div class="frd-modal-hours">';
+            html += '<div class="frd-modal-hours frd-modal-section-body">';
             const dayLabels = {
                 monday: 'Monday',
                 tuesday: 'Tuesday',
@@ -802,7 +803,7 @@
         }
         html += '</div>';
 
-        // Action buttons
+        // Action buttons - no divider above
         html += '<div class="frd-modal-buttons">';
         
         if (location.phone) {
