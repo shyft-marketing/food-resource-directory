@@ -36,8 +36,8 @@
             }, 1);
         });
 
-        // Fix clear button to properly clear all selections - simpler approach
-        $(document).on('click', '.select2-selection__clear', function(e) {
+        // Fix clear button to properly clear all selections
+        $(document).on('click', 'button.select2-selection__clear', function(e) {
             e.preventDefault();
             e.stopPropagation();
 
@@ -48,10 +48,21 @@
             // Close dropdown if open
             $select.select2('close');
 
-            // Clear all selections - use empty array for multi-select
-            setTimeout(function() {
+            // Get current selections and total options
+            const currentValues = $select.val() || [];
+            const totalOptions = $select.find('option').length;
+
+            // If all options are selected, Select2 has a bug - force clear differently
+            if (currentValues.length === totalOptions) {
+                // First remove all but one, then clear the last one
+                $select.val([currentValues[0]]).trigger('change');
+                setTimeout(function() {
+                    $select.val([]).trigger('change');
+                }, 10);
+            } else {
+                // Normal clear
                 $select.val([]).trigger('change');
-            }, 50);
+            }
 
             return false;
         });
