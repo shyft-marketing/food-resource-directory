@@ -230,43 +230,59 @@
 }
 
 .frd-filters-toggle-btn {
-    display: flex;
-    align-items: center;
-    gap: var(--frd-spacing-sm);
-    padding: 0;
-    background: transparent;
-    border: none;
-    color: var(--frd-text);
-    font-size: var(--frd-font-base);
-    font-weight: var(--frd-weight-medium);
-    cursor: pointer;
-    transition: var(--frd-transition);
-    white-space: nowrap;
+    display: flex !important;
+    align-items: center !important;
+    gap: var(--frd-spacing-sm) !important;
+    padding: 0 !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    color: var(--frd-text) !important;
+    font-size: var(--frd-font-base) !important;
+    font-weight: var(--frd-weight-medium) !important;
+    cursor: pointer !important;
+    transition: var(--frd-transition) !important;
+    white-space: nowrap !important;
+    box-shadow: none !important;
+    text-decoration: none !important;
 }
 
 .frd-filters-toggle-btn:hover {
-    color: #1e2a39;
+    color: #1e2a39 !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    text-decoration: none !important;
+    transform: none !important;
 }
 
 .frd-filters-toggle-btn:focus {
-    outline: 2px solid var(--frd-primary);
-    outline-offset: 2px;
-    border-radius: 2px;
+    outline: 2px solid var(--frd-primary) !important;
+    outline-offset: 2px !important;
+    border-radius: 2px !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
 }
 
 .frd-filters-toggle-btn:active {
-    color: #1e2a39;
+    color: #1e2a39 !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 
 .frd-filters-toggle-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
 }
 
 .frd-filters-toggle-btn img {
-    width: var(--frd-icon-sm);
-    height: var(--frd-icon-sm);
-    display: block;
+    width: var(--frd-icon-sm) !important;
+    height: var(--frd-icon-sm) !important;
+    display: block !important;
 }
 
 /* Filters */
