@@ -107,7 +107,8 @@
     justify-content: center;
     gap: var(--frd-spacing-sm);
     padding: var(--frd-spacing-md) var(--frd-spacing-xl);
-    background: var(--frd-white);
+    background: var(--frd-white) !important;
+    background-color: var(--frd-white) !important;
     border: var(--frd-border-width-thick) solid var(--frd-border);
     border-radius: var(--frd-radius-md);
     color: var(--frd-text);
@@ -118,7 +119,9 @@
 }
 
 .frd-toggle-btn:hover:not(.active) {
-    background: var(--frd-background);
+    background: var(--frd-background) !important;
+    background-color: var(--frd-background) !important;
+    color: var(--frd-text) !important;
 }
 
 .frd-toggle-btn:focus {
@@ -136,7 +139,8 @@
 }
 
 .frd-toggle-btn.active {
-    background: var(--frd-dark);
+    background: var(--frd-dark) !important;
+    background-color: var(--frd-dark) !important;
     border-color: var(--frd-dark);
     color: var(--frd-white);
 }
@@ -358,7 +362,7 @@
 .frd-filter-group select {
     width: 100%;
     padding: var(--frd-spacing-md) var(--frd-spacing-md);
-    border: var(--frd-border-width) solid var(--frd-border);
+    border: var(--frd-border-width) solid var(--frd-dark);
     border-radius: var(--frd-radius-md);
     font-size: var(--frd-font-sm);
     transition: border-color 0.2s ease;
@@ -400,7 +404,7 @@
 
 /* Select2 Customization */
 .select2-container--default .select2-selection--multiple {
-    border: var(--frd-border-width) solid var(--frd-border);
+    border: var(--frd-border-width) solid var(--frd-dark);
     border-radius: var(--frd-radius-md);
     min-height: var(--frd-icon-xl);
     padding: var(--frd-spacing-xs) var(--frd-spacing-sm);
@@ -455,7 +459,7 @@
 }
 
 .select2-container--default .select2-selection--multiple .select2-selection__choice {
-    background-color: var(--frd-primary);
+    background-color: var(--frd-dark);
     border: none;
     color: var(--frd-white);
     border-radius: var(--frd-radius-sm);
@@ -699,7 +703,7 @@ button.select2-selection__clear span {
     gap: var(--frd-spacing-md);
     margin-top: var(--frd-spacing-xl);
     padding-top: var(--frd-spacing-xl);
-    border-top: var(--frd-border-width) solid var(--frd-border);
+    border-top: var(--frd-border-width) solid var(--frd-dark);
 }
 
 .frd-btn {
@@ -713,12 +717,14 @@ button.select2-selection__clear span {
 }
 
 .frd-btn-primary {
-    background: var(--frd-primary);
+    background: var(--frd-dark) !important;
+    background-color: var(--frd-dark) !important;
     color: var(--frd-white);
 }
 
 .frd-btn-primary:hover:not(:disabled) {
-    background: var(--frd-primary-dark);
+    background: var(--frd-dark-hover) !important;
+    background-color: var(--frd-dark-hover) !important;
 }
 
 .frd-btn-primary:focus {
@@ -727,7 +733,8 @@ button.select2-selection__clear span {
 }
 
 .frd-btn-primary:active:not(:disabled) {
-    background: var(--frd-primary);
+    background: var(--frd-dark-hover) !important;
+    background-color: var(--frd-dark-hover) !important;
     color: var(--frd-white);
 }
 
@@ -737,24 +744,44 @@ button.select2-selection__clear span {
 }
 
 .frd-btn-secondary {
-    background: var(--frd-white);
-    color: var(--frd-text);
-    border: var(--frd-border-width) solid var(--frd-border);
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: var(--frd-spacing-sm) !important;
+    padding: var(--frd-spacing-md) 0 !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    color: var(--frd-text) !important;
+    cursor: pointer !important;
+    transition: var(--frd-transition) !important;
+    white-space: nowrap !important;
+    box-shadow: none !important;
+    text-decoration: none !important;
 }
 
 .frd-btn-secondary:hover:not(:disabled) {
-    background: var(--frd-background);
+    color: var(--frd-accent) !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 
 .frd-btn-secondary:focus {
-    outline: none !important;
-    box-shadow: 0 0 0 3px var(--frd-focus-ring) !important;
+    outline: 2px solid var(--frd-primary) !important;
+    outline-offset: 2px !important;
+    border-radius: 2px !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
 }
 
 .frd-btn-secondary:active:not(:disabled) {
-    background: var(--frd-white);
-    color: var(--frd-text);
-    border-color: var(--frd-border);
+    color: var(--frd-accent) !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 
 .frd-btn-secondary:disabled {
@@ -922,14 +949,16 @@ button.select2-selection__clear span {
     height: var(--frd-icon-lg);
     border: var(--frd-border-width) solid var(--frd-text);
     border-radius: var(--frd-radius-md);
-    background: var(--frd-white);
+    background: var(--frd-white) !important;
+    background-color: var(--frd-white) !important;
     transition: var(--frd-transition);
     cursor: pointer;
 }
 
 .frd-popup-icon-btn:hover:not(:disabled) {
-    background: var(--frd-primary);
-    border-color: var(--frd-primary);
+    background: var(--frd-dark) !important;
+    background-color: var(--frd-dark) !important;
+    border-color: var(--frd-dark);
     transform: translateY(-2px);
     box-shadow: var(--frd-shadow);
 }
@@ -951,7 +980,8 @@ button.select2-selection__clear span {
 }
 
 .frd-popup-icon-btn:active:not(:disabled) {
-    background: var(--frd-white);
+    background: var(--frd-white) !important;
+    background-color: var(--frd-white) !important;
     border-color: var(--frd-text);
 }
 
@@ -1019,7 +1049,7 @@ button.select2-selection__clear span {
 
 .frd-list-controls select {
     padding: var(--frd-spacing-sm) var(--frd-spacing-md);
-    border: var(--frd-border-width) solid var(--frd-border);
+    border: var(--frd-border-width) solid var(--frd-dark);
     border-radius: var(--frd-radius-md);
     font-size: var(--frd-font-sm);
     transition: border-color 0.2s ease;
@@ -1124,7 +1154,7 @@ button.select2-selection__clear span {
     gap: var(--frd-spacing-md);
     margin-top: var(--frd-spacing-md);
     padding-top: var(--frd-spacing-md);
-    border-top: var(--frd-border-width) solid var(--frd-border);
+    border-top: var(--frd-border-width) solid var(--frd-dark);
 }
 
 /* Icon buttons container */
@@ -1143,14 +1173,16 @@ button.select2-selection__clear span {
     height: var(--frd-icon-lg);
     border: var(--frd-border-width) solid var(--frd-text);
     border-radius: var(--frd-radius-md);
-    background: var(--frd-white);
+    background: var(--frd-white) !important;
+    background-color: var(--frd-white) !important;
     transition: var(--frd-transition);
     cursor: pointer;
 }
 
 .frd-list-icon-btn:hover:not(:disabled) {
-    background: var(--frd-primary);
-    border-color: var(--frd-primary);
+    background: var(--frd-dark) !important;
+    background-color: var(--frd-dark) !important;
+    border-color: var(--frd-dark);
     transform: translateY(-2px);
     box-shadow: var(--frd-shadow);
 }
@@ -1172,7 +1204,8 @@ button.select2-selection__clear span {
 }
 
 .frd-list-icon-btn:active:not(:disabled) {
-    background: var(--frd-white);
+    background: var(--frd-white) !important;
+    background-color: var(--frd-white) !important;
     border-color: var(--frd-text);
 }
 
@@ -1184,50 +1217,57 @@ button.select2-selection__clear span {
 
 /* More Info button */
 .frd-list-more-info {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--frd-spacing-sm);
-    padding: var(--frd-spacing-sm) var(--frd-spacing-lg);
-    background: var(--frd-white);
-    border: var(--frd-border-width) solid var(--frd-border);
-    border-radius: var(--frd-radius-md);
-    font-size: var(--frd-font-sm);
-    font-weight: var(--frd-weight-medium);
-    color: var(--frd-text);
-    cursor: pointer;
-    transition: var(--frd-transition);
-    white-space: nowrap;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: var(--frd-spacing-sm) !important;
+    padding: 0 !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    font-size: var(--frd-font-base) !important;
+    font-weight: var(--frd-weight-medium) !important;
+    color: var(--frd-dark) !important;
+    cursor: pointer !important;
+    transition: var(--frd-transition) !important;
+    white-space: nowrap !important;
+    text-decoration: none !important;
+    box-shadow: none !important;
 }
 
 .frd-list-more-info:hover:not(:disabled) {
-    background: var(--frd-primary);
-    border-color: var(--frd-primary);
-    color: var(--frd-white);
-    transform: translateY(-2px);
-    box-shadow: var(--frd-shadow);
+    color: var(--frd-dark-hover) !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    transform: none !important;
 }
 
 .frd-list-more-info img {
-    width: 1em;
-    height: 1em;
-    transition: filter 0.2s ease;
+    width: var(--frd-spacing-lg) !important;
+    height: var(--frd-spacing-lg) !important;
 }
 
 .frd-list-more-info:hover:not(:disabled) img {
-    filter: brightness(0) invert(1);
+    filter: none;
 }
 
 .frd-list-more-info:focus {
-    outline: none !important;
-    box-shadow: 0 0 0 3px var(--frd-focus-ring) !important;
-    border-color: var(--frd-primary) !important;
+    outline: 2px solid var(--frd-primary) !important;
+    outline-offset: 2px !important;
+    border-radius: 2px !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
 }
 
 .frd-list-more-info:active:not(:disabled) {
-    background: var(--frd-white);
-    border-color: var(--frd-border);
-    color: var(--frd-text);
+    color: var(--frd-dark-hover) !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 
 .frd-list-more-info:disabled {
@@ -1359,7 +1399,7 @@ button.select2-selection__clear span {
     gap: var(--frd-spacing-lg);
     margin-bottom: var(--frd-spacing-2xl);
     padding-bottom: var(--frd-spacing-2xl);
-    border-bottom: var(--frd-border-width) solid var(--frd-border);
+    border-bottom: var(--frd-border-width) solid var(--frd-dark);
 }
 
 .frd-modal-contact-item {
@@ -1374,7 +1414,8 @@ button.select2-selection__clear span {
     height: var(--frd-icon-sm);
     flex-shrink: 0;
     margin-top: 2px;
-    opacity: 0.6;
+    opacity: 1;
+    filter: invert(64%) sepia(31%) saturate(1346%) hue-rotate(318deg) brightness(101%) contrast(99%);
 }
 
 .frd-modal-contact-item a {
@@ -1446,7 +1487,7 @@ button.select2-selection__clear span {
     gap: var(--frd-spacing-md);
     margin-top: var(--frd-spacing-2xl);
     padding-top: var(--frd-spacing-2xl);
-    border-top: var(--frd-border-width) solid var(--frd-border);
+    border-top: var(--frd-border-width) solid var(--frd-dark);
 }
 
 .frd-modal-btn {
@@ -1458,6 +1499,7 @@ button.select2-selection__clear span {
     border-radius: var(--frd-radius-sm);
     font-size: var(--frd-font-base);
     font-weight: var(--frd-weight-bold);
+    font-family: "Tungsten", sans-serif !important;
     letter-spacing: 0.5px;
     text-decoration: none;
     transition: var(--frd-transition);
@@ -1471,12 +1513,15 @@ button.select2-selection__clear span {
 }
 
 .frd-modal-btn-primary {
-    background: var(--frd-dark);
+    background: var(--frd-dark) !important;
+    background-color: var(--frd-dark) !important;
     color: var(--frd-white);
 }
 
 .frd-modal-btn-primary:hover:not(:disabled) {
-    background: var(--frd-dark-hover);
+    background: var(--frd-dark) !important;
+    background-color: var(--frd-dark) !important;
+    color: var(--frd-white) !important;
 }
 
 .frd-modal-btn-primary:focus {
@@ -1485,8 +1530,9 @@ button.select2-selection__clear span {
 }
 
 .frd-modal-btn-primary:active:not(:disabled) {
-    background: var(--frd-dark);
-    color: var(--frd-white);
+    background: var(--frd-dark) !important;
+    background-color: var(--frd-dark) !important;
+    color: var(--frd-white) !important;
 }
 
 .frd-modal-btn-primary:disabled {
@@ -1499,14 +1545,21 @@ button.select2-selection__clear span {
 }
 
 .frd-modal-btn-secondary {
-    background: var(--frd-white);
-    color: var(--frd-dark);
-    border: var(--frd-border-width) solid var(--frd-border);
+    background: var(--frd-white) !important;
+    background-color: var(--frd-white) !important;
+    color: var(--frd-dark) !important;
+    border: var(--frd-border-width) solid var(--frd-dark) !important;
 }
 
 .frd-modal-btn-secondary:hover:not(:disabled) {
-    background: var(--frd-background);
-    border-color: var(--frd-dark);
+    background: var(--frd-dark-hover) !important;
+    background-color: var(--frd-dark-hover) !important;
+    border-color: var(--frd-dark-hover) !important;
+    color: var(--frd-white) !important;
+}
+
+.frd-modal-btn-secondary:hover:not(:disabled) img {
+    filter: brightness(0) invert(1) !important;
 }
 
 .frd-modal-btn-secondary:focus {
@@ -1515,9 +1568,10 @@ button.select2-selection__clear span {
 }
 
 .frd-modal-btn-secondary:active:not(:disabled) {
-    background: var(--frd-white);
-    color: var(--frd-dark);
-    border-color: var(--frd-border);
+    background: var(--frd-dark-hover) !important;
+    background-color: var(--frd-dark-hover) !important;
+    color: var(--frd-white) !important;
+    border-color: var(--frd-dark-hover) !important;
 }
 
 .frd-modal-btn-secondary:disabled {
