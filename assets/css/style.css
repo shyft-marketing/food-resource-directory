@@ -209,8 +209,9 @@
     align-items: center;
     justify-content: center;
     padding: var(--frd-spacing-md) var(--frd-spacing-lg);
-    background: var(--frd-dark);
-    border: var(--frd-border-width) solid var(--frd-dark);
+    background: var(--frd-dark) !important;
+    background-color: var(--frd-dark) !important;
+    border: var(--frd-border-width) solid var(--frd-dark) !important;
     border-radius: 0 var(--frd-radius-md) var(--frd-radius-md) 0;
     cursor: pointer;
     transition: var(--frd-transition);
@@ -218,23 +219,29 @@
 }
 
 .frd-search-btn:hover:not(:disabled) {
-    background: #1e2a39;
-    border-color: #1e2a39;
+    background: #1e2a39 !important;
+    background-color: #1e2a39 !important;
+    border-color: #1e2a39 !important;
 }
 
 .frd-search-btn:focus {
     outline: none !important;
     box-shadow: 0 0 0 3px var(--frd-focus-ring) !important;
+    background: var(--frd-dark) !important;
+    background-color: var(--frd-dark) !important;
 }
 
 .frd-search-btn:active:not(:disabled) {
-    background: var(--frd-dark);
-    border-color: var(--frd-dark);
+    background: var(--frd-dark) !important;
+    background-color: var(--frd-dark) !important;
+    border-color: var(--frd-dark) !important;
 }
 
 .frd-search-btn:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+    background: var(--frd-dark) !important;
+    background-color: var(--frd-dark) !important;
 }
 
 .frd-search-btn img {
