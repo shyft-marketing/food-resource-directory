@@ -191,9 +191,23 @@
     position: relative !important;
 }
 
-/* Add padding to the inner pills container to force wrapping before clear button */
+/* Remove extra padding - the clear button is positioned absolutely so it doesn't need space */
 .select2-container--default .select2-selection--multiple .select2-selection__rendered {
-    padding-right: 50px !important;
+    padding-right: 0 !important;
+    display: block !important;
+    width: 100% !important;
+}
+
+/* Style the inline search input field that appears after selections */
+.select2-container--default .select2-selection--multiple .select2-search--inline {
+    display: inline-block !important;
+}
+
+.select2-container--default .select2-selection--multiple .select2-search--inline .select2-search__field {
+    margin: 4px 0 !important;
+    padding: 0 !important;
+    min-width: 120px !important;
+    width: auto !important;
 }
 
 /* Dropdown arrow indicator for multi-select */
