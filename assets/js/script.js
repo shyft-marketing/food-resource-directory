@@ -539,8 +539,7 @@
             html += '<p style="margin: 0 0 8px 0; font-weight: 600; color: #2563eb;">' + location.distance + ' miles away</p>';
         }
 
-        html += '<p style="margin: 0 0 8px 0; font-size: 14px; color: #64748b;">' + location.full_address + '</p>';
-
+        // Services above address
         if (location.services && location.services.length > 0) {
             html += '<div style="margin-bottom: 8px;">';
             location.services.forEach(function(service) {
@@ -549,8 +548,33 @@
             html += '</div>';
         }
 
+        // Address
+        html += '<p style="margin: 0 0 12px 0; font-size: 14px; color: #64748b;">' + location.full_address + '</p>';
+
+        // Icon buttons
+        html += '<div class="frd-popup-actions">';
+        
+        if (location.phone) {
+            html += '<a href="tel:' + location.phone_link + '" class="frd-popup-icon-btn" title="Call">';
+            html += '<img src="' + frdData.pluginUrl + '/assets/icons/Phone Icon.svg" alt="Call">';
+            html += '</a>';
+        }
+        
+        if (location.website) {
+            html += '<a href="' + location.website + '" target="_blank" class="frd-popup-icon-btn" title="Website">';
+            html += '<img src="' + frdData.pluginUrl + '/assets/icons/Link Icon.svg" alt="Website">';
+            html += '</a>';
+        }
+        
+        const directionsUrl = 'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(location.full_address);
+        html += '<a href="' + directionsUrl + '" target="_blank" class="frd-popup-icon-btn" title="Directions">';
+        html += '<img src="' + frdData.pluginUrl + '/assets/icons/Directions Icon.svg" alt="Directions">';
+        html += '</a>';
+        
+        html += '</div>';
+
         // Add "More Info" button
-        html += '<button class="frd-popup-more-info" data-location-id="' + location.id + '" style="width: 100%; margin-top: 8px; padding: 8px 12px; background: #2563eb; color: white; border: none; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; transition: background 0.2s;">More Info</button>';
+        html += '<button class="frd-popup-more-info" data-location-id="' + location.id + '" style="width: 100%; margin-top: 12px; padding: 8px 12px; background: #2563eb; color: white; border: none; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; transition: background 0.2s;">More Info</button>';
         html += '</div>';
 
         return html;

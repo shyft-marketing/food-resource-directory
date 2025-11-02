@@ -635,6 +635,44 @@ button.select2-selection__clear span {
     transform: scale(1.1) !important;
 }
 
+/* Popup Actions (Icon Buttons) */
+.frd-popup-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.frd-popup-icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--frd-border);
+    border-radius: 6px;
+    background: white;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.frd-popup-icon-btn:hover {
+    background: var(--frd-primary);
+    border-color: var(--frd-primary);
+    transform: translateY(-2px);
+    box-shadow: var(--frd-shadow);
+}
+
+.frd-popup-icon-btn img {
+    width: 20px;
+    height: 20px;
+    display: block;
+}
+
+.frd-popup-icon-btn:hover img {
+    filter: brightness(0) invert(1);
+}
+
 /* Popup More Info Button */
 .frd-popup-more-info:hover {
     background: var(--frd-primary-dark) !important;
