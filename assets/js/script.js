@@ -559,7 +559,7 @@
         }
 
         // Address
-        html += '<p style="margin: 0 0 12px 0; font-size: 0.875rem; color: #3A5780; text-wrap: pretty;">' + location.full_address + '</p>';
+        html += '<p style="margin: 0 0 12px 0; font-size: 0.875rem; color: #3A5780; text-wrap: balance;">' + location.full_address + '</p>';
 
         // Icon buttons
         html += '<div class="frd-popup-actions">';
