@@ -613,7 +613,7 @@ button.select2-selection__clear span {
     background-color: white !important;
     box-shadow: var(--frd-shadow-lg) !important;
     border: none !important;
-    font-size: 20px !important;
+    font-size: 40px !important;
     line-height: 1 !important;
     padding: 0 !important;
     margin: 0 !important;
@@ -670,6 +670,22 @@ button.select2-selection__clear span {
 
 .frd-popup-icon-btn:hover img {
     filter: brightness(0) invert(1);
+}
+
+.frd-popup-icon-btn:focus,
+.frd-popup-icon-btn:active {
+    outline: none;
+    border: 1px solid var(--frd-border);
+    background: white;
+}
+
+.frd-popup-icon-btn:focus:not(:hover),
+.frd-popup-icon-btn:active:not(:hover) {
+    outline: none;
+    border: 1px solid var(--frd-border);
+    background: white;
+    transform: none;
+    box-shadow: none;
 }
 
 /* Popup More Info Button */
@@ -868,7 +884,7 @@ button.select2-selection__clear span {
     background: white !important;
     background-color: white !important;
     border-radius: 50% !important;
-    font-size: 30px !important;
+    font-size: 60px !important;
     line-height: 1 !important;
     padding: 0 !important;
     margin: 0 !important;
