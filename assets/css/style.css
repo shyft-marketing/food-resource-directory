@@ -256,7 +256,7 @@ button.select2-selection__clear {
     font-size: 28px !important;
     line-height: 1 !important;
     margin: 0 !important;
-    padding: 4px !important;
+    padding: 0 !important;
     height: 28px !important;
     width: 28px !important;
     color: #dc2626 !important;
@@ -270,8 +270,12 @@ button.select2-selection__clear:hover {
 }
 
 button.select2-selection__clear span {
-    display: block !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     line-height: 1 !important;
+    width: 100% !important;
+    height: 100% !important;
 }
 
 /* Hide dropdown arrow when selections exist */
