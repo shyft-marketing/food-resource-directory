@@ -593,7 +593,7 @@ button.select2-selection__clear span {
 
 /* Mapbox Popup Customization */
 .mapboxgl-popup-content {
-    padding: 20px;
+    padding: 20px 50px 20px 20px;
     border-radius: 8px;
     box-shadow: var(--frd-shadow-lg);
     max-width: 350px;
@@ -603,6 +603,8 @@ button.select2-selection__clear span {
     font-size: 24px;
     padding: 8px;
     color: var(--frd-text-light);
+    right: 8px;
+    top: 8px;
 }
 
 .mapboxgl-popup-close-button:hover {
