@@ -122,8 +122,8 @@
 }
 
 .frd-toggle-btn:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px var(--frd-focus-ring);
+    outline: none !important;
+    box-shadow: 0 0 0 3px var(--frd-focus-ring) !important;
 }
 
 .frd-toggle-btn:active {
@@ -187,11 +187,11 @@
 }
 
 .frd-search-input-group input:focus {
-    outline: none;
-    border-color: var(--frd-primary);
-    box-shadow: 0 0 0 3px var(--frd-focus-ring);
-    position: relative;
-    z-index: 1;
+    outline: none !important;
+    border-color: var(--frd-primary) !important;
+    box-shadow: 0 0 0 3px var(--frd-focus-ring) !important;
+    position: relative !important;
+    z-index: 1 !important;
 }
 
 .frd-search-input-group input:active {
@@ -223,8 +223,8 @@
 }
 
 .frd-search-btn:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px var(--frd-focus-ring);
+    outline: none !important;
+    box-shadow: 0 0 0 3px var(--frd-focus-ring) !important;
 }
 
 .frd-search-btn:active:not(:disabled) {
@@ -245,21 +245,20 @@
 }
 
 .frd-filters-toggle-btn {
-    display: flex !important;
+    display: inline-flex !important;
     align-items: center !important;
     gap: var(--frd-spacing-sm) !important;
-    padding: 0 !important;
+    padding: var(--frd-spacing-md) 0 !important;
     background: transparent !important;
     background-color: transparent !important;
     border: none !important;
     color: var(--frd-text) !important;
-    font-size: var(--frd-font-base) !important;
-    font-weight: var(--frd-weight-medium) !important;
     cursor: pointer !important;
     transition: var(--frd-transition) !important;
     white-space: nowrap !important;
     box-shadow: none !important;
     text-decoration: none !important;
+    vertical-align: middle !important;
 }
 
 .frd-filters-toggle-btn:hover {
@@ -371,9 +370,9 @@
 
 .frd-filter-group input[type="text"]:focus,
 .frd-filter-group select:focus {
-    outline: none;
-    border-color: var(--frd-primary);
-    box-shadow: 0 0 0 3px var(--frd-focus-ring);
+    outline: none !important;
+    border-color: var(--frd-primary) !important;
+    box-shadow: 0 0 0 3px var(--frd-focus-ring) !important;
 }
 
 .frd-filter-group input[type="text"]:disabled,
@@ -443,8 +442,9 @@
 }
 
 .select2-container--default.select2-container--focus .select2-selection--multiple {
-    border-color: var(--frd-primary);
-    box-shadow: 0 0 0 3px var(--frd-focus-ring);
+    border-color: var(--frd-primary) !important;
+    box-shadow: 0 0 0 3px var(--frd-focus-ring) !important;
+    outline: none !important;
 }
 
 .select2-container--default .select2-selection--multiple .select2-selection__choice {
@@ -600,8 +600,14 @@ button.select2-selection__clear span {
 }
 
 .select2-container--default .select2-search--dropdown .select2-search__field {
-    border: var(--frd-border-width) solid var(--frd-border);
-    border-radius: var(--frd-radius-sm);
+    border: var(--frd-border-width) solid var(--frd-border) !important;
+    border-radius: var(--frd-radius-sm) !important;
+}
+
+.select2-container--default .select2-search--dropdown .select2-search__field:focus {
+    outline: none !important;
+    border-color: var(--frd-primary) !important;
+    box-shadow: 0 0 0 3px var(--frd-focus-ring) !important;
 }
 
 /* Distance Slider */
@@ -640,15 +646,15 @@ button.select2-selection__clear span {
 }
 
 .frd-distance-slider input[type="range"]:focus {
-    outline: none;
+    outline: none !important;
 }
 
 .frd-distance-slider input[type="range"]:focus::-webkit-slider-thumb {
-    box-shadow: 0 0 0 3px var(--frd-focus-ring);
+    box-shadow: 0 0 0 3px var(--frd-focus-ring) !important;
 }
 
 .frd-distance-slider input[type="range"]:focus::-moz-range-thumb {
-    box-shadow: 0 0 0 3px var(--frd-focus-ring);
+    box-shadow: 0 0 0 3px var(--frd-focus-ring) !important;
 }
 
 .frd-distance-slider input[type="range"]:hover::-webkit-slider-thumb {
@@ -709,8 +715,8 @@ button.select2-selection__clear span {
 }
 
 .frd-btn-primary:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px var(--frd-focus-ring);
+    outline: none !important;
+    box-shadow: 0 0 0 3px var(--frd-focus-ring) !important;
 }
 
 .frd-btn-primary:active:not(:disabled) {
@@ -734,8 +740,8 @@ button.select2-selection__clear span {
 }
 
 .frd-btn-secondary:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px var(--frd-focus-ring);
+    outline: none !important;
+    box-shadow: 0 0 0 3px var(--frd-focus-ring) !important;
 }
 
 .frd-btn-secondary:active:not(:disabled) {
@@ -932,9 +938,9 @@ button.select2-selection__clear span {
 }
 
 .frd-popup-icon-btn:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px var(--frd-focus-ring);
-    border-color: var(--frd-primary);
+    outline: none !important;
+    box-shadow: 0 0 0 3px var(--frd-focus-ring) !important;
+    border-color: var(--frd-primary) !important;
 }
 
 .frd-popup-icon-btn:active:not(:disabled) {
@@ -1017,9 +1023,9 @@ button.select2-selection__clear span {
 }
 
 .frd-list-controls select:focus {
-    outline: none;
-    border-color: var(--frd-primary);
-    box-shadow: 0 0 0 3px var(--frd-focus-ring);
+    outline: none !important;
+    border-color: var(--frd-primary) !important;
+    box-shadow: 0 0 0 3px var(--frd-focus-ring) !important;
 }
 
 .frd-list-controls select:disabled {
@@ -1153,9 +1159,9 @@ button.select2-selection__clear span {
 }
 
 .frd-list-icon-btn:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px var(--frd-focus-ring);
-    border-color: var(--frd-primary);
+    outline: none !important;
+    box-shadow: 0 0 0 3px var(--frd-focus-ring) !important;
+    border-color: var(--frd-primary) !important;
 }
 
 .frd-list-icon-btn:active:not(:disabled) {
@@ -1206,9 +1212,9 @@ button.select2-selection__clear span {
 }
 
 .frd-list-more-info:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px var(--frd-focus-ring);
-    border-color: var(--frd-primary);
+    outline: none !important;
+    box-shadow: 0 0 0 3px var(--frd-focus-ring) !important;
+    border-color: var(--frd-primary) !important;
 }
 
 .frd-list-more-info:active:not(:disabled) {
@@ -1376,9 +1382,9 @@ button.select2-selection__clear span {
 }
 
 .frd-modal-contact-item a:focus {
-    outline: 2px solid var(--frd-primary);
-    outline-offset: 2px;
-    border-radius: 2px;
+    outline: 2px solid var(--frd-primary) !important;
+    outline-offset: 2px !important;
+    border-radius: 2px !important;
 }
 
 .frd-modal-contact-item a:active {
@@ -1467,8 +1473,8 @@ button.select2-selection__clear span {
 }
 
 .frd-modal-btn-primary:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(38, 52, 71, 0.2);
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(38, 52, 71, 0.2) !important;
 }
 
 .frd-modal-btn-primary:active:not(:disabled) {
@@ -1497,8 +1503,8 @@ button.select2-selection__clear span {
 }
 
 .frd-modal-btn-secondary:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px var(--frd-focus-ring);
+    outline: none !important;
+    box-shadow: 0 0 0 3px var(--frd-focus-ring) !important;
 }
 
 .frd-modal-btn-secondary:active:not(:disabled) {
@@ -1540,9 +1546,9 @@ button.select2-selection__clear span {
 }
 
 .frd-modal-suggest-edits:focus {
-    outline: 2px solid var(--frd-primary);
-    outline-offset: 2px;
-    border-radius: 2px;
+    outline: 2px solid var(--frd-primary) !important;
+    outline-offset: 2px !important;
+    border-radius: 2px !important;
 }
 
 .frd-modal-suggest-edits:active {
