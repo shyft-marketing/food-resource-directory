@@ -19,7 +19,7 @@
     --frd-hover-bg: #F4F1E9;
     --frd-focus-ring: rgba(58, 87, 128, 0.1);
     --frd-danger-dark: #e6005c;
-    
+
     /* === Shadows === */
     --frd-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
     --frd-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
@@ -48,11 +48,11 @@
     --frd-font-xl: 1.5rem;
     --frd-font-2xl: 1.75rem;
     --frd-font-3xl: 2rem;
-    
+
     --frd-weight-medium: 500;
     --frd-weight-semibold: 600;
     --frd-weight-bold: 700;
-    
+
     --frd-leading-none: 1;
     --frd-leading-tight: 1.2;
     --frd-leading-relaxed: 1.6;
@@ -349,9 +349,10 @@
 .frd-filter-group label {
     display: block;
     margin-bottom: var(--frd-spacing-sm);
-    font-weight: var(--frd-weight-medium);
+    font-weight: 700;
     font-size: var(--frd-font-sm);
     color: var(--frd-text);
+
 }
 
 .frd-filter-group small {
@@ -585,7 +586,7 @@ button.select2-selection__clear span {
     color: var(--frd-white) !important;
 }
 
-/* State 2: Non-selected items being hovered - light gray background */  
+/* State 2: Non-selected items being hovered - light gray background */
 .select2-container--default .select2-results__option--highlighted:not(.select2-results__option--selected) {
     background-color: var(--frd-hover-bg) !important;
     color: var(--frd-text) !important;
@@ -634,8 +635,8 @@ button.select2-selection__clear span {
 .frd-distance-slider input[type="range"] {
     flex: 1;
     height: 6px;
-    border-radius: 3px;
-    background: var(--frd-border);
+    border-radius: 0px;
+    background: #f4f1e9;
     outline: none;
     -webkit-appearance: none;
 }
@@ -646,7 +647,7 @@ button.select2-selection__clear span {
     width: var(--frd-font-lg);
     height: var(--frd-font-lg);
     border-radius: var(--frd-radius-full);
-    background: var(--frd-primary);
+    background: #ff6f61;
     cursor: pointer;
 }
 
@@ -654,7 +655,7 @@ button.select2-selection__clear span {
     width: var(--frd-font-lg);
     height: var(--frd-font-lg);
     border-radius: var(--frd-radius-full);
-    background: var(--frd-primary);
+    background: #ff6f61;
     cursor: pointer;
     border: none;
 }
@@ -695,8 +696,9 @@ button.select2-selection__clear span {
 .frd-distance-value {
     min-width: 70px;
     text-align: right;
-    font-weight: var(--frd-weight-medium);
+    font-weight: 400;
     color: var(--frd-primary);
+    font-size: var(--frd-font-sm);
 }
 
 
@@ -863,7 +865,7 @@ button.select2-selection__clear span {
     box-sizing: content-box !important;
 }
 
-.mapboxgl-ctrl-group button + button {
+.mapboxgl-ctrl-group button+button {
     border-top: var(--frd-border-width) solid var(--frd-border) !important;
 }
 
@@ -1012,7 +1014,7 @@ button.select2-selection__clear span {
 }
 
 .frd-popup-more-info:hover {
-    background: var(--frd-primary-dark) !important;
+    background: #1e2a39 !important;
     font-family: "Tungsten", sans-serif !important;
 }
 
@@ -1115,9 +1117,11 @@ button.select2-selection__clear span {
 .frd-location-title {
     display: block;
     font-size: var(--frd-font-lg);
-    font-weight: var(--frd-weight-semibold);
     margin: 0 0 var(--frd-spacing-xs) 0;
     color: var(--frd-text);
+    font-family: 'Tungsten', sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
 }
 
 .frd-location-distance {
@@ -1129,7 +1133,7 @@ button.select2-selection__clear span {
 }
 
 .frd-location-address {
-    font-size: var(--frd-font-sm);
+    font-size: var(--frd-font-base);
     color: #3A5780;
     margin-bottom: var(--frd-spacing-md);
 }
@@ -1396,7 +1400,7 @@ button.select2-selection__clear span {
 }
 
 .frd-modal-title {
-    font-size: var(--frd-font-2xl);
+    font-size: var(--frd-font-xl);
     font-weight: var(--frd-weight-bold);
     margin: 0;
     line-height: var(--frd-leading-tight);
@@ -1462,6 +1466,16 @@ button.select2-selection__clear span {
     text-decoration: none;
 }
 
+.frd-modal-section-heading {
+    font-family: 'Tungsten', sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.frd-modal-section-body {
+    color: #3a5780;
+}
+
 .frd-modal-section {
     margin-bottom: var(--frd-spacing-2xl);
     font-size: var(--frd-font-base);
@@ -1508,7 +1522,7 @@ button.select2-selection__clear span {
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: var(--frd-spacing-md);
     margin-top: var(--frd-spacing-2xl);
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     font-weight: 600;
 }
 
@@ -1540,7 +1554,7 @@ button.select2-selection__clear span {
 
 .frd-modal-btn-primary:hover:not(:disabled) {
     background: var(--frd-dark) !important;
-    background-color: var(--frd-dark) !important;
+    background-color: #1e2a39 !important;
     color: var(--frd-white) !important;
 }
 
@@ -1607,7 +1621,7 @@ button.select2-selection__clear span {
     font-size: 0.75rem;
     color: var(--frd-text-light);
     text-decoration: none !important;
-    margin-top: var(--frd-spacing-md);
+    margin-top: 24px;
     transition: var(--frd-transition);
 }
 
@@ -1641,11 +1655,11 @@ button.select2-selection__clear span {
     .frd-directory {
         padding: 15px;
     }
-    
+
     .frd-view-toggle {
         flex-direction: column;
     }
-    
+
     .frd-filters-header {
         flex-direction: column;
         align-items: flex-start;
@@ -1659,28 +1673,28 @@ button.select2-selection__clear span {
     .frd-filter-actions {
         flex-direction: column;
     }
-    
+
     .frd-btn {
         width: 100%;
     }
-    
+
     #frd-map {
         height: 400px;
     }
-    
+
     .frd-location-header {
         flex-direction: column;
     }
-    
+
     .frd-location-distance {
         margin-left: 0;
         margin-top: var(--frd-spacing-xs);
     }
-    
+
     .frd-modal-content {
         padding: var(--frd-spacing-xl);
     }
-    
+
     .frd-modal-actions {
         flex-direction: column;
     }
@@ -1688,21 +1702,22 @@ button.select2-selection__clear span {
 
 /* Print Styles */
 @media print {
+
     .frd-view-toggle,
     .frd-filters,
     .frd-list-controls,
     .frd-modal {
         display: none !important;
     }
-    
+
     .frd-map-view {
         display: none !important;
     }
-    
+
     .frd-list-view {
         display: block !important;
     }
-    
+
     .frd-location-card {
         page-break-inside: avoid;
         box-shadow: none;
