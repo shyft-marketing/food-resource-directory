@@ -1000,7 +1000,7 @@ button.select2-selection__clear span {
 
 .frd-modal-buttons {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
     gap: 12px;
     margin-top: 24px;
     padding-top: 24px;
