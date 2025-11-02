@@ -3,7 +3,7 @@
     * Plugin Name: Food Resource Directory
     * Plugin URI: https://github.com/shyft-marketing/food-resource-directory
     * Description: Interactive map and filterable directory of food pantries and soup kitchens with ACF integration
-    * Version: 1.0.58
+    * Version: 1.0.59
     * Author: SHYFT
     * Author URI: https://shyft.wtf
     * License: GPL v2 or later
@@ -30,6 +30,10 @@ class Food_Resource_Directory {
         // Check for ACF dependency
         add_action('admin_init', array($this, 'check_dependencies'));
         add_action('admin_notices', array($this, 'dependency_notice'));
+
+        // Register settings page
+        add_action('admin_menu', array($this, 'add_settings_page'));
+        add_action('admin_init', array($this, 'register_settings'));
 
         // Only initialize if ACF is active
         if ($this->is_acf_active()) {
@@ -71,6 +75,114 @@ class Food_Resource_Directory {
             delete_transient('frd_missing_acf');
         }
     }
+
+    /**
+     * Add settings page to WordPress admin menu
+     */
+    public function add_settings_page() {
+        add_options_page(
+            'Food Resource Directory Settings',
+            'Food Resource Directory',
+            'manage_options',
+            'food-resource-directory',
+            array($this, 'render_settings_page')
+        );
+    }
+
+    /**
+     * Register plugin settings
+     */
+    public function register_settings() {
+        register_setting('frd_settings', 'frd_mapbox_secret_token', array(
+            'type' => 'string',
+            'sanitize_callback' => 'sanitize_text_field',
+            'default' => ''
+        ));
+
+        add_settings_section(
+            'frd_mapbox_section',
+            'Mapbox Configuration',
+            array($this, 'render_mapbox_section_info'),
+            'frd_settings'
+        );
+
+        add_settings_field(
+            'frd_mapbox_secret_token',
+            'Mapbox Secret Token',
+            array($this, 'render_secret_token_field'),
+            'frd_settings',
+            'frd_mapbox_section'
+        );
+    }
+
+    /**
+     * Render settings page
+     */
+    public function render_settings_page() {
+        if (!current_user_can('manage_options')) {
+            return;
+        }
+
+        // Check if settings were saved
+        if (isset($_GET['settings-updated'])) {
+            add_settings_error('frd_messages', 'frd_message', 'Settings Saved', 'updated');
+        }
+
+        settings_errors('frd_messages');
+        ?>
+        <div class="wrap">
+            <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
+            <form action="options.php" method="post">
+                <?php
+                settings_fields('frd_settings');
+                do_settings_sections('frd_settings');
+                submit_button('Save Settings');
+                ?>
+            </form>
+        </div>
+        <?php
+    }
+
+    /**
+     * Render section info for Mapbox settings
+     */
+    public function render_mapbox_section_info() {
+        echo '<p>Configure your Mapbox API token. If you provide a Secret Token, it will be used. Otherwise, the plugin will use the default Public Token.</p>';
+    }
+
+    /**
+     * Render secret token field
+     */
+    public function render_secret_token_field() {
+        $value = get_option('frd_mapbox_secret_token', '');
+        ?>
+        <input type="text" 
+               id="frd_mapbox_secret_token" 
+               name="frd_mapbox_secret_token" 
+               value="<?php echo esc_attr($value); ?>" 
+               class="regular-text"
+               placeholder="sk.ey...">
+        <p class="description">
+            Enter your Mapbox Secret Token here. Leave blank to use the default Public Token.<br>
+            Get your token from <a href="https://account.mapbox.com/access-tokens/" target="_blank">Mapbox Account</a>.
+        </p>
+        <?php
+    }
+
+    /**
+     * Get Mapbox token with fallback logic
+     * Returns Secret Token if set, otherwise returns Public Token
+     */
+    private function get_mapbox_token() {
+        $secret_token = get_option('frd_mapbox_secret_token', '');
+        
+        if (!empty($secret_token)) {
+            return $secret_token;
+        }
+        
+        // Default Public Token
+        return 'pk.eyJ1IjoibWFjb21iZGVmZW5kZXJzIiwiYSI6ImNtaGU0bDlrejBhMXQybnB2Zng5aW85M3UifQ.dsT7ITwivyDeR0j07AZkgA';
+    }
     
     /**
      * Enqueue scripts and styles
@@ -102,7 +214,7 @@ class Food_Resource_Directory {
             wp_localize_script('frd-script', 'frdData', array(
                 'ajaxUrl' => admin_url('admin-ajax.php'),
                 'nonce' => wp_create_nonce('frd_nonce'),
-                'mapboxToken' => 'pk.eyJ1IjoibWFjb21iZGVmZW5kZXJzIiwiYSI6ImNtaGU0bDlrejBhMXQybnB2Zng5aW85M3UifQ.dsT7ITwivyDeR0j07AZkgA',
+                'mapboxToken' => $this->get_mapbox_token(),
                 'defaultCenter' => array(-83.0458, 42.5803), // Center of the three counties
                 'defaultZoom' => 9
             ));
@@ -431,7 +543,7 @@ class Food_Resource_Directory {
     private function geocode_address($address) {
         error_log('FRD: Geocoding address: ' . $address);
 
-        $mapbox_token = 'pk.eyJ1IjoibWFjb21iZGVmZW5kZXJzIiwiYSI6ImNtaGU0bDlrejBhMXQybnB2Zng5aW85M3UifQ.dsT7ITwivyDeR0j07AZkgA';
+        $mapbox_token = $this->get_mapbox_token();
         $url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' . urlencode($address) . '.json?access_token=' . $mapbox_token . '&country=US&proximity=-83.0458,42.5803';
 
         error_log('FRD: Geocoding URL: ' . $url);
