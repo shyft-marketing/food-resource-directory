@@ -1116,7 +1116,7 @@ button.select2-selection__clear span {
 
 .frd-location-title {
     display: block;
-    font-size: var(--frd-font-lg);
+    font-size: var(--frd-font-xl);
     margin: 0 0 var(--frd-spacing-xs) 0;
     color: var(--frd-text);
     font-family: 'Tungsten', sans-serif;
@@ -1133,7 +1133,7 @@ button.select2-selection__clear span {
 }
 
 .frd-location-address {
-    font-size: var(--frd-font-base);
+    font-size: 0.875rem;
     color: #3A5780;
     margin-bottom: var(--frd-spacing-md);
 }
