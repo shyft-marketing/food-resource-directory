@@ -650,7 +650,6 @@ button.select2-selection__clear span {
     border-radius: var(--frd-radius-full);
     background: #ff6f61;
     cursor: pointer;
-    border: 1px solid #263447;
 }
 
 .frd-distance-slider input[type="range"]::-moz-range-thumb {
