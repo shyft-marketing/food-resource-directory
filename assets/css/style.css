@@ -922,10 +922,11 @@ button.select2-selection__clear span {
     border: var(--frd-border-width) solid var(--frd-service-border);
     border-radius: var(--frd-radius-sm);
     font-size: var(--frd-font-sm);
-    font-weight: var(--frd-weight-medium);
+    font-weight: 1em;
     color: var(--frd-text);
     white-space: nowrap;
     flex-shrink: 0;
+    text-wrap: pretty;
 }
 
 .mapboxgl-popup-close-button {
