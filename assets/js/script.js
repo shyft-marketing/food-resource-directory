@@ -665,10 +665,12 @@
 
         $footer.append($iconButtons);
 
-        // More Info button - using inline styles like map popup
-        const $moreInfoBtn = $('<button class="frd-list-more-info" style="padding: 0; background: transparent; color: #263447; border: none; font-size: 1rem; font-weight: 600; font-family: \'Tungsten\', sans-serif; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px;"></button>');
-        $moreInfoBtn.append('<span style="font-family: \'Tungsten\', sans-serif;">More Info</span>');
-        $moreInfoBtn.append('<img src="' + frdData.pluginUrl + '/assets/icons/Read More Icon.svg" alt="" style="width: 1em; height: 1em;">');
+        // More Info button - create as HTML string like map popup
+        const moreInfoHtml = '<button class="frd-list-more-info" style="padding: 0; background: transparent; color: #263447; border: none; font-size: 1rem; font-weight: 600; font-family: \'Tungsten\', sans-serif; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">' +
+            '<span>More Info</span>' +
+            '<img src="' + frdData.pluginUrl + '/assets/icons/Read More Icon.svg" alt="" style="width: 1em; height: 1em;">' +
+            '</button>';
+        const $moreInfoBtn = $(moreInfoHtml);
         $moreInfoBtn.on('click', function(e) {
             e.stopPropagation();
             showLocationDetails(location);
