@@ -102,7 +102,7 @@ class FRD_Import_Validator {
      * Validate required fields
      */
     private function validate_required($row, &$result) {
-        $required = array('Title', 'Street Address', 'City', 'State', 'ZIP', 'County');
+        $required = array('County', 'Organization', 'Type', 'Street Address', 'City', 'State', 'ZIP Code');
         
         foreach ($required as $field) {
             if (empty($row[$field])) {
@@ -113,14 +113,14 @@ class FRD_Import_Validator {
     }
     
     /**
-     * Validate title is unique within import
+     * Validate organization name is unique within import
      */
     private function validate_title_unique($row, $all_titles, &$result) {
-        if (empty($row['Title'])) {
+        if (empty($row['Organization'])) {
             return;
         }
         
-        $title = $row['Title'];
+        $title = $row['Organization'];
         $count = 0;
         
         foreach ($all_titles as $existing_title) {
@@ -130,13 +130,13 @@ class FRD_Import_Validator {
         }
         
         if ($count > 1) {
-            $result['warnings'][] = "Duplicate title in import file - will be created with suffix";
+            $result['warnings'][] = "Duplicate organization name in import file - will be created with suffix";
         }
         
         // Check if title exists in WordPress
         $existing = get_page_by_title($title, OBJECT, 'food-resource');
         if ($existing) {
-            $result['warnings'][] = "Location with this title already exists - will create duplicate with suffix";
+            $result['warnings'][] = "Location with this organization name already exists - will create duplicate with suffix";
         }
     }
     
@@ -160,11 +160,11 @@ class FRD_Import_Validator {
      * Validate ZIP code
      */
     private function validate_zip($row, &$result) {
-        if (empty($row['ZIP'])) {
+        if (empty($row['ZIP Code'])) {
             return;
         }
         
-        $zip = trim($row['ZIP']);
+        $zip = trim($row['ZIP Code']);
         
         // Must be exactly 5 digits
         if (!preg_match('/^\d{5}$/', $zip)) {
@@ -243,16 +243,16 @@ class FRD_Import_Validator {
     }
     
     /**
-     * Validate services
+     * Validate services (Type field)
      */
     private function validate_services($row, &$result) {
-        if (empty($row['Services'])) {
+        if (empty($row['Type'])) {
             $result['valid'] = false;
-            $result['errors'][] = "Services field is required";
+            $result['errors'][] = "Type field is required";
             return;
         }
         
-        $services = array_map('trim', explode(',', $row['Services']));
+        $services = array_map('trim', explode(',', $row['Type']));
         $invalid_services = array();
         
         foreach ($services as $service) {
@@ -263,28 +263,28 @@ class FRD_Import_Validator {
         
         if (!empty($invalid_services)) {
             $result['valid'] = false;
-            $result['errors'][] = "Invalid service(s): " . implode(', ', $invalid_services) . " (valid: " . implode(', ', $this->valid_services) . ")";
+            $result['errors'][] = "Invalid service type(s): " . implode(', ', $invalid_services) . " (valid: " . implode(', ', $this->valid_services) . ")";
         }
     }
     
     /**
-     * Validate Hours Other Hours field
+     * Validate Other Hours field
      */
     private function validate_hours_other_hours($row, &$result) {
-        if (empty($row['Hours Other Hours'])) {
+        if (empty($row['Other Hours'])) {
             return; // Optional field
         }
         
-        $value = trim($row['Hours Other Hours']);
+        $value = trim($row['Other Hours']);
         
         if (!in_array($value, $this->valid_hours_options)) {
             $result['valid'] = false;
-            $result['errors'][] = "Invalid 'Hours Other Hours' value: {$value} (must be one of: " . implode(', ', $this->valid_hours_options) . ")";
+            $result['errors'][] = "Invalid 'Other Hours' value: {$value} (must be one of: " . implode(', ', $this->valid_hours_options) . ")";
         }
         
         // If not "Regular hours", warn that day/time fields will be ignored
         if ($value !== 'Regular hours' && $value !== '') {
-            $result['warnings'][] = "Hours Other Hours is set to '{$value}' - day/time fields will be ignored";
+            $result['warnings'][] = "Other Hours is set to '{$value}' - day/time fields will be ignored";
         }
     }
     
@@ -292,12 +292,14 @@ class FRD_Import_Validator {
      * Validate hours fields
      */
     private function validate_hours($row, &$result) {
-        $days = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
+        $days = array('Mondays', 'Tuesdays', 'Wednesdays', 'Thursdays', 'Fridays', 'Saturdays', 'Sundays');
+        $day_names = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
         
-        foreach ($days as $day) {
-            $open_field = $day . ' Open';
-            $open_time_field = $day . ' Open Time';
-            $close_time_field = $day . ' Close Time';
+        foreach ($days as $index => $day) {
+            $day_name = $day_names[$index];
+            $open_field = 'Open ' . $day . '?';
+            $open_time_field = $day_name . ' Open Time';
+            $close_time_field = $day_name . ' Close Time';
             
             if (empty($row[$open_field])) {
                 continue;

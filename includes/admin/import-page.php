@@ -50,19 +50,21 @@ $step = isset($_GET['step']) ? sanitize_text_field($_GET['step']) : 'upload';
                     
                     <h4>Required Fields:</h4>
                     <ul>
-                        <li><strong>Title</strong> - Location name</li>
+                        <li><strong>County</strong> - One of: Macomb County, Oakland County, Wayne County</li>
+                        <li><strong>Organization</strong> - Location name</li>
+                        <li><strong>Type</strong> - Service type (Food Pantry, Soup Kitchen, or Other)</li>
                         <li><strong>Street Address</strong> - Street address</li>
                         <li><strong>City</strong> - City name</li>
                         <li><strong>State</strong> - 2-letter state code (e.g., MI)</li>
-                        <li><strong>ZIP</strong> - 5-digit ZIP code</li>
-                        <li><strong>County</strong> - One of: Macomb County, Oakland County, Wayne County</li>
+                        <li><strong>ZIP Code</strong> - 5-digit ZIP code</li>
                     </ul>
                     
                     <h4>Format Guidelines:</h4>
                     <ul>
                         <li><strong>Phone:</strong> 10 digits, no special characters (e.g., 3135550100)</li>
-                        <li><strong>Services:</strong> Comma-separated (e.g., "Food Pantry, Soup Kitchen")</li>
-                        <li><strong>Hours:</strong> TRUE or FALSE for "Open?" fields</li>
+                        <li><strong>Type:</strong> Comma-separated service types (e.g., "Food Pantry, Soup Kitchen")</li>
+                        <li><strong>Other Hours:</strong> Leave blank for regular hours, or select: Appointment only, Hours unknown, Call to confirm</li>
+                        <li><strong>Open Days:</strong> TRUE or FALSE for "Open X?" fields</li>
                         <li><strong>Times:</strong> Any format (e.g., 9:00 AM, 9am, 09:00)</li>
                     </ul>
                 </div>
@@ -442,7 +444,7 @@ jQuery(document).ready(function($) {
         if (data.valid_rows > 0) {
             html += '<h3>Preview (First 10 Rows)</h3>';
             html += '<table class="frd-preview-table"><thead><tr>';
-            html += '<th>Row</th><th>Title</th><th>Address</th><th>County</th><th>Status</th>';
+            html += '<th>Row</th><th>Organization</th><th>Address</th><th>County</th><th>Status</th>';
             html += '</tr></thead><tbody>';
             
             var preview = data.preview.slice(0, 10);
@@ -454,7 +456,7 @@ jQuery(document).ready(function($) {
                 
                 html += '<tr class="' + rowClass + '">';
                 html += '<td>' + row._row_number + '</td>';
-                html += '<td>' + escapeHtml(row.Title || '') + '</td>';
+                html += '<td>' + escapeHtml(row.Organization || '') + '</td>';
                 html += '<td>' + escapeHtml(row['Street Address'] || '') + ', ' + escapeHtml(row.City || '') + '</td>';
                 html += '<td>' + escapeHtml(row.County || '') + '</td>';
                 html += '<td>' + statusBadge;

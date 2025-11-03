@@ -181,20 +181,21 @@ public function import_data($data, $batch_size = 25) {
 
 ## CSV Template Column Reference
 
-1. Title
-2. Street Address
-3. City
-4. State
-5. ZIP
-6. County
-7. Phone
-8. Website
-9. Services
+1. County
+2. Organization
+3. Type
+4. Street Address
+5. City
+6. State
+7. ZIP Code
+8. Phone
+9. Website
 10. Languages
-11-30. Hours fields (Monday-Sunday: Open, Open Time, Close Time)
-31. Hours Note
-32. Eligibility Requirements
-33. Additional Notes
+11. Eligibility Requirements
+12. Notes
+13. Other Hours
+14-20. Open days (Open Mondays? through Open Sundays?)
+21-34. Time fields (Monday Open Time through Sunday Close Time)
 
 ## Support
 

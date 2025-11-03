@@ -57,11 +57,11 @@ class FRD_Importer {
             return $parse_result;
         }
         
-        // Get all titles for duplicate checking
+        // Get all organization names for duplicate checking
         $all_titles = array();
         foreach ($parse_result['data'] as $row) {
-            if (!empty($row['Title'])) {
-                $all_titles[] = $row['Title'];
+            if (!empty($row['Organization'])) {
+                $all_titles[] = $row['Organization'];
             }
         }
         
@@ -117,7 +117,7 @@ class FRD_Importer {
                 $this->results['skipped']++;
                 $this->results['errors'][] = array(
                     'row' => $row['_row_number'],
-                    'title' => $row['Title'],
+                    'title' => $row['Organization'],
                     'errors' => $row['_validation']['errors']
                 );
                 continue;
@@ -133,7 +133,7 @@ class FRD_Importer {
                 $this->results['failed']++;
                 $this->results['errors'][] = array(
                     'row' => $row['_row_number'],
-                    'title' => $row['Title'],
+                    'title' => $row['Organization'],
                     'errors' => $result['errors']
                 );
             }
@@ -158,8 +158,8 @@ class FRD_Importer {
      * @return array Result with 'success' and 'post_id' or 'errors'
      */
     private function import_row($row) {
-        // Get unique title
-        $title = $this->get_unique_title($row['Title']);
+        // Get unique title from Organization field
+        $title = $this->get_unique_title($row['Organization']);
         
         // Create post
         $post_data = array(
@@ -197,7 +197,7 @@ class FRD_Importer {
         update_field('street_address', $row['Street Address'], $post_id);
         update_field('city', $row['City'], $post_id);
         update_field('state', strtoupper(trim($row['State'])), $post_id);
-        update_field('zip', $row['ZIP'], $post_id);
+        update_field('zip', $row['ZIP Code'], $post_id);
         update_field('county', $row['County'], $post_id);
         
         // Contact fields
@@ -211,9 +211,9 @@ class FRD_Importer {
             update_field('url', $row['Website'], $post_id);
         }
         
-        // Services (comma-separated to array)
-        if (!empty($row['Services'])) {
-            $services = array_map('trim', explode(',', $row['Services']));
+        // Type/Services (comma-separated to array)
+        if (!empty($row['Type'])) {
+            $services = array_map('trim', explode(',', $row['Type']));
             update_field('services', $services, $post_id);
         }
         
@@ -223,22 +223,25 @@ class FRD_Importer {
             update_field('languages', $languages, $post_id);
         }
         
-        // Hours Other Hours field
-        $hours_other_hours = !empty($row['Hours Other Hours']) ? trim($row['Hours Other Hours']) : '';
+        // Other Hours field
+        $hours_other_hours = !empty($row['Other Hours']) ? trim($row['Other Hours']) : '';
         if (!empty($hours_other_hours)) {
             update_field('hours_other_hours', $hours_other_hours, $post_id);
         }
         
-        // Only set day/time fields if Hours Other Hours is empty or "Regular hours"
+        // Only set day/time fields if Other Hours is empty or "Regular hours"
         if (empty($hours_other_hours) || $hours_other_hours === 'Regular hours') {
             // Hours for each day
-            $days = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
+            $days = array('Mondays', 'Tuesdays', 'Wednesdays', 'Thursdays', 'Fridays', 'Saturdays', 'Sundays');
+            $day_names = array('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday');
+            $day_labels = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
             
-            foreach ($days as $day) {
-                $day_lower = strtolower($day);
-                $open_field = $day . ' Open';
-                $open_time_field = $day . ' Open Time';
-                $close_time_field = $day . ' Close Time';
+            foreach ($days as $index => $day) {
+                $day_lower = $day_names[$index];
+                $day_label = $day_labels[$index];
+                $open_field = 'Open ' . $day . '?';
+                $open_time_field = $day_label . ' Open Time';
+                $close_time_field = $day_label . ' Close Time';
                 
                 $is_open = $this->parse_boolean($row[$open_field]);
                 
@@ -260,8 +263,8 @@ class FRD_Importer {
             update_field('eligibility', $row['Eligibility Requirements'], $post_id);
         }
         
-        if (!empty($row['Additional Notes'])) {
-            update_field('notes', $row['Additional Notes'], $post_id);
+        if (!empty($row['Notes'])) {
+            update_field('notes', $row['Notes'], $post_id);
         }
     }
     
