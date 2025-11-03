@@ -223,32 +223,36 @@ class FRD_Importer {
             update_field('languages', $languages, $post_id);
         }
         
-        // Hours for each day
-        $days = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
-        
-        foreach ($days as $day) {
-            $day_lower = strtolower($day);
-            $open_field = $day . ' Open';
-            $open_time_field = $day . ' Open Time';
-            $close_time_field = $day . ' Close Time';
-            
-            $is_open = $this->parse_boolean($row[$open_field]);
-            
-            update_field('hours_' . $day_lower . '_open', $is_open ? '1' : '0', $post_id);
-            
-            if ($is_open && !empty($row[$open_time_field]) && !empty($row[$close_time_field])) {
-                // Format time
-                $open_time = $this->format_time($row[$open_time_field]);
-                $close_time = $this->format_time($row[$close_time_field]);
-                
-                update_field('hours_' . $day_lower . '_open_time', $open_time, $post_id);
-                update_field('hours_' . $day_lower . '_close_time', $close_time, $post_id);
-            }
+        // Hours Other Hours field
+        $hours_other_hours = !empty($row['Hours Other Hours']) ? trim($row['Hours Other Hours']) : '';
+        if (!empty($hours_other_hours)) {
+            update_field('hours_other_hours', $hours_other_hours, $post_id);
         }
         
-        // Hours note
-        if (!empty($row['Hours Note'])) {
-            update_field('hours_other_hours', $row['Hours Note'], $post_id);
+        // Only set day/time fields if Hours Other Hours is empty or "Regular hours"
+        if (empty($hours_other_hours) || $hours_other_hours === 'Regular hours') {
+            // Hours for each day
+            $days = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
+            
+            foreach ($days as $day) {
+                $day_lower = strtolower($day);
+                $open_field = $day . ' Open';
+                $open_time_field = $day . ' Open Time';
+                $close_time_field = $day . ' Close Time';
+                
+                $is_open = $this->parse_boolean($row[$open_field]);
+                
+                update_field('hours_' . $day_lower . '_open', $is_open ? '1' : '0', $post_id);
+                
+                if ($is_open && !empty($row[$open_time_field]) && !empty($row[$close_time_field])) {
+                    // Format time
+                    $open_time = $this->format_time($row[$open_time_field]);
+                    $close_time = $this->format_time($row[$close_time_field]);
+                    
+                    update_field('hours_' . $day_lower . '_open_time', $open_time, $post_id);
+                    update_field('hours_' . $day_lower . '_close_time', $close_time, $post_id);
+                }
+            }
         }
         
         // Additional fields

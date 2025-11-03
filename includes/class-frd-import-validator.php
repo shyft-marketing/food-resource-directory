@@ -31,6 +31,16 @@ class FRD_Import_Validator {
     );
     
     /**
+     * Valid hours other hours options
+     */
+    private $valid_hours_options = array(
+        'Regular hours',
+        'Appointment only',
+        'Hours unknown',
+        'Call to confirm'
+    );
+    
+    /**
      * Allowed counties (filterable)
      */
     private $allowed_counties = array();
@@ -78,6 +88,9 @@ class FRD_Import_Validator {
         
         // Service fields
         $this->validate_services($row, $result);
+        
+        // Hours Other Hours field
+        $this->validate_hours_other_hours($row, $result);
         
         // Hours
         $this->validate_hours($row, $result);
@@ -251,6 +264,27 @@ class FRD_Import_Validator {
         if (!empty($invalid_services)) {
             $result['valid'] = false;
             $result['errors'][] = "Invalid service(s): " . implode(', ', $invalid_services) . " (valid: " . implode(', ', $this->valid_services) . ")";
+        }
+    }
+    
+    /**
+     * Validate Hours Other Hours field
+     */
+    private function validate_hours_other_hours($row, &$result) {
+        if (empty($row['Hours Other Hours'])) {
+            return; // Optional field
+        }
+        
+        $value = trim($row['Hours Other Hours']);
+        
+        if (!in_array($value, $this->valid_hours_options)) {
+            $result['valid'] = false;
+            $result['errors'][] = "Invalid 'Hours Other Hours' value: {$value} (must be one of: " . implode(', ', $this->valid_hours_options) . ")";
+        }
+        
+        // If not "Regular hours", warn that day/time fields will be ignored
+        if ($value !== 'Regular hours' && $value !== '') {
+            $result['warnings'][] = "Hours Other Hours is set to '{$value}' - day/time fields will be ignored";
         }
     }
     

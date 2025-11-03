@@ -84,10 +84,17 @@ The Food Resource Directory plugin now includes a comprehensive CSV bulk import 
 - Any values accepted
 - Example: "English, Spanish, Arabic"
 
+**Hours Other Hours:**
+- Optional dropdown field
+- Valid values: "Regular hours", "Appointment only", "Hours unknown", "Call to confirm"
+- If set to anything other than "Regular hours", day/time fields will be ignored
+- Leave empty or set to "Regular hours" to use day/time fields
+
 **Hours:**
 - Open fields: TRUE or FALSE (case-insensitive)
 - Time fields: Flexible format (9:00 AM, 9am, 09:00)
 - If day is open, both open and close times required
+- Only used when Hours Other Hours is empty or "Regular hours"
 
 **Website:**
 - Must be valid URL

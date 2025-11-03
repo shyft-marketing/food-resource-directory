@@ -57,7 +57,7 @@ class FRD_CSV_Parser {
         'Sunday Open',
         'Sunday Open Time',
         'Sunday Close Time',
-        'Hours Note',
+        'Hours Other Hours',
         'Eligibility Requirements',
         'Additional Notes'
     );
