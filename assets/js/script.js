@@ -13,11 +13,32 @@
         console.log('FRD: Document ready, initializing...');
         console.log('FRD: Mapbox token:', frdData.mapboxToken);
         console.log('FRD: AJAX URL:', frdData.ajaxUrl);
+        
+        // Set default view based on device size
+        // For tablets (up to 1024px) and mobile devices, default to list view
+        if (window.innerWidth <= 1024) {
+            currentView = 'list';
+        }
+        
         initializeDirectory();
     });
 
     function initializeDirectory() {
         console.log('FRD: Starting initialization...');
+
+        // Set initial view based on device size
+        if (currentView === 'list') {
+            // Update toggle buttons
+            $('.frd-toggle-btn').removeClass('active');
+            $('.frd-toggle-btn[data-view="list"]').addClass('active');
+            
+            // Update views
+            $('.frd-view').removeClass('active');
+            $('.frd-list-view').addClass('active');
+            
+            // Show list controls
+            $('.frd-list-controls').show();
+        }
 
         // Initialize Select2 on multi-select dropdowns
         $('#frd-services, #frd-days').select2({
