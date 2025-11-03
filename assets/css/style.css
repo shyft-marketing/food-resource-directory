@@ -1087,7 +1087,7 @@ button.select2-selection__clear span {
 }
 
 .frd-list-controls label {
-    font-weight: 700;
+    font-weight: 700 !important;
     font-size: var(--frd-font-sm);
 }
 
