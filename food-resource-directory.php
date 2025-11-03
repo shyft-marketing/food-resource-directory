@@ -3,7 +3,7 @@
     * Plugin Name: Food Resource Directory
     * Plugin URI: https://github.com/shyft-marketing/food-resource-directory
     * Description: Interactive map and filterable directory of food pantries and soup kitchens with ACF integration
-    * Version: 1.0.140
+    * Version: 1.0.141
     * Author: SHYFT
     * Author URI: https://shyft.wtf
     * License: GPL v2 or later
@@ -44,6 +44,14 @@ class Food_Resource_Directory {
             add_action('wp_ajax_nopriv_frd_get_locations', array($this, 'ajax_get_locations'));
             add_action('wp_ajax_frd_geocode', array($this, 'ajax_geocode'));
             add_action('wp_ajax_nopriv_frd_geocode', array($this, 'ajax_geocode'));
+            
+            // Import functionality
+            add_action('admin_menu', array($this, 'add_import_page'));
+            add_action('admin_post_frd_download_template', array($this, 'download_template'));
+            add_action('wp_ajax_frd_upload_preview', array($this, 'ajax_upload_preview'));
+            add_action('wp_ajax_frd_get_preview', array($this, 'ajax_get_preview'));
+            add_action('wp_ajax_frd_confirm_import', array($this, 'ajax_confirm_import'));
+            add_action('wp_ajax_frd_get_results', array($this, 'ajax_get_results'));
         }
     }
 
@@ -629,6 +637,179 @@ class Food_Resource_Directory {
         
         return round($distance, 2);
     }
+    /**
+     * Add import page to admin menu
+     */
+    public function add_import_page() {
+        add_submenu_page(
+            'edit.php?post_type=food-resource',
+            'Import Locations',
+            'Import Locations',
+            'manage_options',
+            'food-resource-directory-import',
+            array($this, 'render_import_page')
+        );
+    }
+    
+    /**
+     * Render import page
+     */
+    public function render_import_page() {
+        include FRD_PLUGIN_DIR . 'includes/admin/import-page.php';
+    }
+    
+    /**
+     * Download CSV template
+     */
+    public function download_template() {
+        if (!current_user_can('manage_options')) {
+            wp_die('Unauthorized');
+        }
+        
+        require_once FRD_PLUGIN_DIR . 'includes/class-frd-csv-parser.php';
+        $parser = new FRD_CSV_Parser();
+        
+        $csv_content = $parser->generate_template();
+        
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename="food-resource-import-template.csv"');
+        header('Pragma: no-cache');
+        header('Expires: 0');
+        
+        echo $csv_content;
+        exit;
+    }
+    
+    /**
+     * AJAX: Upload and preview CSV
+     */
+    public function ajax_upload_preview() {
+        check_ajax_referer('frd_import_upload', 'frd_import_nonce');
+        
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error(array('message' => 'Unauthorized'));
+        }
+        
+        if (!isset($_FILES['import_file'])) {
+            wp_send_json_error(array('message' => 'No file uploaded'));
+        }
+        
+        $file = $_FILES['import_file'];
+        
+        // Check file type
+        $file_ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        if ($file_ext !== 'csv') {
+            wp_send_json_error(array('message' => 'Only CSV files are allowed'));
+        }
+        
+        // Move uploaded file
+        $upload_dir = wp_upload_dir();
+        $temp_file = $upload_dir['basedir'] . '/frd-import-' . time() . '.csv';
+        
+        if (!move_uploaded_file($file['tmp_name'], $temp_file)) {
+            wp_send_json_error(array('message' => 'Failed to save uploaded file'));
+        }
+        
+        // Parse and validate
+        require_once FRD_PLUGIN_DIR . 'includes/class-frd-importer.php';
+        $importer = new FRD_Importer();
+        
+        $result = $importer->parse_and_validate($temp_file);
+        
+        if (!$result['success']) {
+            @unlink($temp_file);
+            wp_send_json_error(array('message' => implode(' ', $result['errors'])));
+        }
+        
+        // Store data in transient for preview
+        set_transient('frd_import_data_' . get_current_user_id(), array(
+            'file' => $temp_file,
+            'data' => $result
+        ), 3600); // 1 hour
+        
+        wp_send_json_success(array('message' => 'File uploaded successfully'));
+    }
+    
+    /**
+     * AJAX: Get preview data
+     */
+    public function ajax_get_preview() {
+        check_ajax_referer('frd_import_preview', 'nonce');
+        
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error(array('message' => 'Unauthorized'));
+        }
+        
+        $import_data = get_transient('frd_import_data_' . get_current_user_id());
+        
+        if (!$import_data) {
+            wp_send_json_error(array('message' => 'No import data found. Please upload a file first.'));
+        }
+        
+        $result = $import_data['data'];
+        
+        wp_send_json_success(array(
+            'total_rows' => $result['total_rows'],
+            'valid_rows' => $result['valid_rows'],
+            'invalid_rows' => $result['invalid_rows'],
+            'preview' => $result['data']
+        ));
+    }
+    
+    /**
+     * AJAX: Confirm and execute import
+     */
+    public function ajax_confirm_import() {
+        check_ajax_referer('frd_import_confirm', 'nonce');
+        
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error(array('message' => 'Unauthorized'));
+        }
+        
+        $import_data = get_transient('frd_import_data_' . get_current_user_id());
+        
+        if (!$import_data) {
+            wp_send_json_error(array('message' => 'No import data found'));
+        }
+        
+        require_once FRD_PLUGIN_DIR . 'includes/class-frd-importer.php';
+        $importer = new FRD_Importer();
+        
+        $results = $importer->import_data($import_data['data']['data']);
+        
+        // Clean up temp file
+        if (file_exists($import_data['file'])) {
+            @unlink($import_data['file']);
+        }
+        
+        // Store results in transient
+        set_transient('frd_import_results_' . get_current_user_id(), $results, 3600);
+        
+        // Delete import data
+        delete_transient('frd_import_data_' . get_current_user_id());
+        
+        wp_send_json_success(array('message' => 'Import completed'));
+    }
+    
+    /**
+     * AJAX: Get import results
+     */
+    public function ajax_get_results() {
+        check_ajax_referer('frd_import_results', 'nonce');
+        
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error(array('message' => 'Unauthorized'));
+        }
+        
+        $results = get_transient('frd_import_results_' . get_current_user_id());
+        
+        if (!$results) {
+            wp_send_json_error(array('message' => 'No import results found'));
+        }
+        
+        wp_send_json_success($results);
+    }
+    
     /**
      * Plugin activation hook
      */
