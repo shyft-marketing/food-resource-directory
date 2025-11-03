@@ -807,22 +807,22 @@
         
         if (location.phone) {
             html += '<a href="tel:' + location.phone_link + '" class="frd-modal-btn frd-modal-btn-primary">';
-            html += '<img src="' + frdData.pluginUrl + '/assets/icons/Phone Icon.svg" alt="">';
             html += 'CALL';
+            html += '<img src="' + frdData.pluginUrl + '/assets/icons/Phone Icon.svg" alt="">';
             html += '</a>';
         }
         
         if (location.website) {
             html += '<a href="' + location.website + '" target="_blank" class="frd-modal-btn frd-modal-btn-secondary">';
-            html += '<img src="' + frdData.pluginUrl + '/assets/icons/Link Icon.svg" alt="">';
             html += 'VISIT WEBSITE';
+            html += '<img src="' + frdData.pluginUrl + '/assets/icons/Link Icon.svg" alt="">';
             html += '</a>';
         }
         
         const directionsUrl = 'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(location.full_address);
         html += '<a href="' + directionsUrl + '" target="_blank" class="frd-modal-btn frd-modal-btn-secondary">';
-        html += '<img src="' + frdData.pluginUrl + '/assets/icons/Directions Icon.svg" alt="">';
         html += 'DIRECTIONS';
+        html += '<img src="' + frdData.pluginUrl + '/assets/icons/Directions Icon.svg" alt="">';
         html += '</a>';
         
         html += '</div>';

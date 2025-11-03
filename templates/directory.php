@@ -3,12 +3,12 @@
     <!-- View Toggle -->
     <div class="frd-view-toggle">
         <button class="frd-toggle-btn active" data-view="map">
-            <img src="<?php echo plugin_dir_url(dirname(__FILE__)) . 'assets/icons/Map Icon.svg'; ?>" alt="Map" />
             Map View
+            <img src="<?php echo plugin_dir_url(dirname(__FILE__)) . 'assets/icons/Map Icon.svg'; ?>" alt="Map" />
         </button>
         <button class="frd-toggle-btn" data-view="list">
-            <img src="<?php echo plugin_dir_url(dirname(__FILE__)) . 'assets/icons/List Icon.svg'; ?>" alt="List" />
             List View
+            <img src="<?php echo plugin_dir_url(dirname(__FILE__)) . 'assets/icons/List Icon.svg'; ?>" alt="List" />
         </button>
     </div>
 
@@ -23,8 +23,8 @@
             </div>
         </div>
         <button class="frd-filters-toggle-btn" id="frd-filters-toggle-btn">
-            <img src="<?php echo plugin_dir_url(dirname(__FILE__)) . 'assets/icons/Filter Icon.svg'; ?>" alt="Filters" />
             Filters
+            <img src="<?php echo plugin_dir_url(dirname(__FILE__)) . 'assets/icons/Filter Icon.svg'; ?>" alt="Filters" />
         </button>
     </div>
 
