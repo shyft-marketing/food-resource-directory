@@ -676,13 +676,23 @@
             // Create popup content on demand (lazy loading)
             const popupContent = createPopupContent(location);
 
-            new mapboxgl.Popup({
+            const popup = new mapboxgl.Popup({
                 offset: 25,
                 maxWidth: '350px'
             })
                 .setLngLat(coordinates)
                 .setHTML(popupContent)
                 .addTo(map);
+
+            // Prevent icon buttons from receiving focus when popup opens
+            popup.on('open', function() {
+                // Remove focus from any element in the popup
+                setTimeout(function() {
+                    if (document.activeElement) {
+                        document.activeElement.blur();
+                    }
+                }, 0);
+            });
         });
 
         // Change cursor on hover
