@@ -14,6 +14,8 @@ if (!defined('WP_UNINSTALL_PLUGIN')) {
 // Delete plugin options
 delete_option('frd_version');
 delete_option('frd_settings');
+delete_option('frd_mapbox_public_token');
+delete_option('frd_mapbox_secret_token');
 
 // Delete transients
 delete_transient('frd_missing_acf');

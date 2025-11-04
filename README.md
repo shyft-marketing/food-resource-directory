@@ -2,7 +2,8 @@
 
 A WordPress plugin that displays an interactive map and filterable directory of food pantries, soup kitchens, and other food resources. Built with Advanced Custom Fields (ACF) integration and Mapbox mapping.
 
-![WordPress Version](https://img.shields.io/badge/WordPress-6.8.3%2B-blue)
+![Version](https://img.shields.io/badge/version-2.0.0-brightgreen)
+![WordPress Version](https://img.shields.io/badge/WordPress-6.0%2B-blue)
 ![PHP Version](https://img.shields.io/badge/PHP-7.4%2B-purple)
 ![License](https://img.shields.io/badge/license-GPL--2.0-green)
 
@@ -32,12 +33,24 @@ A WordPress plugin that displays an interactive map and filterable directory of 
 - Touch-optimized interface
 - Works on all screen sizes
 
+### 📥 CSV Import (NEW in v2.0.0)
+- Bulk import locations from CSV
+- Download template with all required fields
+- Validation and preview before import
+- Import up to hundreds of locations at once
+
+### ⚙️ Admin Configuration (NEW in v2.0.0)
+- Configure Mapbox tokens via WP Admin
+- Support for both public and secret tokens
+- No more code editing required
+
 ## Requirements
 
-- WordPress 6.8.3 or higher
+- WordPress 6.0 or higher
 - PHP 7.4 or higher
-- Advanced Custom Fields PRO plugin
-- Mapbox account (free tier works)
+- Advanced Custom Fields (ACF or ACF PRO)
+- Mapbox account (free tier available at [mapbox.com](https://www.mapbox.com/))
+- Modern browser with WebGL support (see [BROWSER-SUPPORT.md](BROWSER-SUPPORT.md))
 
 ## Installation
 
@@ -50,8 +63,8 @@ A WordPress plugin that displays an interactive map and filterable directory of 
    - Upload the `food-resource-directory` folder to `/wp-content/plugins/`
    - Or upload as a ZIP file via WordPress Admin → Plugins → Add New
 
-3. **Install ACF PRO**
-   - Purchase and install [Advanced Custom Fields PRO](https://www.advancedcustomfields.com/pro/)
+3. **Install ACF**
+   - Install [Advanced Custom Fields](https://wordpress.org/plugins/advanced-custom-fields/) (free) or [ACF PRO](https://www.advancedcustomfields.com/pro/)
 
 4. **Activate the plugin**
    - Go to WordPress Admin → Plugins
@@ -126,21 +139,21 @@ For each day, create 3 separate fields:
 - `eligibility` (Text Area)
 - `notes` (Text Area)
 
-### Step 3: Configure Mapbox Token
+### Step 3: Configure Mapbox Tokens
 
-Edit `food-resource-directory.php` and update the Mapbox token on line 57:
+**NEW in v2.0.0:** Configure tokens via WordPress Admin - no code editing required!
 
-```php
-'mapboxToken' => 'YOUR_MAPBOX_TOKEN_HERE'
-```
-
-And line 263:
-
-```php
-$mapbox_token = 'YOUR_MAPBOX_TOKEN_HERE';
-```
+1. Go to **WordPress Admin → Settings → Food Resource Directory**
+2. Enter your Mapbox Public Token (required)
+3. Optionally enter your Mapbox Secret Token (for server-side geocoding)
+4. Click **Save Settings**
 
 **Get a free Mapbox token:** https://account.mapbox.com/
+
+**Token Requirements:**
+- Public tokens start with `pk.` (used for map display)
+- Secret tokens start with `sk.` (optional, for server-side operations)
+- Free tier includes 50,000 map loads per month
 
 ### Step 4: Add to Your Site
 
@@ -160,10 +173,20 @@ $mapbox_token = 'YOUR_MAPBOX_TOKEN_HERE';
 
 ### Adding Food Resources
 
+**Option 1: Add Manually**
 1. Go to **WordPress Admin → Food Resources → Add New**
 2. Enter the location name as the **Title**
 3. Fill in all fields in the "Food Resource Info" section
 4. Click **Publish**
+
+**Option 2: Import from CSV (NEW in v2.0.0)**
+1. Go to **WordPress Admin → Food Resources → Import Locations**
+2. Download the CSV template
+3. Fill in your location data following the template format
+4. Upload the completed CSV file
+5. Review the preview and confirm import
+
+See [IMPORT-FEATURE.md](IMPORT-FEATURE.md) for detailed CSV import instructions.
 
 ### For Site Visitors
 
@@ -245,11 +268,16 @@ See [CONTEXT.md](CONTEXT.md) for detailed troubleshooting guide.
 
 ## Browser Support
 
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest)
-- Mobile browsers (iOS Safari, Chrome Mobile)
+The plugin requires modern browsers with WebGL support:
+
+- ✅ Chrome/Edge 90+ (April 2021+)
+- ✅ Firefox 88+ (April 2021+)
+- ✅ Safari 14+ (September 2020+)
+- ✅ Mobile Safari (iOS 14+)
+- ✅ Chrome for Android 90+
+- ❌ Internet Explorer (not supported)
+
+See [BROWSER-SUPPORT.md](BROWSER-SUPPORT.md) for complete compatibility information.
 
 ## Contributing
 
@@ -281,7 +309,21 @@ This program is free software; you can redistribute it and/or modify it under th
 
 ## Changelog
 
-### 1.0.0 - October 2025
+### 2.0.0 - November 2024
+- **NEW: CSV Import** - Bulk import locations with validation and preview
+- **NEW: Admin Settings** - Configure Mapbox tokens via WordPress Admin
+- **NEW: Public/Secret Token Support** - Use separate tokens for client/server operations
+- **Performance: Query Caching** - 1-hour transient caching for faster load times
+- **Performance: Distance Slider Debouncing** - Smoother filter interactions
+- **Security: Rate Limiting** - Geocoding API rate limits to prevent abuse
+- **Security: Enhanced Input Validation** - Improved data sanitization
+- **Security: Nonce Protection** - All admin actions protected with nonces
+- **Fix: Cache Invalidation** - Caches automatically clear when data changes
+- **Fix: Phone Number Validation** - Only accepts valid 10-digit US phone numbers
+- **Extensibility: Filter Hooks** - `frd_locations_data` filter for customization
+- Documentation improvements and browser support matrix
+
+### 1.0.0 - October 2024
 - Initial release
 - Map view with Mapbox integration
 - List view with sorting

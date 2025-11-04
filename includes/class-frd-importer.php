@@ -193,6 +193,10 @@ class FRD_Importer {
      * @param array $row Row data
      */
     private function set_acf_fields($post_id, $row) {
+        // Check if ACF is available
+        if (!function_exists('update_field')) {
+            return;
+        }
         // Address fields
         update_field('street_address', $row['Street Address'], $post_id);
         update_field('city', $row['City'], $post_id);
@@ -204,7 +208,10 @@ class FRD_Importer {
         if (!empty($row['Phone'])) {
             // Clean phone number to digits only
             $phone = preg_replace('/[^0-9]/', '', $row['Phone']);
-            update_field('phone', $phone, $post_id);
+            // Only save if it's a valid 10-digit number
+            if (strlen($phone) === 10) {
+                update_field('phone', $phone, $post_id);
+            }
         }
         
         if (!empty($row['Website'])) {

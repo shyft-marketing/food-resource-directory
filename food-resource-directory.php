@@ -3,7 +3,7 @@
     * Plugin Name: Food Resource Directory
     * Plugin URI: https://github.com/shyft-marketing/food-resource-directory
     * Description: Interactive map and filterable directory of food pantries and soup kitchens with ACF integration
-    * Version: 1.0.151
+    * Version: 2.0.0
     * Author: SHYFT
     * Author URI: https://shyft.wtf
     * License: GPL v2 or later
@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants
-define('FRD_VERSION', '1.0.6');
+define('FRD_VERSION', '2.0.0');
 define('FRD_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('FRD_PLUGIN_URL', plugin_dir_url(__FILE__));
 
@@ -52,6 +52,11 @@ class Food_Resource_Directory {
             add_action('wp_ajax_frd_get_preview', array($this, 'ajax_get_preview'));
             add_action('wp_ajax_frd_confirm_import', array($this, 'ajax_confirm_import'));
             add_action('wp_ajax_frd_get_results', array($this, 'ajax_get_results'));
+            
+            // Cache invalidation hooks
+            add_action('save_post_food-resource', array($this, 'clear_location_caches'));
+            add_action('delete_post', array($this, 'clear_location_caches'));
+            add_action('acf/save_post', array($this, 'clear_location_caches'), 20);
         }
     }
 
@@ -102,9 +107,15 @@ class Food_Resource_Directory {
      * Register plugin settings
      */
     public function register_settings() {
+        register_setting('frd_settings', 'frd_mapbox_public_token', array(
+            'type' => 'string',
+            'sanitize_callback' => array($this, 'sanitize_mapbox_token'),
+            'default' => 'pk.eyJ1IjoibWFjb21iZGVmZW5kZXJzIiwiYSI6ImNtaGU0bDlrejBhMXQybnB2Zng5aW85M3UifQ.dsT7ITwivyDeR0j07AZkgA'
+        ));
+        
         register_setting('frd_settings', 'frd_mapbox_secret_token', array(
             'type' => 'string',
-            'sanitize_callback' => 'sanitize_text_field',
+            'sanitize_callback' => array($this, 'sanitize_mapbox_token'),
             'default' => ''
         ));
 
@@ -116,12 +127,38 @@ class Food_Resource_Directory {
         );
 
         add_settings_field(
+            'frd_mapbox_public_token',
+            'Mapbox Public Token',
+            array($this, 'render_public_token_field'),
+            'frd_settings',
+            'frd_mapbox_section'
+        );
+
+        add_settings_field(
             'frd_mapbox_secret_token',
             'Mapbox Secret Token',
             array($this, 'render_secret_token_field'),
             'frd_settings',
             'frd_mapbox_section'
         );
+    }
+    
+    /**
+     * Sanitize Mapbox token
+     */
+    public function sanitize_mapbox_token($token) {
+        $token = sanitize_text_field($token);
+        
+        // Validate Mapbox token format (starts with sk. or pk.)
+        if (!empty($token) && !preg_match('/^(sk|pk)\.[a-zA-Z0-9_-]+$/', $token)) {
+            add_settings_error('frd_messages', 'invalid_token', 
+                'Invalid Mapbox token format. Token must start with sk. or pk.', 'error');
+            // Return current value instead of invalid one
+            $setting_name = strpos($token, 'sk.') === 0 ? 'frd_mapbox_secret_token' : 'frd_mapbox_public_token';
+            return get_option($setting_name, '');
+        }
+        
+        return $token;
     }
 
     /**
@@ -156,7 +193,27 @@ class Food_Resource_Directory {
      * Render section info for Mapbox settings
      */
     public function render_mapbox_section_info() {
-        echo '<p>Configure your Mapbox API token for server-side operations (geocoding). The default Public Token will continue to be used for displaying the map in the browser.</p>';
+        echo '<p>Configure your Mapbox API tokens. The Public Token is used for displaying the map in the browser, and the Secret Token (optional) is used for server-side geocoding operations.</p>';
+    }
+
+    /**
+     * Render public token field
+     */
+    public function render_public_token_field() {
+        $value = get_option('frd_mapbox_public_token', 'pk.eyJ1IjoibWFjb21iZGVmZW5kZXJzIiwiYSI6ImNtaGU0bDlrejBhMXQybnB2Zng5aW85M3UifQ.dsT7ITwivyDeR0j07AZkgA');
+        ?>
+        <input type="text" 
+               id="frd_mapbox_public_token" 
+               name="frd_mapbox_public_token" 
+               value="<?php echo esc_attr($value); ?>" 
+               class="regular-text"
+               placeholder="pk.ey...">
+        <p class="description">
+            <strong>Required:</strong> Your Mapbox Public Token for client-side map display.<br>
+            Get your token from <a href="https://account.mapbox.com/access-tokens/" target="_blank" rel="noopener noreferrer">Mapbox Account</a>.<br>
+            Token must start with "pk."
+        </p>
+        <?php
     }
 
     /**
@@ -172,10 +229,11 @@ class Food_Resource_Directory {
                class="regular-text"
                placeholder="sk.ey...">
         <p class="description">
-            <strong>Optional:</strong> Enter your Mapbox Secret Token for server-side geocoding operations.<br>
-            Leave blank to use the default Public Token for all operations.<br>
-            <em>Note: Secret tokens can only be used server-side; the Public Token will always be used for the client-side map display.</em><br>
-            Get your token from <a href="https://account.mapbox.com/access-tokens/" target="_blank">Mapbox Account</a>.
+            <strong>Optional:</strong> Your Mapbox Secret Token for server-side geocoding operations.<br>
+            Leave blank to use the Public Token for all operations.<br>
+            <em>Note: Secret tokens can only be used server-side.</em><br>
+            Get your token from <a href="https://account.mapbox.com/access-tokens/" target="_blank" rel="noopener noreferrer">Mapbox Account</a>.<br>
+            Token must start with "sk."
         </p>
         <?php
     }
@@ -185,8 +243,7 @@ class Food_Resource_Directory {
      * Always returns the public token (secret tokens cannot be used in browser)
      */
     private function get_mapbox_public_token() {
-        // Default Public Token (always used for client-side JavaScript)
-        return 'pk.eyJ1IjoibWFjb21iZGVmZW5kZXJzIiwiYSI6ImNtaGU0bDlrejBhMXQybnB2Zng5aW85M3UifQ.dsT7ITwivyDeR0j07AZkgA';
+        return get_option('frd_mapbox_public_token', 'pk.eyJ1IjoibWFjb21iZGVmZW5kZXJzIiwiYSI6ImNtaGU0bDlrejBhMXQybnB2Zng5aW85M3UifQ.dsT7ITwivyDeR0j07AZkgA');
     }
 
     /**
@@ -262,13 +319,16 @@ class Food_Resource_Directory {
     public function ajax_get_locations() {
         check_ajax_referer('frd_nonce', 'nonce');
 
-        error_log('FRD: ajax_get_locations called');
-
         $filters = isset($_POST['filters']) ? $_POST['filters'] : array();
         $user_location = isset($_POST['user_location']) ? $_POST['user_location'] : null;
-
-        error_log('FRD: Filters: ' . print_r($filters, true));
-        error_log('FRD: User location: ' . print_r($user_location, true));
+        
+        // Check cache first
+        $cache_key = 'frd_locations_' . md5(serialize($filters) . serialize($user_location));
+        $cached = get_transient($cache_key);
+        
+        if ($cached !== false && defined('WP_DEBUG') && !WP_DEBUG) {
+            wp_send_json_success($cached);
+        }
 
         $args = array(
             'post_type' => 'food-resource',
@@ -277,8 +337,6 @@ class Food_Resource_Directory {
             'orderby' => 'title',
             'order' => 'ASC'
         );
-
-        error_log('FRD: Query args: ' . print_r($args, true));
         
         // Apply meta query filters
         $meta_query = array('relation' => 'AND');
@@ -325,34 +383,29 @@ class Food_Resource_Directory {
         $query = new WP_Query($args);
         $locations = array();
 
-        error_log('FRD: Query found ' . $query->found_posts . ' posts');
-
         if ($query->have_posts()) {
             while ($query->have_posts()) {
                 $query->the_post();
                 $post_id = get_the_ID();
 
-                error_log('FRD: Processing post ID: ' . $post_id . ' - ' . get_the_title());
-
                 $location = $this->get_location_data($post_id);
-
-                error_log('FRD: Location data: ' . print_r($location, true));
 
                 // Calculate distance if user location is provided
                 if ($user_location && isset($user_location['lat']) && isset($user_location['lng'])) {
-                    $location['distance'] = $this->calculate_distance(
-                        $user_location['lat'],
-                        $user_location['lng'],
-                        $location['latitude'],
-                        $location['longitude']
-                    );
+                    // Only calculate distance if location has coordinates
+                    if ($location['latitude'] && $location['longitude']) {
+                        $location['distance'] = $this->calculate_distance(
+                            $user_location['lat'],
+                            $user_location['lng'],
+                            $location['latitude'],
+                            $location['longitude']
+                        );
+                    }
                 }
 
                 $locations[] = $location;
             }
             wp_reset_postdata();
-        } else {
-            error_log('FRD: No posts found!');
         }
 
         // Sort by distance if user location is provided
@@ -361,8 +414,12 @@ class Food_Resource_Directory {
                 return $a['distance'] <=> $b['distance'];
             });
         }
-
-        error_log('FRD: Returning ' . count($locations) . ' locations');
+        
+        // Apply extensibility filter
+        $locations = apply_filters('frd_locations_data', $locations, $filters);
+        
+        // Cache results (1 hour)
+        set_transient($cache_key, $locations, HOUR_IN_SECONDS);
 
         wp_send_json_success($locations);
     }
@@ -416,33 +473,21 @@ class Food_Resource_Directory {
      * Get formatted location data for a post
      */
     private function get_location_data($post_id) {
-        error_log('FRD: Getting location data for post ' . $post_id);
-
         $street_address = get_field('street_address', $post_id);
         $city = get_field('city', $post_id);
         $state = get_field('state', $post_id);
         $zip = get_field('zip', $post_id);
 
-        error_log('FRD: ACF fields - street: ' . $street_address . ', city: ' . $city . ', state: ' . $state . ', zip: ' . $zip);
-
         // Build full address
         $full_address = trim($street_address . ', ' . $city . ', ' . $state . ' ' . $zip);
-
-        error_log('FRD: Full address: ' . $full_address);
 
         // Get coordinates (we'll geocode these on first load)
         $coordinates = get_post_meta($post_id, '_frd_coordinates', true);
         if (empty($coordinates)) {
-            error_log('FRD: No cached coordinates, geocoding...');
             $coordinates = $this->geocode_address($full_address);
             if ($coordinates) {
-                error_log('FRD: Geocoded successfully: ' . print_r($coordinates, true));
                 update_post_meta($post_id, '_frd_coordinates', $coordinates);
-            } else {
-                error_log('FRD: Geocoding failed for address: ' . $full_address);
             }
-        } else {
-            error_log('FRD: Using cached coordinates: ' . print_r($coordinates, true));
         }
 
         // Get services
@@ -459,13 +504,8 @@ class Food_Resource_Directory {
 
         // Get and format phone number
         $phone_raw = get_field('phone', $post_id);
-        error_log('FRD: Raw phone from ACF: ' . var_export($phone_raw, true) . ' (type: ' . gettype($phone_raw) . ')');
-
         $phone_display = $this->format_phone_display($phone_raw);
         $phone_link = $this->format_phone_link($phone_raw);
-
-        error_log('FRD: Formatted phone display: ' . $phone_display);
-        error_log('FRD: Formatted phone link: ' . $phone_link);
 
         return array(
             'id' => $post_id,
@@ -493,35 +533,28 @@ class Food_Resource_Directory {
      * Geocode an address using Mapbox
      */
     private function geocode_address($address) {
-        error_log('FRD: Geocoding address: ' . $address);
-
         $mapbox_token = $this->get_mapbox_server_token();
         $url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' . urlencode($address) . '.json?access_token=' . $mapbox_token . '&country=US&proximity=-83.0458,42.5803';
 
-        error_log('FRD: Geocoding URL: ' . $url);
-
-        $response = wp_remote_get($url);
+        $response = wp_remote_get($url, array('timeout' => 15));
 
         if (is_wp_error($response)) {
-            error_log('FRD: Geocoding WP Error: ' . $response->get_error_message());
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('FRD Geocoding Error: ' . $response->get_error_message());
+            }
             return null;
         }
 
         $body = wp_remote_retrieve_body($response);
-        error_log('FRD: Geocoding response body: ' . $body);
-
         $data = json_decode($body, true);
 
         if (isset($data['features'][0]['center'])) {
-            $coords = array(
+            return array(
                 'lng' => $data['features'][0]['center'][0],
                 'lat' => $data['features'][0]['center'][1]
             );
-            error_log('FRD: Geocoding successful: ' . print_r($coords, true));
-            return $coords;
         }
 
-        error_log('FRD: Geocoding failed - no features found in response');
         return null;
     }
     
@@ -530,6 +563,18 @@ class Food_Resource_Directory {
      */
     public function ajax_geocode() {
         check_ajax_referer('frd_nonce', 'nonce');
+        
+        // Rate limit: 10 requests per minute per user/IP
+        $user_id = get_current_user_id();
+        $ip = isset($_SERVER['REMOTE_ADDR']) ? sanitize_text_field($_SERVER['REMOTE_ADDR']) : 'unknown';
+        $rate_key = 'frd_geocode_rate_' . ($user_id ?: $ip);
+        
+        $count = get_transient($rate_key);
+        if ($count !== false && $count >= 10) {
+            wp_send_json_error('Rate limit exceeded. Please wait a moment before searching again.');
+        }
+        
+        set_transient($rate_key, ($count ?: 0) + 1, MINUTE_IN_SECONDS);
         
         $address = isset($_POST['address']) ? sanitize_text_field($_POST['address']) : '';
         
@@ -550,6 +595,12 @@ class Food_Resource_Directory {
      * Get list of languages that are actually used in at least one location
      */
     private function get_available_languages() {
+        // Check cache first
+        $cached = get_transient('frd_available_languages');
+        if ($cached !== false) {
+            return $cached;
+        }
+        
         $args = array(
             'post_type' => 'food-resource',
             'posts_per_page' => -1,
@@ -572,6 +623,9 @@ class Food_Resource_Directory {
         // Get unique languages and sort alphabetically
         $unique_languages = array_unique($all_languages);
         sort($unique_languages);
+        
+        // Cache for 1 hour
+        set_transient('frd_available_languages', $unique_languages, HOUR_IN_SECONDS);
         
         return $unique_languages;
     }
@@ -623,6 +677,11 @@ class Food_Resource_Directory {
      * Download CSV template
      */
     public function download_template() {
+        // Verify nonce
+        if (!isset($_GET['_wpnonce']) || !wp_verify_nonce($_GET['_wpnonce'], 'frd_download_template')) {
+            wp_die('Security check failed');
+        }
+        
         if (!current_user_can('manage_options')) {
             wp_die('Unauthorized');
         }
@@ -656,39 +715,48 @@ class Food_Resource_Directory {
         }
         
         $file = $_FILES['import_file'];
+        $temp_file = '';
         
-        // Check file type
-        $file_ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-        if ($file_ext !== 'csv') {
-            wp_send_json_error(array('message' => 'Only CSV files are allowed'));
+        try {
+            // Check file type
+            $file_ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+            if ($file_ext !== 'csv') {
+                wp_send_json_error(array('message' => 'Only CSV files are allowed'));
+            }
+            
+            // Move uploaded file
+            $upload_dir = wp_upload_dir();
+            $temp_file = $upload_dir['basedir'] . '/frd-import-' . time() . '.csv';
+            
+            if (!move_uploaded_file($file['tmp_name'], $temp_file)) {
+                wp_send_json_error(array('message' => 'Failed to save uploaded file'));
+            }
+            
+            // Parse and validate
+            require_once FRD_PLUGIN_DIR . 'includes/class-frd-importer.php';
+            $importer = new FRD_Importer();
+            
+            $result = $importer->parse_and_validate($temp_file);
+            
+            if (!$result['success']) {
+                throw new Exception(implode(' ', $result['errors']));
+            }
+            
+            // Store data in transient for preview
+            set_transient('frd_import_data_' . get_current_user_id(), array(
+                'file' => $temp_file,
+                'data' => $result
+            ), 3600); // 1 hour
+            
+            wp_send_json_success(array('message' => 'File uploaded successfully'));
+            
+        } catch (Exception $e) {
+            // Clean up temp file on error
+            if ($temp_file && file_exists($temp_file)) {
+                @unlink($temp_file);
+            }
+            wp_send_json_error(array('message' => $e->getMessage()));
         }
-        
-        // Move uploaded file
-        $upload_dir = wp_upload_dir();
-        $temp_file = $upload_dir['basedir'] . '/frd-import-' . time() . '.csv';
-        
-        if (!move_uploaded_file($file['tmp_name'], $temp_file)) {
-            wp_send_json_error(array('message' => 'Failed to save uploaded file'));
-        }
-        
-        // Parse and validate
-        require_once FRD_PLUGIN_DIR . 'includes/class-frd-importer.php';
-        $importer = new FRD_Importer();
-        
-        $result = $importer->parse_and_validate($temp_file);
-        
-        if (!$result['success']) {
-            @unlink($temp_file);
-            wp_send_json_error(array('message' => implode(' ', $result['errors'])));
-        }
-        
-        // Store data in transient for preview
-        set_transient('frd_import_data_' . get_current_user_id(), array(
-            'file' => $temp_file,
-            'data' => $result
-        ), 3600); // 1 hour
-        
-        wp_send_json_success(array('message' => 'File uploaded successfully'));
     }
     
     /**
@@ -804,6 +872,34 @@ class Food_Resource_Directory {
     public static function deactivate() {
         // Flush rewrite rules
         flush_rewrite_rules();
+    }
+    
+    /**
+     * Clear all location-related caches
+     * Called when a food-resource post is saved or deleted
+     */
+    public function clear_location_caches($post_id = null) {
+        // If this is a specific post, check if it's a food-resource
+        if ($post_id && get_post_type($post_id) !== 'food-resource') {
+            return;
+        }
+        
+        // Clear the available languages cache
+        delete_transient('frd_available_languages');
+        
+        // Clear all location query caches
+        // Since we use dynamic cache keys based on filters, we need to delete by pattern
+        global $wpdb;
+        $wpdb->query(
+            "DELETE FROM {$wpdb->options} 
+             WHERE option_name LIKE '_transient_frd_locations_%' 
+             OR option_name LIKE '_transient_timeout_frd_locations_%'"
+        );
+        
+        // Clear WP object cache if available
+        if (function_exists('wp_cache_flush')) {
+            wp_cache_delete('frd_available_languages', 'frd');
+        }
     }
 }
 

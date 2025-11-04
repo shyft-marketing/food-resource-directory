@@ -70,7 +70,7 @@ $step = isset($_GET['step']) ? sanitize_text_field($_GET['step']) : 'upload';
                 </div>
                 
                 <div class="frd-import-actions">
-                    <a href="<?php echo admin_url('admin-post.php?action=frd_download_template'); ?>" class="button button-secondary">
+                    <a href="<?php echo esc_url(wp_nonce_url(admin_url('admin-post.php?action=frd_download_template'), 'frd_download_template')); ?>" class="button button-secondary">
                         <span class="dashicons dashicons-download"></span> Download CSV Template
                     </a>
                 </div>
@@ -367,7 +367,7 @@ jQuery(document).ready(function($) {
             success: function(response) {
                 if (response.success) {
                     // Store data in session and redirect to preview
-                    window.location.href = '<?php echo admin_url('admin.php?page=food-resource-directory-import&step=preview'); ?>';
+                    window.location.href = '<?php echo esc_url(admin_url('admin.php?page=food-resource-directory-import&step=preview')); ?>';
                 } else {
                     $('#frd-upload-result').html(
                         '<div class="notice notice-error"><p>' + response.data.message + '</p></div>'
@@ -410,7 +410,7 @@ jQuery(document).ready(function($) {
             nonce: '<?php echo wp_create_nonce('frd_import_confirm'); ?>'
         }, function(response) {
             if (response.success) {
-                window.location.href = '<?php echo admin_url('admin.php?page=food-resource-directory-import&step=results'); ?>';
+                window.location.href = '<?php echo esc_url(admin_url('admin.php?page=food-resource-directory-import&step=results')); ?>';
             } else {
                 alert('Import failed: ' + response.data.message);
                 $('.spinner').css('visibility', 'hidden');
