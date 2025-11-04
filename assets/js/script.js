@@ -688,10 +688,16 @@
             popup.on('open', function() {
                 // Remove focus from any element in the popup
                 setTimeout(function() {
-                    if (document.activeElement) {
+                    // Find all focusable elements in popups and blur them
+                    const popupElements = document.querySelectorAll('.mapboxgl-popup .frd-popup-icon-btn, .mapboxgl-popup a, .mapboxgl-popup button');
+                    popupElements.forEach(function(el) {
+                        el.blur();
+                    });
+                    // Also blur the currently active element if it's within a popup
+                    if (document.activeElement && document.activeElement.closest('.mapboxgl-popup')) {
                         document.activeElement.blur();
                     }
-                }, 0);
+                }, 10);
             });
         });
 
@@ -748,19 +754,19 @@
         html += '<div class="frd-popup-actions">';
         
         if (location.phone) {
-            html += '<a href="tel:' + location.phone_link + '" class="frd-popup-icon-btn" title="Call">';
+            html += '<a href="tel:' + location.phone_link + '" class="frd-popup-icon-btn" title="Call" tabindex="-1">';
             html += '<img src="' + frdData.pluginUrl + '/assets/icons/Phone Icon.svg" alt="Call">';
             html += '</a>';
         }
         
         if (location.website) {
-            html += '<a href="' + location.website + '" target="_blank" class="frd-popup-icon-btn" title="Website">';
+            html += '<a href="' + location.website + '" target="_blank" class="frd-popup-icon-btn" title="Website" tabindex="-1">';
             html += '<img src="' + frdData.pluginUrl + '/assets/icons/Link Icon.svg" alt="Website">';
             html += '</a>';
         }
         
         const directionsUrl = 'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(location.full_address);
-        html += '<a href="' + directionsUrl + '" target="_blank" class="frd-popup-icon-btn" title="Directions">';
+        html += '<a href="' + directionsUrl + '" target="_blank" class="frd-popup-icon-btn" title="Directions" tabindex="-1">';
         html += '<img src="' + frdData.pluginUrl + '/assets/icons/Directions Icon.svg" alt="Directions">';
         html += '</a>';
         
