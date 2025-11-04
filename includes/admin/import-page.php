@@ -457,7 +457,7 @@ jQuery(document).ready(function($) {
                 html += '<tr class="' + rowClass + '">';
                 html += '<td>' + row._row_number + '</td>';
                 html += '<td>' + escapeHtml(row.Organization || '') + '</td>';
-                html += '<td>' + escapeHtml(row['Street Address'] || '') + ', ' + escapeHtml(row.City || '') + '</td>';
+                html += '<td>' + escapeHtml(row['Street Address'] || '') + ', ' + escapeHtml(row.City || '') + ', ' + escapeHtml(row.State || '') + ' ' + escapeHtml(row['ZIP Code'] || '') + '</td>';
                 html += '<td>' + escapeHtml(row.County || '') + '</td>';
                 html += '<td>' + statusBadge;
                 
