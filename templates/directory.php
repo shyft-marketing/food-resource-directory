@@ -108,6 +108,13 @@
             <div id="frd-list-loading" class="frd-loading">Loading locations...</div>
             <div id="frd-list-items"></div>
         </div>
+        
+        <!-- Pagination Controls -->
+        <div id="frd-pagination" class="frd-pagination" style="display: none;">
+            <button id="frd-prev-page" class="frd-pagination-btn" disabled>Previous</button>
+            <span id="frd-page-info" class="frd-page-info"></span>
+            <button id="frd-next-page" class="frd-pagination-btn" disabled>Next</button>
+        </div>
     </div>
 
     <!-- Location Detail Modal -->

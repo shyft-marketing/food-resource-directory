@@ -7,6 +7,8 @@
     let filteredLocations = [];
     let userLocation = null;
     let currentView = 'map';
+    let currentPage = 1;
+    let itemsPerPage = 20;
 
     // Initialize on document ready
     $(document).ready(function() {
@@ -241,6 +243,22 @@
                 showLocationDetails(location);
             }
         });
+
+        // Pagination controls
+        $('#frd-prev-page').on('click', function() {
+            if (currentPage > 1) {
+                currentPage--;
+                updateList();
+            }
+        });
+
+        $('#frd-next-page').on('click', function() {
+            const totalPages = Math.ceil(filteredLocations.length / itemsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                updateList();
+            }
+        });
     }
 
     function switchView(view) {
@@ -447,6 +465,9 @@
             return true;
         });
 
+        // Reset to first page when filters change
+        currentPage = 1;
+
         // Update display
         updateResultsCount();
         updateMapMarkers();
@@ -515,47 +536,167 @@
     }
 
     function updateMapMarkers() {
-        // Clear existing markers
-        markers.forEach(function(marker) {
-            marker.remove();
+        // Remove existing source and layers if they exist
+        if (map.getSource('locations')) {
+            if (map.getLayer('clusters')) map.removeLayer('clusters');
+            if (map.getLayer('cluster-count')) map.removeLayer('cluster-count');
+            if (map.getLayer('unclustered-point')) map.removeLayer('unclustered-point');
+            map.removeSource('locations');
+        }
+
+        // Prepare GeoJSON data for clustering
+        const geojson = {
+            type: 'FeatureCollection',
+            features: filteredLocations
+                .filter(function(location) {
+                    return location.latitude && location.longitude;
+                })
+                .map(function(location) {
+                    return {
+                        type: 'Feature',
+                        geometry: {
+                            type: 'Point',
+                            coordinates: [location.longitude, location.latitude]
+                        },
+                        properties: {
+                            id: location.id,
+                            title: location.title,
+                            services: location.services && location.services.length > 0 ? location.services[0] : '',
+                            distance: location.distance
+                        }
+                    };
+                })
+        };
+
+        // Add clustering source
+        map.addSource('locations', {
+            type: 'geojson',
+            data: geojson,
+            cluster: true,
+            clusterMaxZoom: 14,
+            clusterRadius: 50
         });
-        markers = [];
 
-        // Add new markers
-        filteredLocations.forEach(function(location) {
-            if (!location.latitude || !location.longitude) {
-                return;
+        // Add cluster circles layer
+        map.addLayer({
+            id: 'clusters',
+            type: 'circle',
+            source: 'locations',
+            filter: ['has', 'point_count'],
+            paint: {
+                'circle-color': [
+                    'step',
+                    ['get', 'point_count'],
+                    '#ff6f61',
+                    10,
+                    '#f59e8e',
+                    30,
+                    '#f07e6a'
+                ],
+                'circle-radius': [
+                    'step',
+                    ['get', 'point_count'],
+                    20,
+                    10,
+                    30,
+                    30,
+                    40
+                ]
             }
+        });
 
-            // Create marker
-            const marker = new mapboxgl.Marker({
-                color: '#ff6f61' // Coral color for food resource markers
-            })
-            .setLngLat([location.longitude, location.latitude])
-            .addTo(map);
+        // Add cluster count labels
+        map.addLayer({
+            id: 'cluster-count',
+            type: 'symbol',
+            source: 'locations',
+            filter: ['has', 'point_count'],
+            layout: {
+                'text-field': '{point_count_abbreviated}',
+                'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+                'text-size': 12
+            },
+            paint: {
+                'text-color': '#ffffff'
+            }
+        });
 
-            // Create popup content
-            const popupContent = createPopupContent(location);
+        // Add individual unclustered points
+        map.addLayer({
+            id: 'unclustered-point',
+            type: 'circle',
+            source: 'locations',
+            filter: ['!', ['has', 'point_count']],
+            paint: {
+                'circle-color': '#ff6f61',
+                'circle-radius': 8,
+                'circle-stroke-width': 2,
+                'circle-stroke-color': '#fff'
+            }
+        });
 
-            // Add popup
-            const popup = new mapboxgl.Popup({
-                offset: 25,
-                maxWidth: '350px'
-            }).setHTML(popupContent);
+        // Click handler for clusters - zoom in
+        map.on('click', 'clusters', function(e) {
+            const features = map.queryRenderedFeatures(e.point, {
+                layers: ['clusters']
+            });
+            const clusterId = features[0].properties.cluster_id;
+            map.getSource('locations').getClusterExpansionZoom(
+                clusterId,
+                function(err, zoom) {
+                    if (err) return;
 
-            marker.setPopup(popup);
+                    map.easeTo({
+                        center: features[0].geometry.coordinates,
+                        zoom: zoom
+                    });
+                }
+            );
+        });
 
-            // Prevent icon buttons from receiving focus when popup opens
-            popup.on('open', function() {
-                // Remove focus from any element in the popup
-                setTimeout(function() {
-                    if (document.activeElement) {
-                        document.activeElement.blur();
-                    }
-                }, 0);
+        // Click handler for unclustered points - show popup (lazy loaded)
+        map.on('click', 'unclustered-point', function(e) {
+            const coordinates = e.features[0].geometry.coordinates.slice();
+            const locationId = e.features[0].properties.id;
+
+            // Find the location data
+            const location = filteredLocations.find(function(loc) {
+                return loc.id === locationId;
             });
 
-            markers.push(marker);
+            if (!location) return;
+
+            // Ensure that if the map is zoomed out such that multiple
+            // copies of the feature are visible, the popup appears
+            // over the copy being pointed to.
+            while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+            }
+
+            // Create popup content on demand (lazy loading)
+            const popupContent = createPopupContent(location);
+
+            new mapboxgl.Popup({
+                offset: 25,
+                maxWidth: '350px'
+            })
+                .setLngLat(coordinates)
+                .setHTML(popupContent)
+                .addTo(map);
+        });
+
+        // Change cursor on hover
+        map.on('mouseenter', 'clusters', function() {
+            map.getCanvas().style.cursor = 'pointer';
+        });
+        map.on('mouseleave', 'clusters', function() {
+            map.getCanvas().style.cursor = '';
+        });
+        map.on('mouseenter', 'unclustered-point', function() {
+            map.getCanvas().style.cursor = 'pointer';
+        });
+        map.on('mouseleave', 'unclustered-point', function() {
+            map.getCanvas().style.cursor = '';
         });
 
         // Fit map to markers if there are any
@@ -631,15 +772,37 @@
         
         if (filteredLocations.length === 0) {
             $container.html('<div class="frd-loading">No locations found matching your filters.</div>');
+            $('#frd-pagination').hide();
             return;
         }
 
-        $container.empty();
+        // Calculate pagination
+        const totalPages = Math.ceil(filteredLocations.length / itemsPerPage);
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = Math.min(startIndex + itemsPerPage, filteredLocations.length);
+        const pageLocations = filteredLocations.slice(startIndex, endIndex);
 
-        filteredLocations.forEach(function(location) {
+        // Clear and populate list with current page items
+        $container.empty();
+        pageLocations.forEach(function(location) {
             const $card = createLocationCard(location);
             $container.append($card);
         });
+
+        // Update pagination controls
+        if (totalPages > 1) {
+            $('#frd-pagination').show();
+            $('#frd-page-info').text('Page ' + currentPage + ' of ' + totalPages + ' (' + (startIndex + 1) + '-' + endIndex + ' of ' + filteredLocations.length + ')');
+            
+            // Update button states
+            $('#frd-prev-page').prop('disabled', currentPage === 1);
+            $('#frd-next-page').prop('disabled', currentPage === totalPages);
+        } else {
+            $('#frd-pagination').hide();
+        }
+
+        // Scroll to top of list
+        $('.frd-list-container').scrollTop(0);
     }
 
     function createLocationCard(location) {
@@ -734,6 +897,9 @@
                 });
                 break;
         }
+
+        // Reset to first page when sorting changes
+        currentPage = 1;
 
         updateList();
     }
