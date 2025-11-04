@@ -3,7 +3,7 @@
     * Plugin Name: Food Resource Directory
     * Plugin URI: https://github.com/shyft-marketing/food-resource-directory
     * Description: Interactive map and filterable directory of food pantries and soup kitchens with ACF integration
-    * Version: 1.0.145
+    * Version: 1.0.146
     * Author: SHYFT
     * Author URI: https://shyft.wtf
     * License: GPL v2 or later
@@ -237,7 +237,8 @@ class Food_Resource_Directory {
                 'mapboxToken' => $this->get_mapbox_public_token(),
                 'pluginUrl' => FRD_PLUGIN_URL,
                 'defaultCenter' => array(-83.0458, 42.5803), // Center of the three counties
-                'defaultZoom' => 9
+                'defaultZoom' => 9,
+                'availableLanguages' => $this->get_available_languages()
             ));
         }
     }
@@ -543,6 +544,36 @@ class Food_Resource_Directory {
         } else {
             wp_send_json_error('Could not geocode address');
         }
+    }
+    
+    /**
+     * Get list of languages that are actually used in at least one location
+     */
+    private function get_available_languages() {
+        $args = array(
+            'post_type' => 'food-resource',
+            'posts_per_page' => -1,
+            'post_status' => 'publish',
+            'fields' => 'ids'
+        );
+        
+        $query = new WP_Query($args);
+        $all_languages = array();
+        
+        if ($query->have_posts()) {
+            foreach ($query->posts as $post_id) {
+                $languages = get_field('languages', $post_id);
+                if (is_array($languages) && !empty($languages)) {
+                    $all_languages = array_merge($all_languages, $languages);
+                }
+            }
+        }
+        
+        // Get unique languages and sort alphabetically
+        $unique_languages = array_unique($all_languages);
+        sort($unique_languages);
+        
+        return $unique_languages;
     }
     
     /**

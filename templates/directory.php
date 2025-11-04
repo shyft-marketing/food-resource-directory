@@ -68,16 +68,7 @@
                 <div class="frd-filter-group">
                     <label for="frd-languages">Languages</label>
                     <select id="frd-languages" name="languages[]" multiple>
-                        <option value="English">English</option>
-                        <option value="Spanish">Spanish</option>
-                        <option value="Arabic">Arabic</option>
-                        <option value="Chinese">Chinese</option>
-                        <option value="French">French</option>
-                        <option value="German">German</option>
-                        <option value="Italian">Italian</option>
-                        <option value="Polish">Polish</option>
-                        <option value="Russian">Russian</option>
-                        <option value="Vietnamese">Vietnamese</option>
+                        <!-- Options will be dynamically populated by JavaScript -->
                     </select>
                 </div>
             </div>

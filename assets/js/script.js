@@ -40,6 +40,14 @@
             $('.frd-list-controls').show();
         }
 
+        // Populate languages dropdown with available languages
+        if (frdData.availableLanguages && frdData.availableLanguages.length > 0) {
+            const $languagesSelect = $('#frd-languages');
+            frdData.availableLanguages.forEach(function(language) {
+                $languagesSelect.append('<option value="' + language + '">' + language + '</option>');
+            });
+        }
+
         // Initialize Select2 on multi-select dropdowns
         $('#frd-services, #frd-languages').select2({
             placeholder: function() {
