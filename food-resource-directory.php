@@ -3,7 +3,7 @@
     * Plugin Name: Food Resource Directory
     * Plugin URI: https://github.com/shyft-marketing/food-resource-directory
     * Description: Interactive map and filterable directory of food pantries and soup kitchens with ACF integration
-    * Version: 1.0.144
+    * Version: 1.0.145
     * Author: SHYFT
     * Author URI: https://shyft.wtf
     * License: GPL v2 or later
@@ -304,18 +304,17 @@ class Food_Resource_Directory {
             );
         }
         
-        // Filter by days of week
-        if (!empty($filters['days']) && is_array($filters['days'])) {
-            $day_query = array('relation' => 'OR');
-            foreach ($filters['days'] as $day) {
-                $day_lower = strtolower($day);
-                $day_query[] = array(
-                    'key' => 'hours_' . $day_lower . '_open',
-                    'value' => '1',
-                    'compare' => '='
+        // Filter by languages
+        if (!empty($filters['languages']) && is_array($filters['languages'])) {
+            $language_query = array('relation' => 'OR');
+            foreach ($filters['languages'] as $language) {
+                $language_query[] = array(
+                    'key' => 'languages',
+                    'value' => '"' . $language . '"',
+                    'compare' => 'LIKE'
                 );
             }
-            $meta_query[] = $day_query;
+            $meta_query[] = $language_query;
         }
         
         if (count($meta_query) > 1) {
@@ -444,12 +443,6 @@ class Food_Resource_Directory {
         } else {
             error_log('FRD: Using cached coordinates: ' . print_r($coordinates, true));
         }
-        
-        // Get special hours note (for "Appointment Only", etc.)
-        $hours_other_hours = get_field('hours_other_hours', $post_id);
-
-        // Get hours
-        $hours = $this->format_hours($post_id);
 
         // Get services
         $services = get_field('services', $post_id);
@@ -489,73 +482,10 @@ class Food_Resource_Directory {
             'eligibility' => get_field('eligibility', $post_id),
             'notes' => get_field('notes', $post_id),
             'county' => get_field('county', $post_id),
-            'hours' => $hours,
-            'hours_other_hours' => $hours_other_hours,
-            'hours_text' => $this->get_hours_text($post_id, $hours_other_hours),
             'latitude' => isset($coordinates['lat']) ? $coordinates['lat'] : null,
             'longitude' => isset($coordinates['lng']) ? $coordinates['lng'] : null,
             'distance' => null
         );
-    }
-    
-    /**
-     * Format hours for display
-     */
-    private function format_hours($post_id) {
-        $days = array('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday');
-        $hours = array();
-        
-        foreach ($days as $day) {
-            $is_open = get_field('hours_' . $day . '_open', $post_id);
-            if ($is_open) {
-                $open_time = get_field('hours_' . $day . '_open_time', $post_id);
-                $close_time = get_field('hours_' . $day . '_close_time', $post_id);
-                
-                $hours[$day] = array(
-                    'open' => true,
-                    'open_time' => $open_time,
-                    'close_time' => $close_time
-                );
-            } else {
-                $hours[$day] = array('open' => false);
-            }
-        }
-        
-        return $hours;
-    }
-    
-    /**
-     * Get hours as readable text
-     */
-    private function get_hours_text($post_id, $hours_other_hours = null) {
-        // If there's a special hours note (and it's not "Regular hours"), return that instead
-        if (!empty($hours_other_hours) && $hours_other_hours !== 'Regular hours') {
-            return $hours_other_hours;
-        }
-
-        $days = array(
-            'monday' => 'Monday',
-            'tuesday' => 'Tuesday',
-            'wednesday' => 'Wednesday',
-            'thursday' => 'Thursday',
-            'friday' => 'Friday',
-            'saturday' => 'Saturday',
-            'sunday' => 'Sunday'
-        );
-
-        $hours_text = array();
-
-        foreach ($days as $key => $label) {
-            $is_open = get_field('hours_' . $key . '_open', $post_id);
-            if ($is_open) {
-                $open_time = get_field('hours_' . $key . '_open_time', $post_id);
-                $close_time = get_field('hours_' . $key . '_close_time', $post_id);
-
-                $hours_text[] = $label . ': ' . $open_time . ' - ' . $close_time;
-            }
-        }
-
-        return !empty($hours_text) ? implode('<br>', $hours_text) : 'Hours not available';
     }
     
     /**

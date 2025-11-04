@@ -64,17 +64,20 @@
                     </select>
                 </div>
 
-                <!-- Days Filter -->
+                <!-- Languages Filter -->
                 <div class="frd-filter-group">
-                    <label for="frd-days">Open On</label>
-                    <select id="frd-days" name="days[]" multiple>
-                        <option value="monday">Monday</option>
-                        <option value="tuesday">Tuesday</option>
-                        <option value="wednesday">Wednesday</option>
-                        <option value="thursday">Thursday</option>
-                        <option value="friday">Friday</option>
-                        <option value="saturday">Saturday</option>
-                        <option value="sunday">Sunday</option>
+                    <label for="frd-languages">Languages</label>
+                    <select id="frd-languages" name="languages[]" multiple>
+                        <option value="English">English</option>
+                        <option value="Spanish">Spanish</option>
+                        <option value="Arabic">Arabic</option>
+                        <option value="Chinese">Chinese</option>
+                        <option value="French">French</option>
+                        <option value="German">German</option>
+                        <option value="Italian">Italian</option>
+                        <option value="Polish">Polish</option>
+                        <option value="Russian">Russian</option>
+                        <option value="Vietnamese">Vietnamese</option>
                     </select>
                 </div>
             </div>

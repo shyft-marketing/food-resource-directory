@@ -38,29 +38,7 @@ class FRD_CSV_Parser {
         'Website',
         'Languages',
         'Eligibility Requirements',
-        'Notes',
-        'Other Hours',
-        'Open Mondays?',
-        'Open Tuesdays?',
-        'Open Wednesdays?',
-        'Open Thursdays?',
-        'Open Fridays?',
-        'Open Saturdays?',
-        'Open Sundays?',
-        'Monday Open Time',
-        'Monday Close Time',
-        'Tuesday Open Time',
-        'Tuesday Close Time',
-        'Wednesday Open Time',
-        'Wednesday Close Time',
-        'Thursday Open Time',
-        'Thursday Close Time',
-        'Friday Open Time',
-        'Friday Close Time',
-        'Saturday Open Time',
-        'Saturday Close Time',
-        'Sunday Open Time',
-        'Sunday Close Time'
+        'Notes'
     );
     
     /**
@@ -177,29 +155,7 @@ class FRD_CSV_Parser {
             'https://example.com',          // Website
             'English, Spanish',             // Languages
             'Must show ID and proof of residency', // Eligibility Requirements
-            'Please call ahead for special dietary needs', // Notes
-            '',                             // Other Hours
-            'TRUE',                         // Open Mondays?
-            'TRUE',                         // Open Tuesdays?
-            'TRUE',                         // Open Wednesdays?
-            'TRUE',                         // Open Thursdays?
-            'TRUE',                         // Open Fridays?
-            'FALSE',                        // Open Saturdays?
-            'FALSE',                        // Open Sundays?
-            '9:00 AM',                      // Monday Open Time
-            '5:00 PM',                      // Monday Close Time
-            '9:00 AM',                      // Tuesday Open Time
-            '5:00 PM',                      // Tuesday Close Time
-            '9:00 AM',                      // Wednesday Open Time
-            '5:00 PM',                      // Wednesday Close Time
-            '9:00 AM',                      // Thursday Open Time
-            '5:00 PM',                      // Thursday Close Time
-            '9:00 AM',                      // Friday Open Time
-            '5:00 PM',                      // Friday Close Time
-            '',                             // Saturday Open Time
-            '',                             // Saturday Close Time
-            '',                             // Sunday Open Time
-            ''                              // Sunday Close Time
+            'Please call ahead for special dietary needs' // Notes
         ));
         
         // Write example row 2
@@ -215,29 +171,7 @@ class FRD_CSV_Parser {
             '',                             // Website
             'English, Arabic',              // Languages
             '',                             // Eligibility Requirements
-            'Limited quantities available', // Notes
-            '',                             // Other Hours
-            'FALSE',                        // Open Mondays?
-            'TRUE',                         // Open Tuesdays?
-            'FALSE',                        // Open Wednesdays?
-            'TRUE',                         // Open Thursdays?
-            'FALSE',                        // Open Fridays?
-            'TRUE',                         // Open Saturdays?
-            'FALSE',                        // Open Sundays?
-            '',                             // Monday Open Time
-            '',                             // Monday Close Time
-            '10:00 AM',                     // Tuesday Open Time
-            '2:00 PM',                      // Tuesday Close Time
-            '',                             // Wednesday Open Time
-            '',                             // Wednesday Close Time
-            '10:00 AM',                     // Thursday Open Time
-            '2:00 PM',                      // Thursday Close Time
-            '',                             // Friday Open Time
-            '',                             // Friday Close Time
-            '9:00 AM',                      // Saturday Open Time
-            '12:00 PM',                     // Saturday Close Time
-            '',                             // Sunday Open Time
-            ''                              // Sunday Close Time
+            'Limited quantities available'  // Notes
         ));
         
         rewind($csv);

@@ -41,9 +41,12 @@
         }
 
         // Initialize Select2 on multi-select dropdowns
-        $('#frd-services, #frd-days').select2({
+        $('#frd-services, #frd-languages').select2({
             placeholder: function() {
-                return $(this).attr('id') === 'frd-services' ? 'All Services' : 'Any Day';
+                const id = $(this).attr('id');
+                if (id === 'frd-services') return 'All Services';
+                if (id === 'frd-languages') return 'All Languages';
+                return '';
             },
             allowClear: true,
             closeOnSelect: false,
@@ -51,7 +54,7 @@
         });
 
         // Force dropdown to have proper spacing when it opens
-        $('#frd-services, #frd-days').on('select2:open', function() {
+        $('#frd-services, #frd-languages').on('select2:open', function() {
             const $select = $(this);
 
             // Use a longer delay to ensure layout has settled
@@ -87,7 +90,7 @@
         // Fix clear button to properly clear all selections
         console.log('FRD Clear: Setting up clear button handler');
 
-        $('#frd-services, #frd-days').on('select2:unselect', function(e) {
+        $('#frd-services, #frd-languages').on('select2:unselect', function(e) {
             const $select = $(this);
 
             setTimeout(function() {
@@ -423,12 +426,12 @@
                 }
             }
 
-            // Filter by days
-            if (filters.days.length > 0) {
-                const openOnDay = filters.days.some(function(day) {
-                    return location.hours && location.hours[day] && location.hours[day].open;
+            // Filter by languages
+            if (filters.languages.length > 0) {
+                const hasLanguage = filters.languages.some(function(language) {
+                    return location.languages && location.languages.includes(language);
                 });
-                if (!openOnDay) {
+                if (!hasLanguage) {
                     return false;
                 }
             }
@@ -445,12 +448,12 @@
     function getFilters() {
         // Get selected values from Select2 dropdowns
         const services = $('#frd-services').val() || [];
-        const days = $('#frd-days').val() || [];
+        const languages = $('#frd-languages').val() || [];
         const county = $('#frd-county').val();
 
         return {
             services: services,
-            days: days,
+            languages: languages,
             county: county
         };
     }
@@ -458,7 +461,7 @@
     function resetFilters() {
         // Clear Select2 dropdowns
         $('#frd-services').val(null).trigger('change');
-        $('#frd-days').val(null).trigger('change');
+        $('#frd-languages').val(null).trigger('change');
 
         // Clear county select
         $('#frd-county').val('');
@@ -759,7 +762,9 @@
         if (location.website) {
             html += '<div class="frd-modal-contact-item">';
             html += '<img src="' + frdData.pluginUrl + '/assets/icons/Link Icon.svg" alt="" class="frd-modal-icon">';
-            html += '<a href="' + location.website + '" target="_blank">' + location.website.replace(/^https?:\/\/(www\.)?/, '') + '</a>';
+            // Clean URL for display: remove protocol, www, and trailing slash
+            const cleanUrl = location.website.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
+            html += '<a href="' + location.website + '" target="_blank">' + cleanUrl + '</a>';
             html += '</div>';
         }
         
@@ -773,13 +778,18 @@
             html += '</div>';
         }
 
-        // Eligibility Requirements
+        // Eligibility Requirements - always show
+        html += '<div class="frd-modal-section frd-modal-section-eligibility">';
         if (location.eligibility) {
-            html += '<div class="frd-modal-section frd-modal-section-eligibility">';
-            html += '<span class="frd-modal-section-heading">Eligibility Requirements</span>';
+            // Has requirements - show heading with "(Call to Confirm)" in coral
+            html += '<span class="frd-modal-section-heading">Eligibility Requirements <span style="color: #FF6F61;">(Call to Confirm)</span></span>';
             html += '<div class="frd-modal-section-body">' + nl2br(location.eligibility) + '</div>';
-            html += '</div>';
+        } else {
+            // No requirements - show default text
+            html += '<span class="frd-modal-section-heading">Eligibility Requirements</span>';
+            html += '<div class="frd-modal-section-body">Call to confirm.</div>';
         }
+        html += '</div>';
 
         // Additional Notes
         if (location.notes) {
@@ -788,40 +798,6 @@
             html += '<div class="frd-modal-section-body">' + nl2br(location.notes) + '</div>';
             html += '</div>';
         }
-
-        // Hours
-        html += '<div class="frd-modal-section frd-modal-section-hours">';
-        html += '<span class="frd-modal-section-heading">Hours</span>';
-        
-        // Check if there's a special hours note
-        if (location.hours_other_hours && location.hours_other_hours !== 'Regular hours') {
-            html += '<div class="frd-modal-section-body">' + location.hours_other_hours + '</div>';
-        } else if (location.hours) {
-            html += '<div class="frd-modal-hours frd-modal-section-body">';
-            const dayLabels = {
-                monday: 'Monday',
-                tuesday: 'Tuesday',
-                wednesday: 'Wednesday',
-                thursday: 'Thursday',
-                friday: 'Friday',
-                saturday: 'Saturday',
-                sunday: 'Sunday'
-            };
-
-            Object.keys(dayLabels).forEach(function(day) {
-                const dayData = location.hours[day];
-                html += '<div class="frd-modal-hours-row">';
-                html += '<span class="frd-modal-hours-day">' + dayLabels[day] + '</span>';
-                if (dayData && dayData.open) {
-                    html += '<span class="frd-modal-hours-time">' + dayData.open_time + ' - ' + dayData.close_time + '</span>';
-                } else {
-                    html += '<span class="frd-modal-hours-time">Closed</span>';
-                }
-                html += '</div>';
-            });
-            html += '</div>';
-        }
-        html += '</div>';
 
         // Action buttons - no divider above
         html += '<div class="frd-modal-buttons">';
