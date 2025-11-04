@@ -1015,6 +1015,9 @@ button.select2-selection__clear span {
 
 .frd-popup-icon-btn:focus {
     outline: none !important;
+}
+
+.frd-popup-icon-btn:focus-visible {
     box-shadow: 0 0 0 3px var(--frd-focus-ring) !important;
     border-color: var(--frd-primary) !important;
 }
