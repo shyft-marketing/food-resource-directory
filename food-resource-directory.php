@@ -3,7 +3,7 @@
     * Plugin Name: Food Resource Directory
     * Plugin URI: https://github.com/shyft-marketing/food-resource-directory
     * Description: Interactive map and filterable directory of food pantries and soup kitchens with ACF integration
-    * Version: 2.0.0
+    * Version: 2.0.1
     * Author: SHYFT
     * Author URI: https://shyft.wtf
     * License: GPL v2 or later
@@ -57,8 +57,12 @@ class Food_Resource_Directory {
             add_action('save_post_food-resource', array($this, 'clear_location_caches'));
             add_action('delete_post', array($this, 'clear_location_caches'));
             add_action('acf/save_post', array($this, 'clear_location_caches'), 20);
+            
+            // Scheduled cleanup for old import temp files
+            add_action('frd_daily_cleanup', array($this, 'cleanup_old_temp_files'));
         }
     }
+
 
     /**
      * Check if ACF is active
@@ -718,18 +722,52 @@ class Food_Resource_Directory {
         $temp_file = '';
         
         try {
+            // Clean up any existing import data and temp files for this user
+            $this->cleanup_user_import_data(get_current_user_id());
+            
+            // Check for upload errors
+            if ($file['error'] !== UPLOAD_ERR_OK) {
+                $error_messages = array(
+                    UPLOAD_ERR_INI_SIZE => 'File exceeds maximum upload size',
+                    UPLOAD_ERR_FORM_SIZE => 'File exceeds maximum upload size',
+                    UPLOAD_ERR_PARTIAL => 'File was only partially uploaded',
+                    UPLOAD_ERR_NO_FILE => 'No file was uploaded',
+                    UPLOAD_ERR_NO_TMP_DIR => 'Missing temporary folder',
+                    UPLOAD_ERR_CANT_WRITE => 'Failed to write file to disk',
+                    UPLOAD_ERR_EXTENSION => 'Upload blocked by PHP extension'
+                );
+                $error_msg = isset($error_messages[$file['error']]) ? $error_messages[$file['error']] : 'Unknown upload error';
+                throw new Exception($error_msg);
+            }
+            
             // Check file type
             $file_ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
             if ($file_ext !== 'csv') {
-                wp_send_json_error(array('message' => 'Only CSV files are allowed'));
+                throw new Exception('Only CSV files are allowed');
+            }
+            
+            // Validate file size (5MB max)
+            if ($file['size'] > 5 * 1024 * 1024) {
+                throw new Exception('File size exceeds 5MB limit');
             }
             
             // Move uploaded file
             $upload_dir = wp_upload_dir();
-            $temp_file = $upload_dir['basedir'] . '/frd-import-' . time() . '.csv';
+            
+            // Check if upload directory is writable
+            if (!wp_is_writable($upload_dir['basedir'])) {
+                throw new Exception('Upload directory is not writable');
+            }
+            
+            $temp_file = $upload_dir['basedir'] . '/frd-import-' . time() . '-' . get_current_user_id() . '.csv';
             
             if (!move_uploaded_file($file['tmp_name'], $temp_file)) {
-                wp_send_json_error(array('message' => 'Failed to save uploaded file'));
+                throw new Exception('Failed to save uploaded file. Please check file permissions.');
+            }
+            
+            // Verify file was created
+            if (!file_exists($temp_file)) {
+                throw new Exception('File was not saved correctly');
             }
             
             // Parse and validate
@@ -743,10 +781,30 @@ class Food_Resource_Directory {
             }
             
             // Store data in transient for preview
-            set_transient('frd_import_data_' . get_current_user_id(), array(
+            $transient_key = 'frd_import_data_' . get_current_user_id();
+            $transient_data = array(
                 'file' => $temp_file,
-                'data' => $result
-            ), 3600); // 1 hour
+                'data' => $result,
+                'timestamp' => time()
+            );
+            
+            $saved = set_transient($transient_key, $transient_data, 3600); // 1 hour
+            
+            // Verify transient was saved
+            if ($saved === false) {
+                throw new Exception('Failed to save import data. Please try again.');
+            }
+            
+            // Double-check we can retrieve it
+            $verify = get_transient($transient_key);
+            if ($verify === false) {
+                throw new Exception('Failed to verify import data storage. Please try again.');
+            }
+            
+            // Log success for debugging
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('FRD Import: Successfully stored import data for user ' . get_current_user_id());
+            }
             
             wp_send_json_success(array('message' => 'File uploaded successfully'));
             
@@ -755,8 +813,77 @@ class Food_Resource_Directory {
             if ($temp_file && file_exists($temp_file)) {
                 @unlink($temp_file);
             }
+            
+            // Log error for debugging
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('FRD Import Error: ' . $e->getMessage());
+            }
+            
             wp_send_json_error(array('message' => $e->getMessage()));
         }
+    }
+    
+    /**
+     * Clean up import data for a specific user
+     * Removes transients and temp files
+     */
+    private function cleanup_user_import_data($user_id) {
+        // Delete import data transient
+        $import_key = 'frd_import_data_' . $user_id;
+        $import_data = get_transient($import_key);
+        
+        if ($import_data && isset($import_data['file']) && file_exists($import_data['file'])) {
+            @unlink($import_data['file']);
+        }
+        
+        delete_transient($import_key);
+        
+        // Delete results transient
+        delete_transient('frd_import_results_' . $user_id);
+        
+        // Clean up any old temp files for this user (older than 24 hours)
+        $upload_dir = wp_upload_dir();
+        $files = glob($upload_dir['basedir'] . '/frd-import-*-' . $user_id . '.csv');
+        
+        if ($files) {
+            foreach ($files as $file) {
+                if (file_exists($file) && (time() - filemtime($file) > 86400)) {
+                    @unlink($file);
+                }
+            }
+        }
+        
+        // Log cleanup for debugging
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('FRD Import: Cleaned up import data for user ' . $user_id);
+        }
+    }
+    
+    /**
+     * Clean up old temp files from all users (older than 24 hours)
+     * Should be called periodically via cron or manually
+     */
+    public function cleanup_old_temp_files() {
+        $upload_dir = wp_upload_dir();
+        $files = glob($upload_dir['basedir'] . '/frd-import-*.csv');
+        
+        $deleted_count = 0;
+        
+        if ($files) {
+            foreach ($files as $file) {
+                if (file_exists($file) && (time() - filemtime($file) > 86400)) {
+                    if (@unlink($file)) {
+                        $deleted_count++;
+                    }
+                }
+            }
+        }
+        
+        if (defined('WP_DEBUG') && WP_DEBUG && $deleted_count > 0) {
+            error_log('FRD Import: Cleaned up ' . $deleted_count . ' old temp files');
+        }
+        
+        return $deleted_count;
     }
     
     /**
@@ -862,6 +989,11 @@ class Food_Resource_Directory {
             set_transient('frd_activation_notice', 'success', 60);
         }
 
+        // Schedule daily cleanup cron job for temp files
+        if (!wp_next_scheduled('frd_daily_cleanup')) {
+            wp_schedule_event(time(), 'daily', 'frd_daily_cleanup');
+        }
+
         // Flush rewrite rules for custom post type
         flush_rewrite_rules();
     }
@@ -870,6 +1002,12 @@ class Food_Resource_Directory {
      * Plugin deactivation hook
      */
     public static function deactivate() {
+        // Clear scheduled cleanup
+        $timestamp = wp_next_scheduled('frd_daily_cleanup');
+        if ($timestamp) {
+            wp_unschedule_event($timestamp, 'frd_daily_cleanup');
+        }
+        
         // Flush rewrite rules
         flush_rewrite_rules();
     }
