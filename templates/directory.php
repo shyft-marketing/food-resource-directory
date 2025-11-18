@@ -83,8 +83,8 @@
 
     <!-- Results Count -->
     <div class="frd-results-info">
-        <p class="frd-results-count">
-            <span id="frd-count">0</span> locations found
+        <p class="frd-results-count" id="frd-results-count">
+            Loading locations...
         </p>
     </div>
 

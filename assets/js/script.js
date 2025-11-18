@@ -557,7 +557,9 @@
   }
 
   function updateResultsCount() {
-    $("#frd-count").text(filteredLocations.length);
+    const count = filteredLocations.length;
+    const text = count === 1 ? 'location found' : 'locations found';
+    $("#frd-results-count").html('<span id="frd-count">' + count + '</span> ' + text);
   }
 
   function updateMapMarkers() {

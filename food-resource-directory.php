@@ -3,7 +3,7 @@
     * Plugin Name: Food Resource Directory
     * Plugin URI: https://github.com/shyft-marketing/food-resource-directory
     * Description: Interactive map and filterable directory of food pantries and soup kitchens with ACF integration
-    * Version: 2.0.8
+    * Version: 2.0.9
     * Author: SHYFT
     * Author URI: https://shyft.wtf
     * License: GPL v2 or later
@@ -57,6 +57,13 @@ class Food_Resource_Directory {
             add_action('save_post_food-resource', array($this, 'clear_location_caches'));
             add_action('delete_post', array($this, 'clear_location_caches'));
             add_action('acf/save_post', array($this, 'clear_location_caches'), 20);
+            
+            // Proactive geocoding hooks
+            add_action('acf/save_post', array($this, 'geocode_on_save'), 10);
+            
+            // Bulk geocoding tool
+            add_action('admin_menu', array($this, 'add_geocoding_page'));
+            add_action('wp_ajax_frd_bulk_geocode', array($this, 'ajax_bulk_geocode'));
             
             // Scheduled cleanup for old import temp files
             add_action('frd_daily_cleanup', array($this, 'cleanup_old_temp_files'));
@@ -1037,6 +1044,246 @@ class Food_Resource_Directory {
         if (function_exists('wp_cache_flush')) {
             wp_cache_delete('frd_available_languages', 'frd');
         }
+    }
+    
+    /**
+     * Geocode location when post is saved (proactive geocoding)
+     * Runs on ACF save_post hook to ensure address fields are available
+     */
+    public function geocode_on_save($post_id) {
+        // Only run for food-resource post type
+        if (get_post_type($post_id) !== 'food-resource') {
+            return;
+        }
+        
+        // Don't run on autosaves or revisions
+        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+            return;
+        }
+        
+        // Check if address fields have changed or coordinates are missing
+        $coordinates = get_post_meta($post_id, '_frd_coordinates', true);
+        
+        // Build full address from ACF fields
+        $street_address = get_field('street_address', $post_id);
+        $city = get_field('city', $post_id);
+        $state = get_field('state', $post_id);
+        $zip = get_field('zip', $post_id);
+        
+        // If any address field is empty, skip geocoding
+        if (empty($street_address) || empty($city) || empty($state) || empty($zip)) {
+            return;
+        }
+        
+        $full_address = trim($street_address . ', ' . $city . ', ' . $state . ' ' . $zip);
+        
+        // Get previously stored address to check if it changed
+        $previous_address = get_post_meta($post_id, '_frd_full_address', true);
+        
+        // If address changed or coordinates are missing, geocode it
+        if ($full_address !== $previous_address || empty($coordinates)) {
+            $new_coordinates = $this->geocode_address($full_address);
+            
+            if ($new_coordinates) {
+                update_post_meta($post_id, '_frd_coordinates', $new_coordinates);
+                update_post_meta($post_id, '_frd_full_address', $full_address);
+                
+                if (defined('WP_DEBUG') && WP_DEBUG) {
+                    error_log("FRD: Geocoded post {$post_id}: {$full_address}");
+                }
+            }
+        }
+    }
+    
+    /**
+     * Add geocoding tools page to admin menu
+     */
+    public function add_geocoding_page() {
+        add_submenu_page(
+            'edit.php?post_type=food-resource',
+            'Geocoding Tools',
+            'Geocoding Tools',
+            'manage_options',
+            'food-resource-directory-geocoding',
+            array($this, 'render_geocoding_page')
+        );
+    }
+    
+    /**
+     * Render geocoding tools page
+     */
+    public function render_geocoding_page() {
+        if (!current_user_can('manage_options')) {
+            wp_die('Unauthorized');
+        }
+        
+        ?>
+        <div class="wrap">
+            <h1>Geocoding Tools</h1>
+            <p>Use this tool to geocode addresses for all food resource locations that are missing coordinates.</p>
+            
+            <div class="card" style="max-width: 800px;">
+                <h2>Bulk Geocode Locations</h2>
+                <p>This will geocode all locations that don't have coordinates yet. This process may take a few minutes depending on how many locations need geocoding.</p>
+                
+                <div id="frd-geocoding-status" style="margin: 20px 0;">
+                    <p><strong>Status:</strong> <span id="frd-geocoding-status-text">Ready</span></p>
+                    <div id="frd-geocoding-progress" style="display: none;">
+                        <div style="background: #f0f0f0; border-radius: 4px; height: 30px; overflow: hidden; margin: 10px 0;">
+                            <div id="frd-geocoding-progress-bar" style="background: #2271b1; height: 100%; width: 0%; transition: width 0.3s;"></div>
+                        </div>
+                        <p id="frd-geocoding-progress-text">0 of 0 locations geocoded</p>
+                    </div>
+                    <div id="frd-geocoding-results" style="display: none; margin-top: 15px;"></div>
+                </div>
+                
+                <button type="button" class="button button-primary" id="frd-bulk-geocode-btn">
+                    Start Bulk Geocoding
+                </button>
+            </div>
+            
+            <div class="card" style="max-width: 800px; margin-top: 20px;">
+                <h2>How It Works</h2>
+                <ul>
+                    <li><strong>Automatic:</strong> New locations are automatically geocoded when saved</li>
+                    <li><strong>Smart Caching:</strong> Coordinates are cached, so addresses are only geocoded once</li>
+                    <li><strong>Re-geocoding:</strong> If you change an address, it will be automatically re-geocoded</li>
+                    <li><strong>Bulk Tool:</strong> Use the button above to geocode any existing locations that are missing coordinates</li>
+                </ul>
+            </div>
+        </div>
+        
+        <script type="text/javascript">
+        jQuery(document).ready(function($) {
+            $('#frd-bulk-geocode-btn').on('click', function() {
+                const $btn = $(this);
+                const $status = $('#frd-geocoding-status-text');
+                const $progress = $('#frd-geocoding-progress');
+                const $progressBar = $('#frd-geocoding-progress-bar');
+                const $progressText = $('#frd-geocoding-progress-text');
+                const $results = $('#frd-geocoding-results');
+                
+                $btn.prop('disabled', true);
+                $status.text('Processing...');
+                $progress.show();
+                $results.hide().empty();
+                
+                $.ajax({
+                    url: ajaxurl,
+                    type: 'POST',
+                    data: {
+                        action: 'frd_bulk_geocode',
+                        nonce: '<?php echo wp_create_nonce('frd_bulk_geocode'); ?>'
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            const data = response.data;
+                            $status.text('Complete!');
+                            $progressBar.css('width', '100%');
+                            $progressText.text(data.geocoded + ' of ' + data.total + ' locations geocoded');
+                            
+                            let resultsHtml = '<div class="notice notice-success inline"><p><strong>Geocoding Complete!</strong></p><ul>';
+                            resultsHtml += '<li>Total locations checked: ' + data.total + '</li>';
+                            resultsHtml += '<li>Already had coordinates: ' + data.skipped + '</li>';
+                            resultsHtml += '<li>Successfully geocoded: ' + data.geocoded + '</li>';
+                            if (data.failed > 0) {
+                                resultsHtml += '<li>Failed to geocode: ' + data.failed + '</li>';
+                            }
+                            resultsHtml += '</ul></div>';
+                            
+                            $results.html(resultsHtml).show();
+                        } else {
+                            $status.text('Error');
+                            $results.html('<div class="notice notice-error inline"><p>' + response.data + '</p></div>').show();
+                        }
+                    },
+                    error: function() {
+                        $status.text('Error');
+                        $results.html('<div class="notice notice-error inline"><p>An error occurred. Please try again.</p></div>').show();
+                    },
+                    complete: function() {
+                        $btn.prop('disabled', false);
+                    }
+                });
+            });
+        });
+        </script>
+        <?php
+    }
+    
+    /**
+     * AJAX handler for bulk geocoding
+     */
+    public function ajax_bulk_geocode() {
+        check_ajax_referer('frd_bulk_geocode', 'nonce');
+        
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error('Unauthorized');
+        }
+        
+        // Get all food-resource posts
+        $args = array(
+            'post_type' => 'food-resource',
+            'posts_per_page' => -1,
+            'post_status' => 'publish',
+            'fields' => 'ids'
+        );
+        
+        $query = new WP_Query($args);
+        $post_ids = $query->posts;
+        
+        $total = count($post_ids);
+        $geocoded = 0;
+        $skipped = 0;
+        $failed = 0;
+        
+        foreach ($post_ids as $post_id) {
+            // Check if already has coordinates
+            $coordinates = get_post_meta($post_id, '_frd_coordinates', true);
+            
+            if (!empty($coordinates) && isset($coordinates['lat']) && isset($coordinates['lng'])) {
+                $skipped++;
+                continue;
+            }
+            
+            // Build address
+            $street_address = get_field('street_address', $post_id);
+            $city = get_field('city', $post_id);
+            $state = get_field('state', $post_id);
+            $zip = get_field('zip', $post_id);
+            
+            // Skip if address is incomplete
+            if (empty($street_address) || empty($city) || empty($state) || empty($zip)) {
+                $failed++;
+                continue;
+            }
+            
+            $full_address = trim($street_address . ', ' . $city . ', ' . $state . ' ' . $zip);
+            
+            // Geocode
+            $new_coordinates = $this->geocode_address($full_address);
+            
+            if ($new_coordinates) {
+                update_post_meta($post_id, '_frd_coordinates', $new_coordinates);
+                update_post_meta($post_id, '_frd_full_address', $full_address);
+                $geocoded++;
+            } else {
+                $failed++;
+            }
+            
+            // Small delay to avoid rate limiting
+            usleep(100000); // 0.1 seconds
+        }
+        
+        // Clear caches after bulk geocoding
+        $this->clear_location_caches();
+        
+        wp_send_json_success(array(
+            'total' => $total,
+            'geocoded' => $geocoded,
+            'skipped' => $skipped,
+            'failed' => $failed
+        ));
     }
 }
 
