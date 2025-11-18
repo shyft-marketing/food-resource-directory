@@ -3,7 +3,7 @@
     * Plugin Name: Food Resource Directory
     * Plugin URI: https://github.com/shyft-marketing/food-resource-directory
     * Description: Interactive map and filterable directory of food pantries and soup kitchens with ACF integration
-    * Version: 2.0.3
+    * Version: 2.0.4
     * Author: SHYFT
     * Author URI: https://shyft.wtf
     * License: GPL v2 or later
@@ -843,12 +843,14 @@ class Food_Resource_Directory {
         
         // Clean up any old temp files for this user (older than 24 hours)
         $upload_dir = wp_upload_dir();
-        $files = glob($upload_dir['basedir'] . '/frd-import-*-' . $user_id . '.csv');
-        
-        if ($files) {
-            foreach ($files as $file) {
-                if (file_exists($file) && (time() - filemtime($file) > 86400)) {
-                    @unlink($file);
+        if (!empty($upload_dir['basedir'])) {
+            $files = @glob($upload_dir['basedir'] . '/frd-import-*-' . $user_id . '.csv');
+            
+            if (is_array($files) && !empty($files)) {
+                foreach ($files as $file) {
+                    if (file_exists($file) && (time() - @filemtime($file) > 86400)) {
+                        @unlink($file);
+                    }
                 }
             }
         }
