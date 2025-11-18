@@ -348,8 +348,11 @@ $step = isset($_GET['step']) ? sanitize_text_field($_GET['step']) : 'upload';
 <script>
 jQuery(document).ready(function($) {
     // Handle file upload and preview
-    $('#frd-upload-form').on('submit', function(e) {
+    // Use .off() first to prevent duplicate handlers
+    $('#frd-upload-form').off('submit').on('submit', function(e) {
         e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
         
         var formData = new FormData(this);
         formData.append('action', 'frd_upload_preview');
@@ -384,6 +387,8 @@ jQuery(document).ready(function($) {
                 $('.spinner').css('visibility', 'hidden');
             }
         });
+        
+        return false; // Additional prevention
     });
     
     // Load preview if on preview step
