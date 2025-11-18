@@ -379,7 +379,7 @@ jQuery(document).ready(function($) {
             success: function(response) {
                 if (response.success) {
                     // Store data in session and redirect to preview
-                    window.location.href = '<?php echo esc_url(admin_url('admin.php?page=food-resource-directory-import&step=preview')); ?>';
+                    window.location.href = '<?php echo esc_url(add_query_arg('step', 'preview', admin_url('admin.php?page=food-resource-directory-import'))); ?>';
                 } else {
                     $('#frd-upload-result').html(
                         '<div class="notice notice-error"><p>' + response.data.message + '</p></div>'
@@ -423,7 +423,7 @@ jQuery(document).ready(function($) {
             nonce: '<?php echo wp_create_nonce('frd_import_confirm'); ?>'
         }, function(response) {
             if (response.success) {
-                window.location.href = '<?php echo esc_url(admin_url('admin.php?page=food-resource-directory-import&step=results')); ?>';
+                window.location.href = '<?php echo esc_url(add_query_arg('step', 'results', admin_url('admin.php?page=food-resource-directory-import'))); ?>';
             } else {
                 alert('Import failed: ' + response.data.message);
                 $('.spinner').css('visibility', 'hidden');
