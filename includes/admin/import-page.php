@@ -77,7 +77,7 @@ $step = isset($_GET['step']) ? sanitize_text_field($_GET['step']) : 'upload';
                 
                 <hr>
                 
-                <form method="post" enctype="multipart/form-data" id="frd-upload-form">
+                <form method="post" enctype="multipart/form-data" id="frd-upload-form" action="javascript:void(0);">
                     <?php wp_nonce_field('frd_import_upload', 'frd_import_nonce'); ?>
                     
                     <table class="form-table">
@@ -93,7 +93,7 @@ $step = isset($_GET['step']) ? sanitize_text_field($_GET['step']) : 'upload';
                     </table>
                     
                     <p class="submit">
-                        <button type="submit" class="button button-primary" id="frd-upload-btn">
+                        <button type="button" class="button button-primary" id="frd-upload-btn">
                             <span class="dashicons dashicons-upload"></span> Upload & Preview
                         </button>
                         <span class="spinner"></span>
@@ -347,14 +347,23 @@ $step = isset($_GET['step']) ? sanitize_text_field($_GET['step']) : 'upload';
 
 <script>
 jQuery(document).ready(function($) {
-    // Handle file upload and preview
-    // Use .off() first to prevent duplicate handlers
-    $('#frd-upload-form').off('submit').on('submit', function(e) {
+    // Handle file upload and preview via button click
+    $('#frd-upload-btn').off('click').on('click', function(e) {
         e.preventDefault();
-        e.stopPropagation();
-        e.stopImmediatePropagation();
         
-        var formData = new FormData(this);
+        // Get the form
+        var $form = $('#frd-upload-form');
+        var fileInput = $('#import_file')[0];
+        
+        // Validate file selection
+        if (!fileInput.files || !fileInput.files.length) {
+            $('#frd-upload-result').html(
+                '<div class="notice notice-error"><p>Please select a CSV file to upload.</p></div>'
+            );
+            return;
+        }
+        
+        var formData = new FormData($form[0]);
         formData.append('action', 'frd_upload_preview');
         
         $('#frd-upload-btn').prop('disabled', true);
@@ -377,18 +386,17 @@ jQuery(document).ready(function($) {
                     );
                 }
             },
-            error: function() {
+            error: function(xhr, status, error) {
                 $('#frd-upload-result').html(
-                    '<div class="notice notice-error"><p>An error occurred while uploading the file.</p></div>'
+                    '<div class="notice notice-error"><p>An error occurred while uploading the file. Please try again.</p></div>'
                 );
+                console.error('Upload error:', error);
             },
             complete: function() {
                 $('#frd-upload-btn').prop('disabled', false);
                 $('.spinner').css('visibility', 'hidden');
             }
         });
-        
-        return false; // Additional prevention
     });
     
     // Load preview if on preview step
