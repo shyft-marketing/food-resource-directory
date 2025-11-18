@@ -218,14 +218,17 @@
             }, 300); // 300ms debounce
         });
 
-    // Apply filters button
-    $("#frd-apply-filters").on("click", function () {
-      const searchValue = $("#frd-location-search").val().trim();
-      if (searchValue && !userLocation) {
-        searchLocation();
-      } else {
-        applyFilters();
-      }
+    // Auto-apply filters when dropdowns change
+    $("#frd-county").on("change", function () {
+      applyFilters();
+    });
+
+    $("#frd-services").on("change", function () {
+      applyFilters();
+    });
+
+    $("#frd-languages").on("change", function () {
+      applyFilters();
     });
 
     // Reset filters button

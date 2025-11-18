@@ -75,8 +75,7 @@
 
             <!-- Filter Actions -->
             <div class="frd-filter-actions">
-                <button class="frd-btn frd-btn-primary" id="frd-apply-filters">Apply Filters</button>
-                <button class="frd-btn frd-btn-secondary" id="frd-reset-filters">Reset</button>
+                <button class="frd-btn frd-btn-secondary" id="frd-reset-filters">Clear All Filters</button>
             </div>
         </div>
     </div>
