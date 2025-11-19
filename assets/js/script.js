@@ -769,10 +769,12 @@
     html += '<div class="frd-popup-title-row">';
     html += '<span class="frd-popup-title">' + location.title + "</span>";
     if (location.services && location.services.length > 0) {
-      html +=
-        '<span class="frd-popup-service-chip">' +
-        location.services[0] +
-        "</span>";
+      location.services.forEach(function(service) {
+        html +=
+          '<span class="frd-popup-service-chip">' +
+          service +
+          "</span>";
+      });
     }
     html += "</div>";
 
@@ -916,14 +918,16 @@
     );
     $titleContainer.append($title);
 
-    // Add first service chip inline with title
+    // Add all service chips inline with title
     if (location.services && location.services.length > 0) {
-      const $serviceChip = $(
-        '<span class="frd-location-service-chip">' +
-          location.services[0] +
-          "</span>"
-      );
-      $titleContainer.append($serviceChip);
+      location.services.forEach(function(service) {
+        const $serviceChip = $(
+          '<span class="frd-location-service-chip">' +
+            service +
+            "</span>"
+        );
+        $titleContainer.append($serviceChip);
+      });
     }
 
     $header.append($titleContainer);
@@ -1050,8 +1054,10 @@
     html += '<div class="frd-modal-title-row">';
     html += '<div class="frd-modal-title">' + location.title + "</div>";
     if (location.services && location.services.length > 0) {
-      html +=
-        '<span class="frd-modal-service">' + location.services[0] + "</span>";
+      location.services.forEach(function(service) {
+        html +=
+          '<span class="frd-modal-service">' + service + "</span>";
+      });
     }
     html += "</div>";
 
