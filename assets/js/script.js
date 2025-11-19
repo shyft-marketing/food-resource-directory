@@ -713,20 +713,13 @@
       popup.on("open", function () {
         // Remove focus from any element in the popup
         setTimeout(function () {
-          // Find all focusable elements in popups and blur them
+          // Find specific focusable elements in popup content (excluding close button)
           const popupElements = document.querySelectorAll(
-            ".mapboxgl-popup .frd-popup-icon-btn, .mapboxgl-popup a, .mapboxgl-popup button"
+            ".mapboxgl-popup .frd-popup-icon-btn, .mapboxgl-popup .frd-popup-actions a, .mapboxgl-popup .frd-popup-more-info"
           );
           popupElements.forEach(function (el) {
             el.blur();
           });
-          // Also blur the currently active element if it's within a popup
-          if (
-            document.activeElement &&
-            document.activeElement.closest(".mapboxgl-popup")
-          ) {
-            document.activeElement.blur();
-          }
         }, 10);
       });
     });
